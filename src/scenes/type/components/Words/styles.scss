@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost&display=swap');
+
+.Words {
+    font-family: Jost;
+    font-size: 24px;
+    text-align: left;
+    width: 50%;
+}
+
+.Line {
+    animation: grow-height 0.2s;
+    max-height: 45px;
+    overflow: hidden;
+}
+
+.notTyped {
+    display: inline-block;
+    overflow: hidden;
+    transition: 0.2s;
+}
+
+.correct {
+    display: inline-block;
+    overflow: hidden;
+    transition: 0.2s;
+}
+
+.incorrect {
+    display: inline-block;
+    overflow: hidden;
+    max-width: 20px;
+    animation: grow-width 0.2s;
+}
+
+@keyframes grow-width {
+    0% {
+        max-width: 0;
+    }
+}
+
+@keyframes grow-height {
+    0% {
+        max-height: 0;
+    }
+}
+
