@@ -55,9 +55,8 @@ export class Speed extends React.Component {
                 { this.state.speed }
                 <TypingContext.Consumer>
                     {(value) => {
-                        this.updateContext = value.updateContext
-                        this.updateKeyTimes(value.data)
-                        this.contextData = value.data
+                        this.updateKeyTimes(value)
+                        this.contextData = value
                     }}
                 </TypingContext.Consumer>
             </p>

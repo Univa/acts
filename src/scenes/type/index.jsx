@@ -27,13 +27,11 @@ export default class Type extends React.Component {
             duration: 3000,
             mode: "type",
             typedata: {
-                data: {
-                    speed: 0,
-                    lastkeytime: 0,
-                    lastkeydelay: 0,
-                    running: false,
-                    correct: 0
-                },
+                speed: 0,
+                lastkeytime: 0,
+                lastkeydelay: 0,
+                running: false,
+                correct: 0
             }
         }
 
@@ -43,10 +41,7 @@ export default class Type extends React.Component {
             this.setState(prevState => ({
                 typedata: {
                     ...prevState.typedata,
-                    data: {
-                        ...prevState.typedata.data,
-                        ...new_data
-                    }
+                    ...new_data
                 }
             }))
         }
@@ -67,10 +62,7 @@ export default class Type extends React.Component {
             ),
             typedata: {
                 ...prevState.typedata,
-                data: {
-                    ...prevState.typedata.data,
-                    running: false
-                }
+                running: false
             }
         }))
     }
@@ -83,10 +75,10 @@ export default class Type extends React.Component {
                         <div class="container" style={{backgroundColor: theme.color.bg}}>
                             <div class="info">
                                 <Timer
-                                    running={ this.state.typedata.data.running }
+                                    running={ this.state.typedata.running }
                                     stopHandler={ this.onTimerStop }
                                 />
-                                <Display value={ this.state.typedata.data.correct } />
+                                <Display value={ this.state.typedata.correct } />
                                 <Speed updateTypingContext={ this.updateTypingContext }/>
                             </div>
                             <Words
