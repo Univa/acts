@@ -4,7 +4,6 @@ import Line from './Line.jsx'
 import Char from './Char.jsx'
 import Word from './Word.jsx'
 import './styles.scss'
-import { TypingContext } from '../../typing-context.jsx';
 
 export class Words extends React.Component {
     constructor(props) {

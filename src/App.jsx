@@ -3,7 +3,7 @@ import {
     Settings,
     Type
 } from './scenes';
-import { ThemeContext } from './theme-context.jsx'
+import { SettingsContext } from './settings-context.jsx'
 import {
     BrowserRouter as Router,
     Switch,
@@ -15,24 +15,26 @@ export default class App extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            theme: {
-                color: {
-                    notTyped: "white",
-                    correct: "green",
-                    incorrect: "red",
-                    bg: "#323232"
-                }
+            settings: {
+                theme: {
+                    color: {
+                        notTyped: "white",
+                        correct: "green",
+                        incorrect: "red",
+                        bg: "#323232"
+                    }
+                },
             }
         }
     }
 
     render() {
         return (
-            <ThemeContext.Provider value={ this.state.theme }>
+            <SettingsContext.Provider value={ this.state.settings }>
                 <Router>
                     <Type />
                 </Router>
-            </ThemeContext.Provider>
+            </SettingsContext.Provider>
         )
     }
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ThemeContext } from '../../../../theme-context';
+import { SettingsContext } from '../../../../settings-context';
 
 export default class Char extends React.Component {
     constructor(props) {
@@ -11,8 +11,8 @@ export default class Char extends React.Component {
 
     render() {
         return (
-            <ThemeContext.Consumer>
-                {(theme) => 
+            <SettingsContext.Consumer>
+                {({theme}) => 
                     {
                         let color = "white"
                         if (this.props.type === "correct") { color = theme.color.correct }
@@ -22,7 +22,7 @@ export default class Char extends React.Component {
                         return <span class={ this.props.type } style={{color: color}}>{ this.props.character }</span>
                     }
                 }
-            </ThemeContext.Consumer>
+            </SettingsContext.Consumer>
         )
     }
 }

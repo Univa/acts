@@ -8,21 +8,21 @@ import {
 } from './components'
 import { TypingContext } from './typing-context.jsx'
 import './styles.scss';
-import { ThemeContext } from '../../theme-context';
+import { SettingsContext } from '../../settings-context';
 
 export default class Type extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             message: (
-                <ThemeContext.Consumer>
-                    {(theme) => (
+                <SettingsContext.Consumer>
+                    {({theme}) => (
                         [
                             <p><span style={{color: theme.color.notTyped}}>Welcome.</span></p>,
                             <p><span style={{color: theme.color.notTyped}}>Start typing when you're </span><span style={{color: theme.color.correct}}>ready.</span></p>
                         ]
                     )}
-                </ThemeContext.Consumer>
+                </SettingsContext.Consumer>
             ),
             duration: 3000,
             mode: "type",
@@ -51,14 +51,14 @@ export default class Type extends React.Component {
         this.setState(prevState => ({
             mode: "result",
             message: (
-                <ThemeContext.Consumer>
-                    {(theme) => (
+                <SettingsContext.Consumer>
+                    {({theme}) => (
                         [
                             <p><span style={{color: theme.color.notTyped}}>Time's up.</span></p>,
-                            <p><span style={{color: theme.color.notTyped}}>WPM: </span><span style={{color: theme.color.correct}}>{ this.state.typedata.data.correct / 5 }</span></p>
+                            <p><span style={{color: theme.color.notTyped}}>WPM: </span><span style={{color: theme.color.correct}}>{ this.state.typedata.correct / 5 }</span></p>
                         ]
                     )}
-                </ThemeContext.Consumer>
+                </SettingsContext.Consumer>
             ),
             typedata: {
                 ...prevState.typedata,
@@ -70,8 +70,8 @@ export default class Type extends React.Component {
     render() { 
         return (
             <TypingContext.Provider value={ this.state.typedata }>
-                <ThemeContext.Consumer>
-                    {(theme) => (
+                <SettingsContext.Consumer>
+                    {({theme}) => (
                         <div class="container" style={{backgroundColor: theme.color.bg}}>
                             <div class="info">
                                 <Timer
@@ -89,7 +89,7 @@ export default class Type extends React.Component {
                             />
                         </div>
                     )}
-                </ThemeContext.Consumer>
+                </SettingsContext.Consumer>
             </TypingContext.Provider>
         )
     }
