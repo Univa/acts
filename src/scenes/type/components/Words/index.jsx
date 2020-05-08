@@ -106,7 +106,7 @@ export class Words extends React.Component {
             this.correctCharacters--
 
             // update time since last correct keypress
-            this.updateContext({
+            this.props.updateTypingContext({
                 correct: this.correctCharacters
             })
             this.setState(prevState => ({
@@ -136,7 +136,7 @@ export class Words extends React.Component {
                     this.correctCharacters--
 
                     // update time since last correct keypress
-                    this.updateContext({
+                    this.props.updateTypingContext({
                         correct: this.correctCharacters
                     })
                     this.setState(prevState => ({
@@ -162,7 +162,7 @@ export class Words extends React.Component {
             if (this.state.contentDisplayed[line][word].incorrect.length === 0 && this.state.contentDisplayed[line][word].notTyped[0] === " ") {
                 this.lastkeytime = new Date().getTime()
                 this.correctCharacters++
-                this.updateContext({
+                this.props.updateTypingContext({
                     lastkeytime: this.lastkeytime,
                     correct: this.correctCharacters
                 })
@@ -192,7 +192,7 @@ export class Words extends React.Component {
             }
             if (!this.startedTyping) {
                 this.startedTyping = true;
-                this.updateContext({
+                this.props.updateTypingContext({
                     running: true
                 })
             }
@@ -210,13 +210,13 @@ export class Words extends React.Component {
             this.correctCharacters++
 
             // update time since last correct keypress
-            this.updateContext({
+            this.props.updateTypingContext({
                 lastkeytime: this.lastkeytime,
                 correct: this.correctCharacters
             })
             if (!this.startedTyping) {
                 this.startedTyping = true;
-                this.updateContext({
+                this.props.updateTypingContext({
                     running: true
                 })
             }
@@ -231,7 +231,7 @@ export class Words extends React.Component {
             )
             if (!this.startedTyping) {
                 this.startedTyping = true;
-                this.updateContext({
+                this.props.updateTypingContext({
                     running: true
                 })
             }
@@ -267,11 +267,6 @@ export class Words extends React.Component {
 
         return (
             <div class="Words">
-                <TypingContext.Consumer>
-                    {(value) => {
-                        this.updateContext = value.updateContext
-                    }}
-                </TypingContext.Consumer>
                 { this.state.displayingMessage ? this.props.message : lines }
             </div>
         )

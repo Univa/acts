@@ -43,7 +43,7 @@ export class Speed extends React.Component {
             bullshit = this.charsInDepth - ((this.props.interval / this.speedDepth) * ((new Date().getTime() - this.contextData.lastkeytime) / 1000 / (this.props.interval / this.speedDepth)))
         }
         var speed = Math.round(bullshit * (60 / (this.speedDepth / 1000)) / 5)
-        this.updateContext({
+        this.props.updateTypingContext({
             speed: speed
         })
         return speed

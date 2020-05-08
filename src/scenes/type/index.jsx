@@ -38,7 +38,7 @@ export default class Type extends React.Component {
         }
 
         this.onTimerStop = this.onTimerStop.bind(this)
-        this.updateContextData = (new_data) => {
+        this.updateTypingContext = (new_data) => {
             // don't touch this ever again or you'll get fucked again
             this.setState(prevState => ({
                 typedata: {
@@ -50,17 +50,6 @@ export default class Type extends React.Component {
                 }
             }))
         }
-    }
-
-    componentDidMount() {
-        this.setState(prevState => ({
-            typedata: {
-                data: {
-                    ...prevState.typedata.data
-                },
-                updateContext: this.updateContextData
-            }
-        }))
     }
 
     onTimerStop() {
@@ -98,12 +87,13 @@ export default class Type extends React.Component {
                                     stopHandler={ this.onTimerStop }
                                 />
                                 <Display value={ this.state.typedata.data.correct } />
-                                <Speed />
+                                <Speed updateTypingContext={ this.updateTypingContext }/>
                             </div>
                             <Words
                                 keyHandler={ this.handleKey }
                                 message={ this.state.message }
                                 msgduration={ this.state.duration }
+                                updateTypingContext={ this.updateTypingContext }
                             />
                         </div>
                     )}
