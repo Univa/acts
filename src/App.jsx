@@ -26,13 +26,29 @@ export default class App extends React.Component {
                 },
             }
         }
+
+        this.updateSettingsContext = (new_data) => {
+            this.setState(prevState => ({
+                settings: {
+                    ...prevState.settings,
+                    new_data
+                }
+            }))
+        }
     }
 
     render() {
         return (
             <SettingsContext.Provider value={ this.state.settings }>
-                <Router>
-                    <Type />
+                <Router basename="/acts">
+                    <Switch>
+                        <Route path="/settings">
+                            <Settings updateSettings={ this.updateSettingsContext }/>
+                        </Route>
+                        <Route path="/">
+                            <Type />
+                        </Route>
+                    </Switch>
                 </Router>
             </SettingsContext.Provider>
         )

@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost&display=swap');
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    font-family: Jost;
+    font-size: 32px;
+}
+
+.color-settings {
+    text-align: center;
+    width: 75%;
+    animation: fadeIn 1s;
+}
+
+.setting-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.setting {
+    font-size: 24px;
+    text-align: center;
+    padding: 0px;
+    margin: 25px;
+}
+
+.setting p {
+    margin: 5px;
+    width: 100%;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0
+    }
+}
