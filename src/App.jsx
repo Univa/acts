@@ -26,6 +26,8 @@ export default class App extends React.Component {
                         command: "yellow"
                     }
                 },
+                starttime: 60,
+                linesAtATime: 2
             }
         }
 

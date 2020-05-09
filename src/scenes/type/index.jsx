@@ -71,10 +71,11 @@ export default class Type extends React.Component {
         return (
             <TypingContext.Provider value={ this.state.typedata }>
                 <SettingsContext.Consumer>
-                    {({theme}) => (
-                        <div class="Type" style={{backgroundColor: theme.color.bg}}>
+                    {(settings) => (
+                        <div class="Type" style={{backgroundColor: settings.theme.color.bg}}>
                             <div class="info">
                                 <Timer
+                                    starttime={ settings.starttime }
                                     running={ this.state.typedata.running }
                                     stopHandler={ this.onTimerStop }
                                 />
@@ -82,6 +83,7 @@ export default class Type extends React.Component {
                                 <Speed updateTypingContext={ this.updateTypingContext }/>
                             </div>
                             <Words
+                                linesAtATime={ settings.linesAtATime }
                                 keyHandler={ this.handleKey }
                                 message={ this.state.message }
                                 msgduration={ this.state.duration }

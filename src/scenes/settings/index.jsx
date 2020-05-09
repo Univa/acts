@@ -39,6 +39,20 @@ export default class Settings extends React.Component {
                                 </div>
                             </div>
                         </div>
+
+                        <div class="type-settings">
+                            <p style={{color: settings.theme.color.notTyped}}>Typing</p>
+                            <div class="setting-container">
+                                <div class="setting">
+                                    <p style={{color: settings.theme.color.notTyped}}>Starting Time</p>
+                                    <Input settingPath={ ["starttime"] } updateSettings={ this.props.updateSettings } />
+                                </div>
+                                <div class="setting">
+                                    <p style={{color: settings.theme.color.notTyped}}>Lines Ahead</p>
+                                    <Input settingPath={ ["linesAtATime"] } updateSettings={ this.props.updateSettings } />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 )}
             </SettingsContext.Consumer>
