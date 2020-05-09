@@ -19,7 +19,6 @@ export class Timer extends React.Component {
     }
 
     start() {
-        console.log("start")
         var interval = 0;
         // calculate the interval in ms
         if (this.props.units === "s") {

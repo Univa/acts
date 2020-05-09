@@ -92,7 +92,6 @@ export class Words extends React.Component {
     }
 
     handleKey(e) {
-        console.log(this.lineTracker)
         var line = this.lineTracker
         var word = this.state.contentDisplayed[line].findIndex(x => x.id === this.wordTracker)
 
@@ -133,9 +132,6 @@ export class Words extends React.Component {
             if (this.wordTracker < this.state.contentDisplayed[line][0].id) {
                 this.lineTracker--
             }
-
-            console.log(this.lineTracker)
-            console.log(this.wordTracker)
 
             if (this.state.contentDisplayed[this.lineTracker][this.state.contentDisplayed[this.lineTracker].findIndex(x => x.id === this.wordTracker)].incorrect.length === 0) {
                 if (line !== 0 || word !== 0) {
