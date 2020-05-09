@@ -23,6 +23,8 @@ export class Words extends React.Component {
         this.correctCharacters = 0
         this.startedTyping = false;
         this.lastkeytime = new Date().getTime();
+
+        this.handleKey = this.handleKey.bind(this);
     }
 
     componentDidMount() {
@@ -30,13 +32,17 @@ export class Words extends React.Component {
             isLoaded: true
         })
 
-        document.addEventListener('keydown', this.handleKey.bind(this));
+        document.addEventListener('keydown', this.handleKey);
 
         this.displayMessage(this.props.msgduration)
 
         for (var i = 0; i < this.props.linesAtATime; i++) {
             this.genLine(8)
         }
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.handleKey)
     }
 
     componentDidUpdate(prevProps) {
@@ -86,6 +92,7 @@ export class Words extends React.Component {
     }
 
     handleKey(e) {
+        console.log(this.lineTracker)
         var line = this.lineTracker
         var word = this.state.contentDisplayed[line].findIndex(x => x.id === this.wordTracker)
 
