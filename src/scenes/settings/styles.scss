@@ -2,9 +2,9 @@
 
 .Settings {
     display: flex;
-    width: 100vw;
-    height: 100vh;
-    justify-content: center;
+    min-width: 100%;
+    min-height: 100%;
+    align-items: center;
     flex-direction: column;
     font-family: Jost;
     font-size: 32px;
@@ -12,6 +12,7 @@
 
 .color-settings, .type-settings {
     text-align: center;
+    margin: 100px;
     width: 75%;
     animation: fadeIn 1s;
 }
