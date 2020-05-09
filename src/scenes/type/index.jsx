@@ -52,10 +52,10 @@ export default class Type extends React.Component {
             mode: "result",
             message: (
                 <SettingsContext.Consumer>
-                    {({theme}) => (
+                    {(settings) => (
                         [
-                            <p><span style={{color: theme.color.notTyped}}>Time's up.</span></p>,
-                            <p><span style={{color: theme.color.notTyped}}>WPM: </span><span style={{color: theme.color.correct}}>{ this.state.typedata.correct / 5 }</span></p>
+                            <p><span style={{color: settings.theme.color.notTyped}}>Time's up.</span></p>,
+                            <p><span style={{color: settings.theme.color.notTyped}}>WPM: </span><span style={{color: settings.theme.color.correct}}>{ (this.state.typedata.correct / 5 * (60 / settings.starttime)).toFixed(1) }</span></p>
                         ]
                     )}
                 </SettingsContext.Consumer>
