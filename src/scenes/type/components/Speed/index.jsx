@@ -14,17 +14,21 @@ export class Speed extends React.Component {
         this.contextData = {
             lastkeytime: 0
         }
+
+        this.updateSpeed = this.updateSpeed.bind(this)
+    }
+
+    updateSpeed() {
+        this.setState({
+            speed: this.calcSpeed()
+        })
     }
 
     componentDidMount() {
         if (this.props.updateMethod === "type") {
-            document.addEventListener('keydown', () => this.setState({
-                speed: this.calcSpeed()
-            }));
+            document.addEventListener('keydown', this.updateSpeed);
         } else {
-            this.interval = setInterval(() => this.setState({
-                speed: this.calcSpeed()
-            }), this.props.interval)
+            this.interval = setInterval(this.updateSpeed, this.props.interval)
         }
     }
 
@@ -33,6 +37,11 @@ export class Speed extends React.Component {
             this.charsInDepth++
             setTimeout(() => this.charsInDepth--, this.speedDepth)
         }
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval)
+        document.removeEventListener('keydown', this.updateSpeed)
     }
 
     calcSpeed() {
