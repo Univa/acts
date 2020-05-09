@@ -8,6 +8,14 @@ export class Timer extends React.Component {
             time: props.starttime,
             running: false
         }
+
+        this.updateTimer = this.updateTimer.bind(this)
+    }
+
+    updateTimer() {
+        this.setState((prevState) => ({
+            time: this.props.mode === "countdown" ? prevState.time - 1 : prevState.time + 1
+        }))
     }
 
     start() {
@@ -22,9 +30,7 @@ export class Timer extends React.Component {
         this.setState({
             running: true
         })
-        this.interval = setInterval(() => this.setState((prevState) => ({
-            time: this.props.mode === "countdown" ? prevState.time - 1 : prevState.time + 1
-        })), interval)
+        this.interval = setInterval(this.updateTimer, interval)
     }
 
     stop() {
@@ -39,6 +45,10 @@ export class Timer extends React.Component {
         if (this.props.running === true) {
             this.start()
         }
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval)
     }
 
     componentDidUpdate(prevProps) {
