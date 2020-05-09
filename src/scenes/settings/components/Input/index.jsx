@@ -2,7 +2,7 @@ import React from 'react'
 import { SettingsContext } from '../../../../settings-context.jsx'
 import './styles.scss'
 
-export class Input extends React.Component {
+export default class Input extends React.Component {
     findSetting(settings, path) {
         var setting = settings
         for (var loc of path) {

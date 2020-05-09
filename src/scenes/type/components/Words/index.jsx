@@ -5,7 +5,7 @@ import Char from './Char.jsx'
 import Word from './Word.jsx'
 import './styles.scss'
 
-export class Words extends React.Component {
+export default class Words extends React.Component {
     constructor(props) {
         super(props);
 

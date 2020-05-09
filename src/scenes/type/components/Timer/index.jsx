@@ -1,7 +1,7 @@
 import React from 'react'
 import './styles.scss'
 
-export class Timer extends React.Component {
+export default class Timer extends React.Component {
     constructor(props) {
         super(props)
         this.state = {

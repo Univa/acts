@@ -2,7 +2,7 @@ import React from 'react'
 import './styles.scss'
 import { TypingContext } from '../../typing-context'
 
-export class Speed extends React.Component {
+export default class Speed extends React.Component {
     constructor(props) {
         super(props)
         this.state = {

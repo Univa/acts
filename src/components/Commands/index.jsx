@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import './styles.scss'
 import { SettingsContext } from '../../settings-context'
 
-class CommandsBase extends React.Component {
+class Commands extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -75,4 +75,4 @@ class CommandsBase extends React.Component {
     }
 }
 
-export const Commands = withRouter(CommandsBase)
+export default withRouter(Commands)

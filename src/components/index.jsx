@@ -1,1 +1,5 @@
-export * from './Commands'
+import Commands from './Commands'
+
+export {
+    Commands
+}
