@@ -20,7 +20,14 @@ export class Input extends React.Component {
     }
 
     handleChange(settings, path, event) {
-        this.changeSetting(settings, path, event.target.value)
+        var value = event.target.value
+        if (this.props.type === "number") {
+            value = parseInt(event.target.value, 10)
+            if (isNaN(value) || value < 0) {
+                value = 0;
+            }
+        }
+        this.changeSetting(settings, path, value)
         this.props.updateSettings(settings)
     }
 
@@ -30,7 +37,7 @@ export class Input extends React.Component {
                 {(settings) => {
                     return (
                         <input
-                            type="text"
+                            type={ this.props.type }
                             style={{color: settings.theme.color.notTyped}}
                             value={ this.findSetting(settings, this.props.settingPath) }
                             onChange={ (event) => this.handleChange.bind(this)(settings, this.props.settingPath, event) }

@@ -19,23 +19,23 @@ export default class Settings extends React.Component {
                             <div class="setting-container">
                                 <div class="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Background</p>
-                                    <Input settingPath={ ["theme", "color", "bg"] } updateSettings={ this.props.updateSettings } />
+                                    <Input type="text" settingPath={ ["theme", "color", "bg"] } updateSettings={ this.props.updateSettings } />
                                 </div>
                                 <div class="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Correct</p>
-                                    <Input settingPath={ ["theme", "color", "correct"] } updateSettings={ this.props.updateSettings } />
+                                    <Input type="text" settingPath={ ["theme", "color", "correct"] } updateSettings={ this.props.updateSettings } />
                                 </div>
                                 <div class="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Incorrect</p>
-                                    <Input settingPath={ ["theme", "color", "incorrect"] } updateSettings={ this.props.updateSettings } />
+                                    <Input type="text" settingPath={ ["theme", "color", "incorrect"] } updateSettings={ this.props.updateSettings } />
                                 </div>
                                 <div class="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Default</p>
-                                    <Input settingPath={ ["theme", "color", "notTyped"] } updateSettings={ this.props.updateSettings } />
+                                    <Input type="text" settingPath={ ["theme", "color", "notTyped"] } updateSettings={ this.props.updateSettings } />
                                 </div>
                                 <div class="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Commands</p>
-                                    <Input settingPath={ ["theme", "color", "command"] } updateSettings={ this.props.updateSettings } />
+                                    <Input type="text" settingPath={ ["theme", "color", "command"] } updateSettings={ this.props.updateSettings } />
                                 </div>
                             </div>
                         </div>
@@ -45,11 +45,11 @@ export default class Settings extends React.Component {
                             <div class="setting-container">
                                 <div class="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Starting Time</p>
-                                    <Input settingPath={ ["starttime"] } updateSettings={ this.props.updateSettings } />
+                                    <Input type="number" settingPath={ ["starttime"] } updateSettings={ this.props.updateSettings } />
                                 </div>
                                 <div class="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Lines Ahead</p>
-                                    <Input settingPath={ ["linesAtATime"] } updateSettings={ this.props.updateSettings } />
+                                    <Input type="number" settingPath={ ["linesAtATime"] } updateSettings={ this.props.updateSettings } />
                                 </div>
                             </div>
                         </div>
