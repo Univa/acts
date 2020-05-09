@@ -3,6 +3,7 @@ import {
     Settings,
     Type
 } from './scenes';
+import { Commands } from './components'
 import { SettingsContext } from './settings-context.jsx'
 import {
     BrowserRouter as Router,
@@ -21,7 +22,8 @@ export default class App extends React.Component {
                         notTyped: "white",
                         correct: "green",
                         incorrect: "red",
-                        bg: "#323232"
+                        bg: "#323232",
+                        command: "yellow"
                     }
                 },
             }
@@ -41,6 +43,7 @@ export default class App extends React.Component {
         return (
             <SettingsContext.Provider value={ this.state.settings }>
                 <Router basename="/acts">
+                    <Commands />
                     <Switch>
                         <Route path="/settings">
                             <Settings updateSettings={ this.updateSettingsContext }/>
