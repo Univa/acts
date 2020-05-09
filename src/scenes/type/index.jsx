@@ -72,7 +72,7 @@ export default class Type extends React.Component {
             <TypingContext.Provider value={ this.state.typedata }>
                 <SettingsContext.Consumer>
                     {({theme}) => (
-                        <div class="container" style={{backgroundColor: theme.color.bg}}>
+                        <div class="Type" style={{backgroundColor: theme.color.bg}}>
                             <div class="info">
                                 <Timer
                                     running={ this.state.typedata.running }

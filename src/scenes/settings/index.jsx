@@ -8,7 +8,7 @@ export default class Settings extends React.Component {
         return (
             <SettingsContext.Consumer>
                 {(settings) => (
-                    <div class="container" style={{backgroundColor: settings.theme.color.bg}}>
+                    <div class="Settings" style={{backgroundColor: settings.theme.color.bg}}>
                         <div class="color-settings">
                             <p style={{color: settings.theme.color.notTyped}}>Colors</p>
                             <p>
