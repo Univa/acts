@@ -19,9 +19,15 @@ export default class Speed extends React.Component {
     }
 
     updateSpeed() {
-        this.setState({
-            speed: this.calcSpeed()
-        })
+        var new_speed = this.calcSpeed()
+        if (new_speed !== this.state.speed) {
+            this.setState({
+                speed: new_speed
+            })
+            this.props.updateTypingContext({
+                speed: new_speed 
+            })
+        }
     }
 
     componentDidMount() {
@@ -52,9 +58,6 @@ export default class Speed extends React.Component {
             bullshit = this.charsInDepth - ((this.props.interval / this.speedDepth) * ((new Date().getTime() - this.contextData.lastkeytime) / 1000 / (this.props.interval / this.speedDepth)))
         }
         var speed = Math.round(bullshit * (60 / (this.speedDepth / 1000)) / 5)
-        this.props.updateTypingContext({
-            speed: speed
-        })
         return speed
     }
 
