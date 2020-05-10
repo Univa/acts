@@ -49,7 +49,7 @@ class App extends React.Component {
     render() {
         return (
             <SettingsContext.Provider value={ this.state.settings }>
-                <Router basename="/acts">
+                <Router basename="/">
                     <Commands />
                     <Switch>
                         <Route path="/settings">
