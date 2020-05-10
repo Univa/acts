@@ -9,6 +9,20 @@ class Input extends React.Component {
         cookies: instanceOf(Cookies).isRequired
     }
 
+    deepCopyObject(object) {
+        if (typeof object !== "object") {
+            return object
+        }
+
+        var newObj = Array.isArray(object) ? [] : {}
+
+        for (var key in object) {
+            newObj[key] = this.deepCopyObject(object[key])
+        }
+
+        return newObj
+    }
+
     findSetting(settings, path) {
         var setting = settings
         for (var loc of path) {
@@ -55,7 +69,7 @@ class Input extends React.Component {
                             type={ this.props.type }
                             style={{color: settings.theme.color.notTyped}}
                             value={ this.findSetting(settings, this.props.settingPath) }
-                            onChange={ (event) => this.handleChange.bind(this)(settings, this.props.settingPath, event) }
+                            onChange={ (event) => this.handleChange.bind(this)(this.deepCopyObject(settings), this.props.settingPath, event) }
                         />
                     )}
                 }
