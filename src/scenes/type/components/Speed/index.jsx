@@ -1,6 +1,7 @@
 import React from 'react'
 import './styles.scss'
 import { TypingContext } from '../../typing-context'
+import { SettingsContext } from '../../../../settings-context'
 
 export default class Speed extends React.Component {
     constructor(props) {
@@ -63,15 +64,21 @@ export default class Speed extends React.Component {
 
     render() {
         return (
-            <p class="Speed">
-                { this.state.speed }
-                <TypingContext.Consumer>
-                    {(value) => {
-                        this.updateKeyTimes(value)
-                        this.contextData = value
-                    }}
-                </TypingContext.Consumer>
-            </p>
+            <SettingsContext.Consumer>
+                {({theme}) => (
+                    <TypingContext.Consumer>
+                        {(value) => {
+                            this.updateKeyTimes(value)
+                            this.contextData = value
+                            return (
+                                <p class="Speed" style={{color: theme.color.speed}}>
+                                    { this.state.speed }
+                                </p>
+                            )
+                        }}
+                    </TypingContext.Consumer>
+                )}
+            </SettingsContext.Consumer>
         )
     }
 }

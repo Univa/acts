@@ -1,5 +1,6 @@
 import React from 'react'
 import './styles.scss'
+import { SettingsContext } from '../../../../settings-context'
 
 export default class Timer extends React.Component {
     constructor(props) {
@@ -63,7 +64,11 @@ export default class Timer extends React.Component {
 
     render() {
         return (
-            <p class="Timer">{ this.state.time }</p>
+            <SettingsContext.Consumer>
+                {({theme}) => (
+                    <p class="Timer" style={{color: theme.color.timer}}>{ this.state.time }</p>
+                )}
+            </SettingsContext.Consumer>
         )
     }
 }

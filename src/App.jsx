@@ -28,7 +28,10 @@ class App extends React.Component {
                         correct: props.cookies.get("theme-color-correct") || "green",
                         incorrect: props.cookies.get("theme-color-incorrect") || "red",
                         bg: props.cookies.get("theme-color-bg") || "#323232",
-                        command: props.cookies.get("theme-color-command")|| "yellow"
+                        command: props.cookies.get("theme-color-command") || "yellow",
+                        timer: props.cookies.get("theme-color-timer") || "white",
+                        counter: props.cookies.get("theme-color-counter") || "white",
+                        speed: props.cookies.get("theme-color-speed") || "white"
                     }
                 },
                 starttime: parseInt(props.cookies.get("starttime"), 10) || 60,
