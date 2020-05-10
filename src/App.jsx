@@ -40,7 +40,7 @@ class App extends React.Component {
             this.setState(prevState => ({
                 settings: {
                     ...prevState.settings,
-                    new_data
+                    ...new_data
                 }
             }))
         }
