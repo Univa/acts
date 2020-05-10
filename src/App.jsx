@@ -8,7 +8,7 @@ import {
 import { Commands } from './components'
 import { SettingsContext } from './settings-context.jsx'
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Switch,
     Route
 } from 'react-router-dom';
