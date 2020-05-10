@@ -1,8 +1,14 @@
 import React from 'react'
+import { withCookies, Cookies } from 'react-cookie'
+import { instanceOf } from 'prop-types'
 import { SettingsContext } from '../../../../settings-context.jsx'
 import './styles.scss'
 
-export default class Input extends React.Component {
+class Input extends React.Component {
+    static propTypes = {
+        cookies: instanceOf(Cookies).isRequired
+    }
+
     findSetting(settings, path) {
         var setting = settings
         for (var loc of path) {
@@ -19,6 +25,14 @@ export default class Input extends React.Component {
         setting[path[path.length - 1]] = value
     }
 
+    setCookie(path, value) {
+        var key = path[0]
+        for (var loc of path.slice(1, path.length)) {
+            key += "-" + loc
+        }
+        this.props.cookies.set(key, value, { path: "/acts" })
+    }
+
     handleChange(settings, path, event) {
         var value = event.target.value
         if (this.props.type === "number") {
@@ -28,6 +42,7 @@ export default class Input extends React.Component {
             }
         }
         this.changeSetting(settings, path, value)
+        this.setCookie(path, value)
         this.props.updateSettings(settings)
     }
 
@@ -48,3 +63,5 @@ export default class Input extends React.Component {
         )
     }
 }
+
+export default withCookies(Input)

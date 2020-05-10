@@ -1,4 +1,6 @@
 import React from 'react'
+import { withCookies, Cookies } from 'react-cookie'
+import { instanceOf } from 'prop-types'
 import {
     Settings,
     Type
@@ -12,22 +14,26 @@ import {
     Route
 } from 'react-router-dom';
 
-export default class App extends React.Component {
+class App extends React.Component {
+    static propTypes = {
+        cookies: instanceOf(Cookies).isRequired
+    }
+
     constructor(props) {
         super(props)
         this.state = {
             settings: {
                 theme: {
                     color: {
-                        notTyped: "white",
-                        correct: "green",
-                        incorrect: "red",
-                        bg: "#323232",
-                        command: "yellow"
+                        notTyped: props.cookies.get("theme-color-notTyped") || "white",
+                        correct: props.cookies.get("theme-color-correct") || "green",
+                        incorrect: props.cookies.get("theme-color-incorrect") || "red",
+                        bg: props.cookies.get("theme-color-bg") || "#323232",
+                        command: props.cookies.get("theme-color-command")|| "yellow"
                     }
                 },
-                starttime: 60,
-                linesAtATime: 2
+                starttime: parseInt(props.cookies.get("starttime"), 10) || 60,
+                linesAtATime: parseInt(props.cookies.get("linesAtATime"), 10) || 2
             }
         }
 
@@ -59,3 +65,5 @@ export default class App extends React.Component {
         )
     }
 }
+
+export default withCookies(App);
