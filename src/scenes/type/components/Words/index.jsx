@@ -95,7 +95,10 @@ export default class Words extends React.Component {
         var line = this.lineTracker
         var word = this.state.contentDisplayed[line].findIndex(x => x.id === this.wordTracker)
 
-        if (e.key === "Backspace" && this.state.contentDisplayed[line][word].incorrect.length !== 0) {
+        // i will refactor this big chunky block later
+        if (this.state.displayingMessage) {
+            //pass
+        } else if (e.key === "Backspace" && this.state.contentDisplayed[line][word].incorrect.length !== 0) {
             this.setState(prevState => ({
                     contentDisplayed: prevState.contentDisplayed.map(line => {
                         return line.map(word => {
