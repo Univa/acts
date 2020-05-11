@@ -11,7 +11,7 @@ class Commands extends React.Component {
             visibility: "hidden"
         }
 
-        this.prefixes = ["!", ":", "/"]
+        this.prefixes = ["!", ":", "/", "."]
 
         this.textBox = React.createRef();
 
