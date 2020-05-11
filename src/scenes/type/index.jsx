@@ -45,6 +45,17 @@ export default class Type extends React.Component {
                 }
             }))
         }
+
+        this.wordsRef = React.createRef()
+        this.containerRef = React.createRef()
+    }
+
+    componentDidMount() {
+        // this pattern for setting an event on a parent component that calls a child method doesn't seem to be the best design
+        // maybe i can come up with something better later, but this will do for now
+        // the problem is the parent ref isn't set when the child component mounts, so i can't set this event there
+        this.containerRef.addEventListener('keydown', this.wordsRef.handleKey)
+        this.containerRef.focus()
     }
 
     onTimerStop() {
@@ -72,7 +83,7 @@ export default class Type extends React.Component {
             <TypingContext.Provider value={ this.state.typedata }>
                 <SettingsContext.Consumer>
                     {(settings) => (
-                        <div class="Type" style={{backgroundColor: settings.theme.color.bg}}>
+                        <div class="Type" tabindex="0" style={{backgroundColor: settings.theme.color.bg}} ref={ (elem) => { this.containerRef = elem } }>
                             <div class="info">
                                 <Timer
                                     starttime={ settings.starttime }
@@ -88,6 +99,7 @@ export default class Type extends React.Component {
                                 message={ this.state.message }
                                 msgduration={ this.state.duration }
                                 updateTypingContext={ this.updateTypingContext }
+                                ref={ (elem) => { this.wordsRef = elem } }
                             />
                         </div>
                     )}

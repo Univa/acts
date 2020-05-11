@@ -32,17 +32,11 @@ export default class Words extends React.Component {
             isLoaded: true
         })
 
-        document.addEventListener('keydown', this.handleKey);
-
         this.displayMessage(this.props.msgduration)
 
         for (var i = 0; i < this.props.linesAtATime; i++) {
             this.genLine(8)
         }
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.handleKey)
     }
 
     componentDidUpdate(prevProps) {
