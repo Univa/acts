@@ -17,6 +17,7 @@ class Commands extends React.Component {
 
         document.addEventListener('keydown', (e) => {
             if (this.prefixes.includes(e.key) && this.textBox.current !== null) {
+                this.focused = document.activeElement
                 this.setState({
                     visibility: "visible"
                 })
@@ -53,6 +54,7 @@ class Commands extends React.Component {
             visibility: "hidden",
             input: ""
         })
+        this.focused.focus()
     }
 
     render() {
