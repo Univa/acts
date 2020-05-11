@@ -95,10 +95,7 @@ export default class Words extends React.Component {
         var line = this.lineTracker
         var word = this.state.contentDisplayed[line].findIndex(x => x.id === this.wordTracker)
 
-
-        if (e.key === "Shift") {
-            // pass
-        } else if (e.key === "Backspace" && this.state.contentDisplayed[line][word].incorrect.length !== 0) {
+        if (e.key === "Backspace" && this.state.contentDisplayed[line][word].incorrect.length !== 0) {
             this.setState(prevState => ({
                     contentDisplayed: prevState.contentDisplayed.map(line => {
                         return line.map(word => {
@@ -160,6 +157,8 @@ export default class Words extends React.Component {
                     })
                 )
             }
+        } else if (e.key.length > 1) {
+            //pass
         } else if (e.key === " ") {
             if (this.state.contentDisplayed[line][word].incorrect.length === 0 && this.state.contentDisplayed[line][word].notTyped[0] === " ") {
                 this.lastkeytime = new Date().getTime()
