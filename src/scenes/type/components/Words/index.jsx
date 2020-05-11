@@ -89,6 +89,10 @@ export default class Words extends React.Component {
         var line = this.lineTracker
         var word = this.state.contentDisplayed[line].findIndex(x => x.id === this.wordTracker)
 
+        if (e.key === "'") {
+            e.preventDefault() // disable's firefox quick find from activating
+        }
+
         // i will refactor this big chunky block later
         if (this.state.displayingMessage) {
             //pass
