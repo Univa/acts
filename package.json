@@ -20,7 +20,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "cross-env gh-pages -d build -m \"Deploy v$npm_package_version\""
+    "deploy": "cross-env gh-pages -d build -m \"Deploy v$npm_package_version $npm_package_gitHead\""
   },
   "eslintConfig": {
     "extends": "react-app"
