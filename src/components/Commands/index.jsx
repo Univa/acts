@@ -66,7 +66,7 @@ class Commands extends React.Component {
                 {(settings) => (
                     <input 
                         type="text"
-                        class="commands"
+                        className="commands"
                         style={{color: settings.theme.color.command, visibility: this.state.visibility}}
                         onKeyDown={ this.handleKey.bind(this) }
                         onChange={ this.updateTextBox.bind(this) }

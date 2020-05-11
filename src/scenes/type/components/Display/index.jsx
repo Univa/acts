@@ -7,7 +7,7 @@ export default class Display extends React.Component {
         return (
             <SettingsContext.Consumer>
                 {({theme}) => (
-                    <p class="Display" style={{color: theme.color.counter}}>{ this.props.value }</p>
+                    <p className="Display" style={{color: theme.color.counter}}>{ this.props.value }</p>
                 )}
             </SettingsContext.Consumer>
         )

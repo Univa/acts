@@ -19,7 +19,7 @@ export default class Char extends React.Component {
                         else if (this.props.type === "incorrect") { color = theme.color.incorrect }
                         else if (this.props.type === "notTyped") { color = theme.color.notTyped }
 
-                        return <span class={ this.props.type } style={{color: color}}>{ this.props.character }</span>
+                        return <span className={ this.props.type } style={{color: color}}>{ this.props.character }</span>
                     }
                 }
             </SettingsContext.Consumer>

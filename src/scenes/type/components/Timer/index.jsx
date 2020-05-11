@@ -66,7 +66,7 @@ export default class Timer extends React.Component {
         return (
             <SettingsContext.Consumer>
                 {({theme}) => (
-                    <p class="Timer" style={{color: theme.color.timer}}>{ this.state.time }</p>
+                    <p className="Timer" style={{color: theme.color.timer}}>{ this.state.time }</p>
                 )}
             </SettingsContext.Consumer>
         )

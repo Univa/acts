@@ -20,7 +20,7 @@ export default class Line extends React.Component {
 
     render() {
         return (
-            <p class="Line">{ this.props.children }</p>
+            <p className="Line">{ this.props.children }</p>
         )
     }
 }

@@ -264,7 +264,7 @@ export default class Words extends React.Component {
         }
 
         return (
-            <div class="Words">
+            <div className="Words">
                 { this.state.displayingMessage ? this.props.message : lines }
             </div>
         )

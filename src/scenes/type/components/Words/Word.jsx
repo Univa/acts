@@ -38,7 +38,7 @@ export default class Word extends React.Component {
 
     render() {
         return (
-            <span class="Word">{ this.props.children } </span>
+            <span className="Word">{ this.props.children } </span>
         )
     }
 }

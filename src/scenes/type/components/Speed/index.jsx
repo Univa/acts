@@ -71,7 +71,7 @@ export default class Speed extends React.Component {
                             this.updateKeyTimes(value)
                             this.contextData = value
                             return (
-                                <p class="Speed" style={{color: theme.color.speed}}>
+                                <p className="Speed" style={{color: theme.color.speed}}>
                                     { this.state.speed }
                                 </p>
                             )
