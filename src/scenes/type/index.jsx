@@ -58,6 +58,10 @@ export default class Type extends React.Component {
         this.containerRef.focus()
     }
 
+    componentWillUnmount() {
+        this.containerRef.removeEventListener('keydown', this.wordsRef.handleKey)
+    }
+
     onTimerStop() {
         this.setState(prevState => ({
             mode: "result",
