@@ -31,12 +31,15 @@ class Commands extends React.Component {
     handleKey(e) {
         if (e.key === "Enter") {
             var command = e.target.value.trim()
-            command = command.slice(1, command.length)
 
-            if (command === "settings") {
-                this.props.history.push("/settings")
-            } else if (command === "type") {
-                this.props.history.push("/type")
+            if (this.prefixes.includes(command[0])) {
+                command = command.slice(1, command.length)
+
+                if (command === "settings") {
+                    this.props.history.push("/settings")
+                } else if (command === "type") {
+                    this.props.history.push("/type")
+                }
             }
 
             this.textBox.current.blur()
