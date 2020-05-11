@@ -252,14 +252,17 @@ export default class Words extends React.Component {
                 var words = []
                 for (var word in this.state.contentDisplayed[line]) {
                     var chars = []
+                    var charCount = 0
                     for (var correct in this.state.contentDisplayed[line][word].correct) {
-                        chars.push(<Char key={ "char-" + correct } type="correct" character={ this.state.contentDisplayed[line][word].correct.charAt(correct) } />)
+                        chars.push(<Char key={ "char-" + charCount } type="correct" character={ this.state.contentDisplayed[line][word].correct.charAt(correct) } />)
+                        charCount++
                     }
                     for (var incorrect in this.state.contentDisplayed[line][word].incorrect) {
                         chars.push(<Char key={ "incorrect-char-" + incorrect } type="incorrect" character={ this.state.contentDisplayed[line][word].incorrect.charAt(incorrect) } />)
                     }
                     for (var notTyped in this.state.contentDisplayed[line][word].notTyped) {
-                        chars.push(<Char key={ "char-" + notTyped } type="notTyped" character={ this.state.contentDisplayed[line][word].notTyped.charAt(notTyped) } />)
+                        chars.push(<Char key={ "char-" + charCount } type="notTyped" character={ this.state.contentDisplayed[line][word].notTyped.charAt(notTyped) } />)
+                        charCount++
                     }
                     words.push(<Word key={ "word-" + word }>{ chars }</Word>)
                 }
