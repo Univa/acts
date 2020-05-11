@@ -244,22 +244,22 @@ export default class Words extends React.Component {
     render() {
         if (!this.state.displayingMessage) {
             var lines = []
-            for (var line of this.state.contentDisplayed) {
+            for (var line in this.state.contentDisplayed) {
                 var words = []
-                for (var word of line) {
+                for (var word in this.state.contentDisplayed[line]) {
                     var chars = []
-                    for (var correct = 0; correct < word.correct.length; correct++) {
-                        chars.push(<Char type="correct" character={ word.correct.charAt(correct) } />)
+                    for (var correct in this.state.contentDisplayed[line][word].correct) {
+                        chars.push(<Char key={ "correct-" + correct } type="correct" character={ this.state.contentDisplayed[line][word].correct.charAt(correct) } />)
                     }
-                    for (var incorrect = 0; incorrect < word.incorrect.length; incorrect++) {
-                        chars.push(<Char type="incorrect" character={ word.incorrect.charAt(incorrect) } />)
+                    for (var incorrect in this.state.contentDisplayed[line][word].incorrect) {
+                        chars.push(<Char key={ "incorrect-" + incorrect } type="incorrect" character={ this.state.contentDisplayed[line][word].incorrect.charAt(incorrect) } />)
                     }
-                    for (var notTyped = 0; notTyped < word.notTyped.length; notTyped++) {
-                        chars.push(<Char type="notTyped" character={ word.notTyped.charAt(notTyped) } />)
+                    for (var notTyped in this.state.contentDisplayed[line][word].notTyped) {
+                        chars.push(<Char key={ "notTyped-" + notTyped } type="notTyped" character={ this.state.contentDisplayed[line][word].notTyped.charAt(notTyped) } />)
                     }
-                    words.push(<Word>{ chars }</Word>)
+                    words.push(<Word key={ "word-" + word }>{ chars }</Word>)
                 }
-                lines.push(<Line>{ words }</Line>)
+                lines.push(<Line key={ "line-" + line }>{ words }</Line>)
             }
         }
 
