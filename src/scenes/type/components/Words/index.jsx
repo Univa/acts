@@ -55,7 +55,7 @@ export default class Words extends React.Component {
     selectRandomWords(num) {
         var words = [];
         for (var i = 0; i < num; i++) {
-            words.push(this.wordBank[Math.floor(Math.random() * (this.wordBank.length + 1))] + " ")
+            words.push(this.wordBank[Math.floor(Math.random() * this.wordBank.length)] + " ")
         }
         return words;
     }
