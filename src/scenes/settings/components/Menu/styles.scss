@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost&display=swap');
+
+.Menu {
+    width: 100%;
+}
+
+.menu-button {
+    font-family: Jost;
+    font-size: 24px;
+    width: 100%;
+    padding: 0px;
+    margin: 5px;
+    text-align: center;
+    border: solid 1px grey;
+    border-radius: 10px;
+}
+
+.menu-options {
+    visibility: hidden;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: solid 1px grey;
+    border-radius: 10px;
+    text-align: left;
+    z-index: 1;
+}
+
+.menu-option {
+    margin: 5px;
+    cursor: pointer;
+}
+
+.Menu:hover .menu-options {
+    visibility: visible;
+}
