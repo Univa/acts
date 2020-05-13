@@ -50,6 +50,7 @@ class App extends React.Component {
     }
 
     render() {
+        document.body.style.background = this.state.settings.theme.color.bg
         return (
             <SettingsContext.Provider value={ this.state.settings }>
                 <Router basename="/">
