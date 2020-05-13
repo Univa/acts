@@ -66,6 +66,7 @@ class Input extends React.Component {
                 {(settings) => {
                     return (
                         <input
+                            className="Input"
                             type={ this.props.type }
                             style={{color: settings.theme.color.notTyped}}
                             value={ this.findSetting(settings, this.props.settingPath) }
