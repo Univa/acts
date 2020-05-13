@@ -1,5 +1,5 @@
 import React from 'react';
-import { wordBank } from './WordBank.js';
+import { Default, TenFastFingers, TypingsGG } from './word_banks';
 import Line from './Line.jsx'
 import Char from './Char.jsx'
 import Word from './Word.jsx'
@@ -17,7 +17,6 @@ export default class Words extends React.Component {
 
         this.lines = 0;
         this.words = 0;
-        this.wordBank = wordBank;
         this.lineTracker = 0
         this.wordTracker = 0
         this.correctCharacters = 0
@@ -25,6 +24,14 @@ export default class Words extends React.Component {
         this.lastkeytime = new Date().getTime();
 
         this.handleKey = this.handleKey.bind(this);
+
+        if (this.props.wordBank === "10fastfingers") {
+            this.wordBank = TenFastFingers
+        } else if (this.props.wordBank === "typings.gg") {
+            this.wordBank = TypingsGG
+        } else {
+            this.wordBank = Default
+        }
     }
 
     componentDidMount() {

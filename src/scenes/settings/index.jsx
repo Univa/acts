@@ -1,6 +1,6 @@
 import React from 'react'
 import { SettingsContext } from '../../settings-context'
-import { Input } from './components'
+import { Input, Menu } from './components'
 import './styles.scss'
 
 export default class Settings extends React.Component {
@@ -62,6 +62,10 @@ export default class Settings extends React.Component {
                                 <div className="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Lines Ahead</p>
                                     <Input type="number" settingPath={ ["linesAtATime"] } updateSettings={ this.props.updateSettings } />
+                                </div>
+                                <div className="setting">
+                                    <p style={{color: settings.theme.color.notTyped}}>Word Bank</p>
+                                    <Menu options={ ["Default", "10fastfingers", "typings.gg"] } settingPath={ ["wordBank"] } updateSettings={ this.props.updateSettings }/>
                                 </div>
                             </div>
                         </div>

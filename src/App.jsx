@@ -35,7 +35,8 @@ class App extends React.Component {
                     }
                 },
                 starttime: parseInt(props.cookies.get("starttime"), 10) || 60,
-                linesAtATime: parseInt(props.cookies.get("linesAtATime"), 10) || 2
+                linesAtATime: parseInt(props.cookies.get("linesAtATime"), 10) || 2,
+                wordBank: props.cookies.get("wordBank") || "Default"
             }
         }
 

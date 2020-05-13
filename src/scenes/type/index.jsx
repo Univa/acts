@@ -103,6 +103,7 @@ export default class Type extends React.Component {
                                 message={ this.state.message }
                                 msgduration={ this.state.duration }
                                 updateTypingContext={ this.updateTypingContext }
+                                wordBank={ settings.wordBank }
                                 ref={ (elem) => { this.wordsRef = elem } }
                             />
                         </div>
