@@ -51,8 +51,10 @@ class Input extends React.Component {
         var value = event.target.value
         if (this.props.type === "number") {
             value = parseInt(event.target.value, 10)
-            if (isNaN(value) || value < 0) {
-                value = 0;
+            if (isNaN(value) || value < this.props.lower) {
+                value = this.props.lower;
+            } else if (value > this.props.upper) {
+                value = this.props.upper
             }
         }
         this.changeSetting(settings, path, value)
@@ -77,6 +79,11 @@ class Input extends React.Component {
             </SettingsContext.Consumer>
         )
     }
+}
+
+Input.defaultProps = {
+    lower: 0,
+    upper: undefined 
 }
 
 export default withCookies(Input)
