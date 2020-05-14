@@ -6,7 +6,7 @@
 }
 
 .Line {
-    animation: grow-height 0.2s;
+    animation: grow-height 0.5s, fade-in 0.5s;
     max-height: 45px;
     overflow: hidden;
 }
@@ -28,16 +28,4 @@
     overflow: hidden;
     max-width: 20px;
     animation: grow-width 0.2s;
-}
-
-@keyframes grow-width {
-    0% {
-        max-width: 0;
-    }
-}
-
-@keyframes grow-height {
-    0% {
-        max-height: 0;
-    }
 }
