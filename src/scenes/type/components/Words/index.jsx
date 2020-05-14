@@ -11,11 +11,10 @@ export default class Words extends React.Component {
 
         this.state = {
             isLoaded: false,
-            contentDisplayed: [],
-            displayingMessage: false
+            displayingMessage: false,
+            content: []
         }
 
-        this.lines = 0;
         this.words = 0;
         this.lineTracker = 0
         this.wordTracker = 0
@@ -24,6 +23,8 @@ export default class Words extends React.Component {
         this.lastkeytime = new Date().getTime();
 
         this.handleKey = this.handleKey.bind(this);
+
+        this.contentRaw = []
 
         if (this.props.wordBank === "10fastfingers") {
             this.wordBank = TenFastFingers
@@ -52,6 +53,34 @@ export default class Words extends React.Component {
         }
     }
 
+    renderLine(line_data, pos) {
+        var words = []
+        for (var word in line_data) {
+            var chars = []
+            var charCount = 0
+            for (var correct in line_data[word].correct) {
+                chars.push(<Char key={ "char-" + charCount } type="correct" character={ line_data[word].correct.charAt(correct) } />)
+                charCount++
+            }
+            for (var incorrect in line_data[word].incorrect) {
+                chars.push(<Char key={ "incorrect-char-" + incorrect } type="incorrect" character={ line_data[word].incorrect.charAt(incorrect) } />)
+            }
+            for (var notTyped in line_data[word].notTyped) {
+                chars.push(<Char key={ "char-" + charCount } type="notTyped" character={ line_data[word].notTyped.charAt(notTyped) } />)
+                charCount++
+            }
+            words.push(<Word key={ "word-" + word }>{ chars }</Word>)
+        }
+
+        this.setState(prevState => {
+            var new_content = prevState.content.slice()
+            new_content[pos] = <Line key={ "line-" + pos }>{ words }</Line>
+            return ({
+                content: new_content
+            })
+        })
+    }
+
     selectRandomWords(num) {
         var words = [];
         for (var i = 0; i < num; i++) {
@@ -64,7 +93,6 @@ export default class Words extends React.Component {
         var words = this.selectRandomWords(num);
 
         var wordsToDisplay = [];
-        this.lines++;
         for (var word of words) {
             wordsToDisplay.push({
                 id: this.words,
@@ -75,9 +103,8 @@ export default class Words extends React.Component {
             this.words++
         }
 
-        this.setState(prevState => ({
-            contentDisplayed: prevState.contentDisplayed.concat([wordsToDisplay])
-        }));
+        this.renderLine(wordsToDisplay, this.contentRaw.length)
+        this.contentRaw.push(wordsToDisplay)
     }
 
     displayMessage(dur) {
@@ -94,150 +121,152 @@ export default class Words extends React.Component {
 
     handleKey(e) {
         var line = this.lineTracker
-        var word = this.state.contentDisplayed[line].findIndex(x => x.id === this.wordTracker)
+        var word = this.contentRaw[line].findIndex(x => x.id === this.wordTracker)
 
         if (e.key === "'") {
             e.preventDefault() // disable's firefox quick find from activating
         }
 
-        // i will refactor this big chunky block later
         if (this.state.displayingMessage) {
             //pass
-        } else if (e.key === "Backspace" && this.state.contentDisplayed[line][word].incorrect.length !== 0) {
-            this.setState(prevState => ({
-                    contentDisplayed: prevState.contentDisplayed.map(line => {
-                        return line.map(word => {
-                            return word.id === this.wordTracker ? { ...word, incorrect: word.incorrect.slice(0, word.incorrect.length - 1) } : word
-                        })
-                    }),
+
+        // If backspace is pressed
+        } else if (e.key === "Backspace") {
+            // If there are incorrect characters
+            if (this.contentRaw[line][word].incorrect.length !== 0) {
+                // Delete an incorrect character
+                this.contentRaw[line][word].incorrect = this.contentRaw[line][word].incorrect.slice(0, this.contentRaw[line][word].incorrect.length - 1)
+                this.renderLine(this.contentRaw[line], line)
+
+            // If there are no incorrect characters, but some correct characters
+            } else if (this.contentRaw[line][word].correct.length > 0) {
+                // Delete a correct character
+                this.correctCharacters--
+
+                this.props.updateTypingContext({
+                    correct: this.correctCharacters
                 })
-            )
-        } else if ((e.key === "Backspace" && this.state.contentDisplayed[line][word].incorrect.length === 0) && (this.state.contentDisplayed[line][word].correct.length > 0)) {
-            this.correctCharacters--
 
-            // update time since last correct keypress
-            this.props.updateTypingContext({
-                correct: this.correctCharacters
-            })
-            this.setState(prevState => ({
-                    contentDisplayed: prevState.contentDisplayed.map(line => {
-                        return line.map(word => {
-                            return word.id === this.wordTracker ? { ...word, correct: word.correct.slice(0, word.correct.length - 1), notTyped: word.correct[word.correct.length - 1] + word.notTyped } : word
-                        })
-                    }),
-                })
-            )
-        } else if (e.key === "Backspace" && this.state.contentDisplayed[line][word].correct.length === 0) {
-            this.wordTracker--
+                this.contentRaw[line][word].notTyped = this.contentRaw[line][word].correct[this.contentRaw[line][word].correct.length - 1] + this.contentRaw[line][word].notTyped
+                this.contentRaw[line][word].correct = this.contentRaw[line][word].correct.slice(0, this.contentRaw[line][word].correct.length - 1)
+                this.renderLine(this.contentRaw[line], line)
 
-            if (this.wordTracker < 0) {
-                this.wordTracker = 0
-            }
+            // If there are no incorrect or correct characters
+            } else if (this.contentRaw[line][word].correct.length === 0) {
+                // Go back a word
+                this.wordTracker--
 
-            if (this.wordTracker < this.state.contentDisplayed[line][0].id) {
-                this.lineTracker--
-            }
-
-            if (this.state.contentDisplayed[this.lineTracker][this.state.contentDisplayed[this.lineTracker].findIndex(x => x.id === this.wordTracker)].incorrect.length === 0) {
-                if (line !== 0 || word !== 0) {
-                    this.correctCharacters--
-
-                    // update time since last correct keypress
-                    this.props.updateTypingContext({
-                        correct: this.correctCharacters
-                    })
-                    this.setState(prevState => ({
-                            contentDisplayed: prevState.contentDisplayed.map(line => {
-                                return line.map(word => {
-                                    return word.id === this.wordTracker ? { ...word, correct: word.correct.slice(0, word.correct.length - 1), notTyped: word.correct[word.correct.length - 1] + word.notTyped } : word
-                                })
-                            }),
-                        })
-                    )
+                if (this.wordTracker < 0) {
+                    this.wordTracker = 0
                 }
-            } else {
-                this.setState(prevState => ({
-                        contentDisplayed: prevState.contentDisplayed.map(line => {
-                            return line.map(word => {
-                                return word.id === this.wordTracker ? { ...word, incorrect: word.incorrect.slice(0, word.incorrect.length - 1) } : word
-                            })
-                        }),
-                    })
-                )
+
+                // Go back a line if we were on the first word of the line
+                if (this.wordTracker < this.contentRaw[line][0].id) {
+                    this.lineTracker--
+                }
+
+                var new_line = this.lineTracker
+                var new_word = this.contentRaw[this.lineTracker].findIndex(x => x.id === this.wordTracker)
+
+                // If there are incorrect characters on the previous word
+                if (this.contentRaw[new_line][new_word].incorrect.length > 0) {
+                    // Delete an incorrect character on the previous word
+                    this.contentRaw[new_line][new_word].incorrect = this.contentRaw[new_line][new_word].incorrect.slice(0, this.contentRaw[new_line][new_word].incorrect.length - 1)
+                    this.renderLine(this.contentRaw[new_line], new_line)
+
+                // If there are no incorrect characters, but some correct characters on the previous word
+                } else if (this.contentRaw[new_line][new_word].correct.length > 0) {
+                    if (line !== 0 || word !== 0) {
+                        // Delete a correct character on the previous word
+                        this.correctCharacters--
+
+                        this.props.updateTypingContext({
+                            correct: this.correctCharacters
+                        })
+
+                        this.contentRaw[new_line][new_word].notTyped = this.contentRaw[new_line][new_word].correct[this.contentRaw[new_line][new_word].correct.length - 1] + this.contentRaw[new_line][new_word].notTyped
+                        this.contentRaw[new_line][new_word].correct = this.contentRaw[new_line][new_word].correct.slice(0, this.contentRaw[new_line][new_word].correct.length - 1)
+                        this.renderLine(this.contentRaw[new_line], new_line)
+                    }
+                }
             }
+
+        // If a non-character key is pressed
         } else if (e.key.length > 1) {
             //pass
+
+        // If space is pressed
         } else if (e.key === " ") {
-            if (this.state.contentDisplayed[line][word].incorrect.length === 0 && this.state.contentDisplayed[line][word].notTyped[0] === " ") {
+            // If all characters were typed correctly
+            if (this.contentRaw[line][word].incorrect.length === 0 && this.contentRaw[line][word].notTyped[0] === " ") {
+                // Create a correct character
+                this.contentRaw[line][word].correct = this.contentRaw[line][word].correct + e.key
+                this.contentRaw[line][word].notTyped = this.contentRaw[line][word].notTyped.slice(1, this.contentRaw[line][word].notTyped.length)
+                this.renderLine(this.contentRaw[line], line)
+
+                // update time since last correct keypress
                 this.lastkeytime = new Date().getTime()
                 this.correctCharacters++
+
                 this.props.updateTypingContext({
                     lastkeytime: this.lastkeytime,
                     correct: this.correctCharacters
                 })
-                this.setState(prevState => ({
-                        contentDisplayed: prevState.contentDisplayed.map(line => {
-                            return line.map(word => {
-                                return word.id === this.wordTracker ? { ...word, correct: word.correct + e.key, notTyped: word.notTyped.slice(1, word.notTyped.length) } : word
-                            })
-                        }),
-                    })
-                )
+
+            // If there were incorrect characters, or if they press an incorrect key before the space
             } else {
-                this.setState(prevState => ({
-                        contentDisplayed: prevState.contentDisplayed.map(line => {
-                            return line.map(word => {
-                                return word.id === this.wordTracker ? { ...word, incorrect: word.incorrect + e.key } : word
-                            })
-                        }),
-                    })
-                )
+                // Create an incorrect character
+                this.contentRaw[line][word].incorrect = this.contentRaw[line][word].incorrect + e.key
+                this.renderLine(this.contentRaw[line], line)
             }
 
+            // Go to the next word
             this.wordTracker++
 
-            if (this.wordTracker > this.state.contentDisplayed[line][this.state.contentDisplayed[line].length - 1].id) {
+            // Go to the next line if we were on the last word of the line
+            if (this.wordTracker > this.contentRaw[line][this.contentRaw[line].length - 1].id) {
                 this.lineTracker++
             }
+
+            // Start the timer if it hasn't
             if (!this.startedTyping) {
                 this.startedTyping = true;
                 this.props.updateTypingContext({
                     running: true
                 })
             }
-        } else if (e.key === this.state.contentDisplayed[line][word].notTyped[0] && this.state.contentDisplayed[line][word].incorrect.length === 0) {
-            this.setState(prevState => ({
-                    contentDisplayed: prevState.contentDisplayed.map(line => {
-                        return line.map(word => {
-                            return word.id === this.wordTracker ? { ...word, correct: word.correct + e.key, notTyped: word.notTyped.slice(1, word.notTyped.length) } : word
-                        })
-                    }),
-                })
-            )
 
+        // If a correct key is pressed, and there are no incorrect characters
+        } else if (e.key === this.contentRaw[line][word].notTyped[0] && this.contentRaw[line][word].incorrect.length === 0) {
+            // Create a correct character
+            this.contentRaw[line][word].correct = this.contentRaw[line][word].correct + e.key
+            this.contentRaw[line][word].notTyped = this.contentRaw[line][word].notTyped.slice(1, this.contentRaw[line][word].notTyped.length)
+            this.renderLine(this.contentRaw[line], line)
+
+            // update time since last correct keypress
             this.lastkeytime = new Date().getTime()
             this.correctCharacters++
 
-            // update time since last correct keypress
             this.props.updateTypingContext({
                 lastkeytime: this.lastkeytime,
                 correct: this.correctCharacters
             })
+
+            // Start the timer if it hasn't
             if (!this.startedTyping) {
                 this.startedTyping = true;
                 this.props.updateTypingContext({
                     running: true
                 })
             }
-        } else if ((e.key !== this.state.contentDisplayed[line][word].notTyped[0] && this.state.contentDisplayed[line][word].incorrect.length === 0) || ((e.key !== " " && e.key !== "Backspace") && this.state.contentDisplayed[line][word].incorrect.length !== 0)) {
-            this.setState(prevState => ({
-                    contentDisplayed: prevState.contentDisplayed.map(line => {
-                        return line.map(word => {
-                            return word.id === this.wordTracker ? { ...word, incorrect: word.incorrect + e.key } : word
-                        })
-                    }),
-                })
-            )
+
+        // If an incorrect key is pressed, or there are incorrect characters
+        } else {
+            // Create an incorrect character
+            this.contentRaw[line][word].incorrect = this.contentRaw[line][word].incorrect + e.key
+            this.renderLine(this.contentRaw[line], line)
+
+            // Start the timer if it hasn't
             if (!this.startedTyping) {
                 this.startedTyping = true;
                 this.props.updateTypingContext({
@@ -246,40 +275,15 @@ export default class Words extends React.Component {
             }
         }
 
-        if (this.lines < this.lineTracker + this.props.linesAtATime) {
+        if (this.contentRaw.length < this.lineTracker + this.props.linesAtATime) {
             this.genLine(8)
         }
-
     }
 
     render() {
-        if (!this.state.displayingMessage) {
-            var lines = []
-            for (var line in this.state.contentDisplayed) {
-                var words = []
-                for (var word in this.state.contentDisplayed[line]) {
-                    var chars = []
-                    var charCount = 0
-                    for (var correct in this.state.contentDisplayed[line][word].correct) {
-                        chars.push(<Char key={ "char-" + charCount } type="correct" character={ this.state.contentDisplayed[line][word].correct.charAt(correct) } />)
-                        charCount++
-                    }
-                    for (var incorrect in this.state.contentDisplayed[line][word].incorrect) {
-                        chars.push(<Char key={ "incorrect-char-" + incorrect } type="incorrect" character={ this.state.contentDisplayed[line][word].incorrect.charAt(incorrect) } />)
-                    }
-                    for (var notTyped in this.state.contentDisplayed[line][word].notTyped) {
-                        chars.push(<Char key={ "char-" + charCount } type="notTyped" character={ this.state.contentDisplayed[line][word].notTyped.charAt(notTyped) } />)
-                        charCount++
-                    }
-                    words.push(<Word key={ "word-" + word }>{ chars }</Word>)
-                }
-                lines.push(<Line key={ "line-" + line }>{ words }</Line>)
-            }
-        }
-
         return (
             <div className="Words">
-                { this.state.displayingMessage ? this.props.message : lines }
+                { this.state.displayingMessage ? this.props.message : this.state.content }
             </div>
         )
     }
