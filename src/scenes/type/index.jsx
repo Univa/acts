@@ -98,7 +98,8 @@ export default class Type extends React.Component {
                                 <Speed updateTypingContext={ this.updateTypingContext }/>
                             </div>
                             <Words
-                                linesAtATime={ settings.linesAtATime }
+                                linesAhead={ settings.linesAhead }
+                                linesBehind={ settings.linesBehind }
                                 keyHandler={ this.handleKey }
                                 message={ this.state.message }
                                 msgduration={ this.state.duration }

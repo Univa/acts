@@ -61,7 +61,11 @@ export default class Settings extends React.Component {
                                 </div>
                                 <div className="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Lines Ahead</p>
-                                    <Input type="number" settingPath={ ["linesAtATime"] } updateSettings={ this.props.updateSettings } />
+                                    <Input type="number" settingPath={ ["linesAhead"] } upper={5} updateSettings={ this.props.updateSettings } />
+                                </div>
+                                <div className="setting">
+                                    <p style={{color: settings.theme.color.notTyped}}>Lines Behind</p>
+                                    <Input type="number" settingPath={ ["linesBehind"] } upper={5} updateSettings={ this.props.updateSettings } />
                                 </div>
                                 <div className="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Word Bank</p>

@@ -8,7 +8,15 @@
 .Line {
     animation: grow-height 0.5s, fade-in 0.5s;
     max-height: 45px;
+    transition: 0.5s;
     overflow: hidden;
+}
+
+.Line.inactive {
+    opacity: 0;
+    max-height: 0px;
+    margin: 0px;
+    transition: 0.5s
 }
 
 .notTyped {

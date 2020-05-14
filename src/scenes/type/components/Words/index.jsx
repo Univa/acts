@@ -42,7 +42,7 @@ export default class Words extends React.Component {
 
         this.displayMessage(this.props.msgduration)
 
-        for (var i = 0; i < this.props.linesAtATime; i++) {
+        for (var i = 0; i < this.props.linesAhead + this.props.linesBehind + 1; i++) {
             this.genLine(8)
         }
     }
@@ -53,32 +53,34 @@ export default class Words extends React.Component {
         }
     }
 
-    renderLine(line_data, pos) {
-        var words = []
-        for (var word in line_data) {
-            var chars = []
-            var charCount = 0
-            for (var correct in line_data[word].correct) {
-                chars.push(<Char key={ "char-" + charCount } type="correct" character={ line_data[word].correct.charAt(correct) } />)
-                charCount++
+    renderLine(line_data, pos, active = true) {
+        if (pos >= 0) {
+            var words = []
+            for (var word in line_data) {
+                var chars = []
+                var charCount = 0
+                for (var correct in line_data[word].correct) {
+                    chars.push(<Char key={ "char-" + charCount } type="correct" character={ line_data[word].correct.charAt(correct) } />)
+                    charCount++
+                }
+                for (var incorrect in line_data[word].incorrect) {
+                    chars.push(<Char key={ "incorrect-char-" + incorrect } type="incorrect" character={ line_data[word].incorrect.charAt(incorrect) } />)
+                }
+                for (var notTyped in line_data[word].notTyped) {
+                    chars.push(<Char key={ "char-" + charCount } type="notTyped" character={ line_data[word].notTyped.charAt(notTyped) } />)
+                    charCount++
+                }
+                words.push(<Word key={ "word-" + word }>{ chars }</Word>)
             }
-            for (var incorrect in line_data[word].incorrect) {
-                chars.push(<Char key={ "incorrect-char-" + incorrect } type="incorrect" character={ line_data[word].incorrect.charAt(incorrect) } />)
-            }
-            for (var notTyped in line_data[word].notTyped) {
-                chars.push(<Char key={ "char-" + charCount } type="notTyped" character={ line_data[word].notTyped.charAt(notTyped) } />)
-                charCount++
-            }
-            words.push(<Word key={ "word-" + word }>{ chars }</Word>)
-        }
 
-        this.setState(prevState => {
-            var new_content = prevState.content.slice()
-            new_content[pos] = <Line key={ "line-" + pos }>{ words }</Line>
-            return ({
-                content: new_content
+            this.setState(prevState => {
+                var new_content = prevState.content.slice()
+                new_content[pos] = <Line key={ "line-" + pos } active={ active }>{ words }</Line>
+                return ({
+                    content: new_content
+                })
             })
-        })
+        }
     }
 
     selectRandomWords(num) {
@@ -163,6 +165,8 @@ export default class Words extends React.Component {
                 // Go back a line if we were on the first word of the line
                 if (this.wordTracker < this.contentRaw[line][0].id) {
                     this.lineTracker--
+                    this.renderLine(this.contentRaw[line + this.props.linesAhead], line + this.props.linesAhead, false) 
+                    this.renderLine(this.contentRaw[line - this.props.linesBehind - 1], line - this.props.linesBehind - 1)
                 }
 
                 var new_line = this.lineTracker
@@ -226,6 +230,8 @@ export default class Words extends React.Component {
             // Go to the next line if we were on the last word of the line
             if (this.wordTracker > this.contentRaw[line][this.contentRaw[line].length - 1].id) {
                 this.lineTracker++
+                this.renderLine(this.contentRaw[line + this.props.linesAhead + 1], line + this.props.linesAhead + 1) 
+                this.renderLine(this.contentRaw[line - this.props.linesBehind], line - this.props.linesBehind, false)
             }
 
             // Start the timer if it hasn't
@@ -275,7 +281,7 @@ export default class Words extends React.Component {
             }
         }
 
-        if (this.contentRaw.length < this.lineTracker + this.props.linesAtATime) {
+        if (this.contentRaw.length < this.lineTracker + this.props.linesAhead + 1) {
             this.genLine(8)
         }
     }
@@ -291,7 +297,8 @@ export default class Words extends React.Component {
 
 Words.defaultProps = {
     isLoaded: false,
-    linesAtATime: 2,
+    linesAhead: 2,
+    linesBehind: 1,
     message: null,
     msgduration: 0
 }
