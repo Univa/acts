@@ -2,13 +2,6 @@ import React from 'react'
 import { SettingsContext } from '../../../../settings-context';
 
 export default class Char extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            // nothing here yet
-        }
-    }
-
     render() {
         return (
             <SettingsContext.Consumer>
