@@ -10,12 +10,12 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    animation: fade-in 1s ease-in;
+    animation: fade-in 1s;
 }
 
 .info {
     display: flex;
     width: 95vw;
     justify-content: space-between;
-    animation: fade-in 1s ease-in;
+    animation: fade-in 1s;
 }
