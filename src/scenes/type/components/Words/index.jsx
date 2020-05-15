@@ -47,6 +47,7 @@ export default class Words extends React.Component {
 
         for (var i = 0; i < this.props.linesAhead + this.props.linesBehind + 1; i++) {
             this.genLine(this.wordsPerLine)
+            this.renderLine(this.contentRaw[i], i)
         }
     }
 
@@ -110,7 +111,6 @@ export default class Words extends React.Component {
             this.words++
         }
 
-        this.renderLine(wordsToDisplay, this.contentRaw.length)
         this.contentRaw.push(wordsToDisplay)
     }
 
@@ -235,6 +235,11 @@ export default class Words extends React.Component {
             // Go to the next line if we were on the last word of the line
             if (this.wordTracker > this.contentRaw[line][this.contentRaw[line].length - 1].id) {
                 this.lineTracker++
+
+                if (this.contentRaw.length < this.lineTracker + this.props.linesAhead + 1) {
+                    this.genLine(this.wordsPerLine)
+                }
+
                 this.renderLine(this.contentRaw[line + this.props.linesAhead + 1], line + this.props.linesAhead + 1) 
                 this.renderLine(this.contentRaw[line - this.props.linesBehind], line - this.props.linesBehind, false)
             }
@@ -284,10 +289,6 @@ export default class Words extends React.Component {
                     running: true
                 })
             }
-        }
-
-        if (this.contentRaw.length < this.lineTracker + this.props.linesAhead + 1) {
-            this.genLine(this.wordsPerLine)
         }
     }
 
