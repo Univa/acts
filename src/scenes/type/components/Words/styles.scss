@@ -19,21 +19,13 @@
     transition: 0.5s
 }
 
-.notTyped {
+.Char {
     display: inline-block;
     overflow: hidden;
     transition: 0.2s;
 }
 
-.correct {
-    display: inline-block;
-    overflow: hidden;
-    transition: 0.2s;
-}
-
-.incorrect {
-    display: inline-block;
-    overflow: hidden;
+.Char.incorrect {
     max-width: 20px;
     animation: grow-width 0.2s;
 }
