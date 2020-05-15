@@ -26,12 +26,15 @@ export default class Words extends React.Component {
 
         this.contentRaw = []
 
+        this.wordsPerLine = 7
+
         if (this.props.wordBank === "10fastfingers") {
             this.wordBank = TenFastFingers
         } else if (this.props.wordBank === "typings.gg") {
             this.wordBank = TypingsGG
         } else {
             this.wordBank = Default
+            this.wordsPerLine = 5
         }
     }
 
@@ -43,7 +46,7 @@ export default class Words extends React.Component {
         this.displayMessage(this.props.msgduration)
 
         for (var i = 0; i < this.props.linesAhead + this.props.linesBehind + 1; i++) {
-            this.genLine(8)
+            this.genLine(this.wordsPerLine)
         }
     }
 
@@ -282,7 +285,7 @@ export default class Words extends React.Component {
         }
 
         if (this.contentRaw.length < this.lineTracker + this.props.linesAhead + 1) {
-            this.genLine(8)
+            this.genLine(this.wordsPerLine)
         }
     }
 
