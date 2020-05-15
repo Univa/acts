@@ -67,7 +67,9 @@ export default class Words extends React.Component {
                     charCount++
                 }
                 for (var incorrect in line_data[word].incorrect) {
-                    chars.push(<Char key={ "incorrect-char-" + incorrect } type="incorrect" character={ line_data[word].incorrect.charAt(incorrect) } />)
+                    if (line_data[word].incorrect.charAt(incorrect) !== " ") {
+                        chars.push(<Char key={ "incorrect-char-" + incorrect } type="incorrect" character={ line_data[word].incorrect.charAt(incorrect) } />)
+                    }
                 }
                 for (var notTyped in line_data[word].notTyped) {
                     chars.push(<Char key={ "char-" + charCount } type="notTyped" character={ line_data[word].notTyped.charAt(notTyped) } />)
