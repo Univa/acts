@@ -45,7 +45,7 @@ export default class Words extends React.Component {
 
         this.displayMessage(this.props.msgduration)
 
-        for (var i = 0; i < this.props.linesAhead + this.props.linesBehind + 1; i++) {
+        for (var i = 0; i < this.props.linesAhead + 1; i++) {
             this.genLine(this.wordsPerLine)
             this.renderLine(this.contentRaw[i], i, true, i === 0 ? 0 : undefined, i === 0 ? 0 : undefined)
         }
