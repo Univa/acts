@@ -21,10 +21,15 @@
 
 .Char {
     overflow: hidden;
-    transition: 0.2s;
+    transition: color 0.2s;
+    border-radius: 3px;
 }
 
 .Char.incorrect {
     max-width: 20px;
     animation: grow-width 0.2s;
+}
+
+.Word {
+    border-radius: 3px;
 }

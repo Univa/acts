@@ -12,10 +12,13 @@ export default class Char extends React.Component {
                         else if (this.props.type === "incorrect") { color = theme.color.incorrect }
                         else if (this.props.type === "notTyped") { color = theme.color.notTyped }
 
+                        let bgColor = "transparent"
+                        if (this.props.highlighted) { bgColor = theme.color.charHighlight }
+
                         if (this.props.character === " ") {
-                            return <span className={ "Char " + this.props.type } style={{color: color}}>&nbsp;</span>
+                            return <span className={ "Char " + this.props.type } style={{color: color, backgroundColor: bgColor}}>&nbsp;</span>
                         } else {
-                            return <span className={ "Char " + this.props.type } style={{color: color}}>{ this.props.character }</span>
+                            return <span className={ "Char " + this.props.type } style={{color: color, backgroundColor: bgColor}}>{ this.props.character }</span>
                         }
                     }
                 }
