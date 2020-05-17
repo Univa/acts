@@ -71,7 +71,6 @@ export default class Words extends React.Component {
             this.genLine(this.wordsPerLine)
             this.renderLine(this.contentRaw[i], i, i === 0 ? true : undefined, true, i === 0 ? 0 : undefined, i === 0 ? 0 : undefined)
         }
-        this.props.resetHandler()
     }
 
     renderLine(line_data, pos, highlight = false, active = true, cur_word = -1, cur_char = -1) {
@@ -181,7 +180,7 @@ export default class Words extends React.Component {
 
         } else if (e.key === "F5") {
             e.preventDefault()
-            this.reset()
+            this.props.resetHandler()
 
         // If backspace is pressed
         } else if (e.key === "Backspace") {

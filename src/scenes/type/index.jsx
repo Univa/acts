@@ -36,6 +36,7 @@ export default class Type extends React.Component {
         }
 
         this.onTimerStop = this.onTimerStop.bind(this)
+        this.onTimerFinish = this.onTimerFinish.bind(this)
         this.onReset = this.onReset.bind(this)
         this.updateTypingContext = (new_data) => {
             // don't touch this ever again or you'll get fucked again
@@ -63,7 +64,7 @@ export default class Type extends React.Component {
         this.containerRef.removeEventListener('keydown', this.wordsRef.handleKey)
     }
 
-    onTimerStop() {
+    onTimerFinish() {
         this.setState(prevState => ({
             mode: "result",
             message: (
@@ -75,7 +76,12 @@ export default class Type extends React.Component {
                         ]
                     )}
                 </SettingsContext.Consumer>
-            ),
+            )
+        }))
+    }
+
+    onTimerStop() {
+        this.setState(prevState => ({
             typedata: {
                 ...prevState.typedata,
                 running: false
@@ -90,10 +96,11 @@ export default class Type extends React.Component {
                 speed: 0,
                 lastkeytime: 0,
                 lastkeydelay: 0,
-                running: false,
                 correct: 0
             }
         })
+        this.timerRef.reset()
+        this.wordsRef.reset()
     }
 
     render() { 
@@ -107,6 +114,8 @@ export default class Type extends React.Component {
                                     starttime={ settings.starttime }
                                     running={ this.state.typedata.running }
                                     stopHandler={ this.onTimerStop }
+                                    finishHandler={ this.onTimerFinish }
+                                    ref={ (elem) => { this.timerRef = elem } }
                                 />
                                 <Display value={ this.state.typedata.correct } />
                                 <Speed updateTypingContext={ this.updateTypingContext }/>
