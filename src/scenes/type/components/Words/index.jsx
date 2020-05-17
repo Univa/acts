@@ -47,7 +47,7 @@ export default class Words extends React.Component {
 
         for (var i = 0; i < this.props.linesAhead + 1; i++) {
             this.genLine(this.wordsPerLine)
-            this.renderLine(this.contentRaw[i], i, true, i === 0 ? 0 : undefined, i === 0 ? 0 : undefined)
+            this.renderLine(this.contentRaw[i], i, i === 0 ? true : undefined, true, i === 0 ? 0 : undefined, i === 0 ? 0 : undefined)
         }
     }
 
@@ -57,7 +57,7 @@ export default class Words extends React.Component {
         }
     }
 
-    renderLine(line_data, pos, active = true, cur_word = -1, cur_char = -1) {
+    renderLine(line_data, pos, highlight = false, active = true, cur_word = -1, cur_char = -1) {
         if (pos >= 0) {
             var words = []
             for (var word in line_data) {
@@ -106,7 +106,7 @@ export default class Words extends React.Component {
 
             this.setState(prevState => {
                 var new_content = prevState.content.slice()
-                new_content[pos] = <Line key={ "line-" + pos } active={ active }>{ words }</Line>
+                new_content[pos] = <Line highlighted={ highlight } key={ "line-" + pos } active={ active }>{ words }</Line>
                 return ({
                     content: new_content
                 })
@@ -174,7 +174,7 @@ export default class Words extends React.Component {
                 } else {
                     char = this.contentRaw[line][word].correct.length
                 }
-                this.renderLine(this.contentRaw[line], line, true, word, char)
+                this.renderLine(this.contentRaw[line], line, true, true, word, char)
 
             // If there are no incorrect characters, but some correct characters
             } else if (this.contentRaw[line][word].correct.length > 0) {
@@ -188,7 +188,7 @@ export default class Words extends React.Component {
                 this.contentRaw[line][word].notTyped = this.contentRaw[line][word].correct[this.contentRaw[line][word].correct.length - 1] + this.contentRaw[line][word].notTyped
                 this.contentRaw[line][word].correct = this.contentRaw[line][word].correct.slice(0, this.contentRaw[line][word].correct.length - 1)
                 let char = this.contentRaw[line][word].correct.length
-                this.renderLine(this.contentRaw[line], line, true, word, char)
+                this.renderLine(this.contentRaw[line], line, true, true, word, char)
 
             // If there are no incorrect or correct characters
             } else if (this.contentRaw[line][word].correct.length === 0) {
@@ -203,7 +203,7 @@ export default class Words extends React.Component {
                 if (this.wordTracker < this.contentRaw[line][0].id) {
                     this.lineTracker--
                     this.renderLine(this.contentRaw[line], line)
-                    this.renderLine(this.contentRaw[line + this.props.linesAhead], line + this.props.linesAhead, false) 
+                    this.renderLine(this.contentRaw[line + this.props.linesAhead], line + this.props.linesAhead, false, false) 
                     this.renderLine(this.contentRaw[line - this.props.linesBehind - 1], line - this.props.linesBehind - 1)
                 }
 
@@ -220,7 +220,7 @@ export default class Words extends React.Component {
                     } else {
                         char = this.contentRaw[new_line][new_word].correct.length
                     }
-                    this.renderLine(this.contentRaw[new_line], new_line, true, new_word, char)
+                    this.renderLine(this.contentRaw[new_line], new_line, true, true, new_word, char)
 
                 // If there are no incorrect characters, then there must be correct characters on the previous word
                 } else if (line !== 0 || word !== 0) {
@@ -234,7 +234,7 @@ export default class Words extends React.Component {
                     this.contentRaw[new_line][new_word].notTyped = this.contentRaw[new_line][new_word].correct[this.contentRaw[new_line][new_word].correct.length - 1] + this.contentRaw[new_line][new_word].notTyped
                     this.contentRaw[new_line][new_word].correct = this.contentRaw[new_line][new_word].correct.slice(0, this.contentRaw[new_line][new_word].correct.length - 1)
                     let char = this.contentRaw[new_line][new_word].correct.length
-                    this.renderLine(this.contentRaw[new_line], new_line, true, new_word, char)
+                    this.renderLine(this.contentRaw[new_line], new_line, true, true, new_word, char)
                 }
             }
 
@@ -265,13 +265,13 @@ export default class Words extends React.Component {
                 this.contentRaw[line][word].incorrect = this.contentRaw[line][word].incorrect + e.key
             }
 
-            this.renderLine(this.contentRaw[line], line, true, word + 1, 0)
-
             // Go to the next word
             this.wordTracker++
 
             // Go to the next line if we were on the last word of the line
             if (this.wordTracker > this.contentRaw[line][this.contentRaw[line].length - 1].id) {
+                this.renderLine(this.contentRaw[line], line, false, true, word + 1, 0)
+
                 this.lineTracker++
 
                 if (this.contentRaw.length < this.lineTracker + this.props.linesAhead + 1) {
@@ -279,8 +279,10 @@ export default class Words extends React.Component {
                 }
 
                 this.renderLine(this.contentRaw[line + this.props.linesAhead + 1], line + this.props.linesAhead + 1) 
-                this.renderLine(this.contentRaw[this.lineTracker], this.lineTracker, true, 0, 0)
-                this.renderLine(this.contentRaw[line - this.props.linesBehind], line - this.props.linesBehind, false)
+                this.renderLine(this.contentRaw[this.lineTracker], this.lineTracker, true, true, 0, 0)
+                this.renderLine(this.contentRaw[line - this.props.linesBehind], line - this.props.linesBehind, false, false)
+            } else {
+                this.renderLine(this.contentRaw[line], line, true, true, word + 1, 0)
             }
 
             // Start the timer if it hasn't
@@ -297,7 +299,7 @@ export default class Words extends React.Component {
             this.contentRaw[line][word].correct = this.contentRaw[line][word].correct + e.key
             this.contentRaw[line][word].notTyped = this.contentRaw[line][word].notTyped.slice(1, this.contentRaw[line][word].notTyped.length)
             let char = this.contentRaw[line][word].correct.length
-            this.renderLine(this.contentRaw[line], line, true, word, char)
+            this.renderLine(this.contentRaw[line], line, true, true, word, char)
 
             // update time since last correct keypress
             this.lastkeytime = new Date().getTime()
@@ -321,7 +323,7 @@ export default class Words extends React.Component {
             // Create an incorrect character
             this.contentRaw[line][word].incorrect = this.contentRaw[line][word].incorrect + e.key
             let char = this.contentRaw[line][word].correct.length + this.contentRaw[line][word].incorrect.length - 1
-            this.renderLine(this.contentRaw[line], line, true, word, char)
+            this.renderLine(this.contentRaw[line], line, true, true, word, char)
 
             // Start the timer if it hasn't
             if (!this.startedTyping) {

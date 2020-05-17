@@ -33,7 +33,8 @@ class App extends React.Component {
                         counter: props.cookies.get("theme-color-counter") || "white",
                         speed: props.cookies.get("theme-color-speed") || "white",
                         charHighlight: props.cookies.get("theme-color-charHighlight") || "rgba(0, 0, 0, 0.2)",
-                        wordHighlight: props.cookies.get("theme-color-wordHighlight") || "rgba(0, 0, 0, 0.2)"
+                        wordHighlight: props.cookies.get("theme-color-wordHighlight") || "rgba(0, 0, 0, 0.2)",
+                        lineHighlight: props.cookies.get("theme-color-lineHighlight") || "rgba(0, 0, 0, 0.2)"
                     }
                 },
                 starttime: parseInt(props.cookies.get("starttime"), 10) || 60,

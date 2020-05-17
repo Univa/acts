@@ -57,6 +57,10 @@ export default class Settings extends React.Component {
                                     <p style={{color: settings.theme.color.notTyped}}>Word Highlight</p>
                                     <Input type="text" settingPath={ ["theme", "color", "wordHighlight"] } updateSettings={ this.props.updateSettings } />
                                 </div>
+                                <div className="setting">
+                                    <p style={{color: settings.theme.color.notTyped}}>Line Highlight</p>
+                                    <Input type="text" settingPath={ ["theme", "color", "lineHighlight"] } updateSettings={ this.props.updateSettings } />
+                                </div>
                             </div>
                         </div>
 
