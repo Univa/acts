@@ -48,6 +48,7 @@ export default class Type extends React.Component {
             }))
         }
 
+        this.timerRef = React.createRef()
         this.wordsRef = React.createRef()
         this.containerRef = React.createRef()
     }
