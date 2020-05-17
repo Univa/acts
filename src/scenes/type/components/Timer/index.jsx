@@ -38,7 +38,6 @@ export default class Timer extends React.Component {
             running: false
         })
         clearInterval(this.interval)
-        this.props.stopHandler()
     }    
 
     componentDidMount() {
@@ -57,8 +56,12 @@ export default class Timer extends React.Component {
             this.start()
         } else if ((!this.props.running && this.state.running) && prevProps.running) {
             this.stop()
+            this.setState({
+                time: this.props.starttime
+            })
         } else if (this.state.time === 0 && this.state.running) {
             this.stop()
+            this.props.stopHandler()
         }
     }
 

@@ -57,6 +57,23 @@ export default class Words extends React.Component {
         }
     }
 
+    reset() {
+        this.words = 0;
+        this.lineTracker = 0
+        this.wordTracker = 0
+        this.correctCharacters = 0
+        this.startedTyping = false;
+        this.contentRaw = []
+        this.setState({
+            content: []
+        })
+        for (var i = 0; i < this.props.linesAhead + 1; i++) {
+            this.genLine(this.wordsPerLine)
+            this.renderLine(this.contentRaw[i], i, i === 0 ? true : undefined, true, i === 0 ? 0 : undefined, i === 0 ? 0 : undefined)
+        }
+        this.props.resetHandler()
+    }
+
     renderLine(line_data, pos, highlight = false, active = true, cur_word = -1, cur_char = -1) {
         if (pos >= 0) {
             var words = []
@@ -161,6 +178,10 @@ export default class Words extends React.Component {
 
         if (this.state.displayingMessage) {
             //pass
+
+        } else if (e.key === "F5") {
+            e.preventDefault()
+            this.reset()
 
         // If backspace is pressed
         } else if (e.key === "Backspace") {

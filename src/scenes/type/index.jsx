@@ -36,6 +36,7 @@ export default class Type extends React.Component {
         }
 
         this.onTimerStop = this.onTimerStop.bind(this)
+        this.onReset = this.onReset.bind(this)
         this.updateTypingContext = (new_data) => {
             // don't touch this ever again or you'll get fucked again
             this.setState(prevState => ({
@@ -82,6 +83,19 @@ export default class Type extends React.Component {
         }))
     }
 
+    onReset() {
+        this.setState({
+            mode: "type",
+            typedata: {
+                speed: 0,
+                lastkeytime: 0,
+                lastkeydelay: 0,
+                running: false,
+                correct: 0
+            }
+        })
+    }
+
     render() { 
         return (
             <TypingContext.Provider value={ this.state.typedata }>
@@ -105,6 +119,7 @@ export default class Type extends React.Component {
                                 msgduration={ this.state.duration }
                                 updateTypingContext={ this.updateTypingContext }
                                 wordBank={ settings.wordBank }
+                                resetHandler={ this.onReset }
                                 ref={ (elem) => { this.wordsRef = elem } }
                             />
                         </div>
