@@ -12,6 +12,9 @@ class Commands extends React.Component {
         }
 
         this.prefixes = ["!", ":", "/"]
+        this.displayingMessage = false
+
+        this.displayMessage = this.displayMessage.bind(this)
 
         this.textBox = React.createRef();
 
@@ -22,7 +25,14 @@ class Commands extends React.Component {
                     visibility: "visible"
                 })
                 this.textBox.current.focus()
+            } else if (this.prefixes.includes(e.key) && this.displayingMessage) {
+                clearTimeout(this.timeout)
+                this.displayingMessage = false;
+                this.setState({
+                    input: ""
+                })
             } else if ((e.key === "Escape" && this.textBox.current !== null) && this.state.visibility === "visible") {
+                clearTimeout(this.timeout)
                 this.textBox.current.blur()
             }
         })
@@ -37,22 +47,37 @@ class Commands extends React.Component {
 
                 if (command === "settings") {
                     this.props.history.push("/settings")
+                    this.textBox.current.blur()
                 } else if (command === "type") {
                     this.props.history.push("/type")
+                    this.textBox.current.blur()
+                } else {
+                    this.displayMessage.bind(this)("\"" + command + "\" is not command", 2000)
                 }
             }
-
-            this.textBox.current.blur()
         }
     }
 
-    updateTextBox(e) {
+    displayMessage(msg, time) {
         this.setState({
-            input: e.target.value
+            input: msg
         })
+        this.displayingMessage = true
+        this.timeout = setTimeout(() => {
+            this.textBox.current.blur()
+        }, time)
+    }
+
+    updateTextBox(e) {
+        if (!this.displayingMessage) {
+            this.setState({
+                input: e.target.value
+            })
+        }
     }
 
     clearTextBox(e) {
+        this.displayingMessage = false;
         this.setState({
             visibility: "hidden",
             input: ""
