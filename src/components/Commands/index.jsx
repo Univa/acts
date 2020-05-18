@@ -39,7 +39,7 @@ class Commands extends React.Component {
     }
 
     handleKey(e) {
-        if (e.key === "Enter") {
+        if (e.key === "Enter" && !this.displayingMessage) {
             var command = e.target.value.trim()
 
             if (this.prefixes.includes(command[0])) {
@@ -52,8 +52,10 @@ class Commands extends React.Component {
                     this.props.history.push("/type")
                     this.textBox.current.blur()
                 } else {
-                    this.displayMessage.bind(this)("\"" + command + "\" is not command", 2000)
+                    this.displayMessage("\"" + command + "\" is not a command", 2000)
                 }
+            } else {
+                this.displayMessage("No command was entered", 2000)
             }
         }
     }
