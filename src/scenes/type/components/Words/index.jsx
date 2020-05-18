@@ -23,6 +23,7 @@ export default class Words extends React.Component {
         this.lastkeytime = new Date().getTime();
 
         this.handleKey = this.handleKey.bind(this);
+        this.reset = this.reset.bind(this);
 
         this.contentRaw = []
 
