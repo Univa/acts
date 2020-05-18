@@ -16,13 +16,13 @@ class Commands extends React.Component {
         this.textBox = React.createRef();
 
         document.addEventListener('keydown', (e) => {
-            if (this.prefixes.includes(e.key) && this.textBox.current !== null) {
+            if ((this.prefixes.includes(e.key) && this.textBox.current !== null) && this.state.visibility !== "visible") {
                 this.focused = document.activeElement
                 this.setState({
                     visibility: "visible"
                 })
                 this.textBox.current.focus()
-            } else if (e.key === "Escape" && this.textBox.current !== null) {
+            } else if ((e.key === "Escape" && this.textBox.current !== null) && this.state.visibility === "visible") {
                 this.textBox.current.blur()
             }
         })
