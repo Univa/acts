@@ -129,6 +129,7 @@ export default class Type extends React.Component {
                                 msgduration={ this.state.duration }
                                 updateTypingContext={ this.updateTypingContext }
                                 wordBank={ settings.wordBank }
+                                customBank={ settings.customBank }
                                 resetHandler={ this.onReset }
                                 ref={ (elem) => { this.wordsRef = elem } }
                             />

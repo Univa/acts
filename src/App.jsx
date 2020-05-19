@@ -2,6 +2,7 @@ import React from 'react'
 import { withCookies, Cookies } from 'react-cookie'
 import { instanceOf } from 'prop-types'
 import {
+    Bank,
     Settings,
     Type
 } from './scenes';
@@ -35,6 +36,13 @@ class App extends React.Component {
             linesAhead = 1
         }
 
+        let customBank = props.cookies.get("customBank")
+        if (customBank === undefined) {
+            customBank = ["sample", "words", "wow"]
+        } else {
+            customBank = customBank.split(" ")
+        }
+
         this.state = {
             settings: {
                 theme: {
@@ -55,7 +63,8 @@ class App extends React.Component {
                 starttime: starttime,
                 linesAhead: linesAhead,
                 linesBehind: linesBehind,
-                wordBank: props.cookies.get("wordBank") || "Default"
+                wordBank: props.cookies.get("wordBank") || "Default",
+                customBank: customBank
             }
         }
 
@@ -76,6 +85,9 @@ class App extends React.Component {
                 <Router basename="/">
                     <Commands />
                     <Switch>
+                        <Route path="/bank">
+                            <Bank updateSettings={ this.updateSettingsContext }/>
+                        </Route>
                         <Route path="/settings">
                             <Settings updateSettings={ this.updateSettingsContext }/>
                         </Route>

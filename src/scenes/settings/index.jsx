@@ -1,6 +1,7 @@
 import React from 'react'
 import { SettingsContext } from '../../settings-context'
 import { Input, Menu } from './components'
+import { NavButton } from '../../components'
 import './styles.scss'
 
 export default class Settings extends React.Component {
@@ -81,8 +82,12 @@ export default class Settings extends React.Component {
                                 </div>
                                 <div className="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Word Bank</p>
-                                    <Menu options={ ["Default", "10fastfingers", "typings.gg"] } settingPath={ ["wordBank"] } updateSettings={ this.props.updateSettings }/>
+                                    <Menu options={ ["Default", "Custom", "10fastfingers", "typings.gg"] } settingPath={ ["wordBank"] } updateSettings={ this.props.updateSettings }/>
                                 </div>
+                            </div>
+                            <div>
+                                <NavButton dest="/bank" message="Edit Custom Word Bank" />
+                                <NavButton dest="/type" message="Go Back to Typing" />
                             </div>
                         </div>
                     </div>

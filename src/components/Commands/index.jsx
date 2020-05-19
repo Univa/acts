@@ -51,6 +51,9 @@ class Commands extends React.Component {
                 } else if (command === "type") {
                     this.props.history.push("/type")
                     this.textBox.current.blur()
+                } else if (command === "bank") {
+                    this.props.history.push("/bank")
+                    this.textBox.current.blur()
                 } else {
                     this.displayMessage("\"" + command + "\" is not a command", 2000)
                 }

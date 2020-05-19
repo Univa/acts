@@ -29,7 +29,9 @@ export default class Words extends React.Component {
 
         this.wordsPerLine = 7
 
-        if (this.props.wordBank === "10fastfingers") {
+        if (this.props.wordBank === "Custom") {
+            this.wordBank = this.props.customBank
+        } else if (this.props.wordBank === "10fastfingers") {
             this.wordBank = TenFastFingers
         } else if (this.props.wordBank === "typings.gg") {
             this.wordBank = TypingsGG

@@ -1,0 +1,28 @@
+.Bank {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: Jost;
+    font-size: 32px;
+    text-align: center;
+    padding: 100px;
+    animation: fade-in 1s;
+}
+
+.word-bank {
+    resize: none;
+    font-family: Jost;
+    font-size: 24px;
+    width: 50vw;
+    height: 35vh;
+    background-color: transparent;
+    border-radius: 10px;
+    border: solid 1px grey;
+    margin: 20px;
+    padding: 20px;
+}
+
+.Bank p {
+    margin: 5px;
+    width: 100%;
+}
