@@ -20,6 +20,21 @@ class App extends React.Component {
 
     constructor(props) {
         super(props)
+        let starttime = parseInt(props.cookies.get("starttime") || 60, 10)
+        if (isNaN(starttime) || starttime <= 0) {
+            starttime = 60
+        }
+
+        let linesAhead = parseInt(props.cookies.get("linesAhead") || 1, 10)
+        if (isNaN(linesAhead) || linesAhead < 0) {
+            linesAhead = 1
+        }
+
+        let linesBehind = parseInt(props.cookies.get("linesBehind") || 1, 10)
+        if (isNaN(linesBehind) || linesBehind < 0) {
+            linesAhead = 1
+        }
+
         this.state = {
             settings: {
                 theme: {
@@ -37,9 +52,9 @@ class App extends React.Component {
                         lineHighlight: props.cookies.get("theme-color-lineHighlight") || "rgba(0, 0, 0, 0.2)"
                     }
                 },
-                starttime: parseInt(props.cookies.get("starttime"), 10) || 60,
-                linesAhead: parseInt(props.cookies.get("linesAhead"), 10) || 1,
-                linesBehind: parseInt(props.cookies.get("linesBehind"), 10) || 1,
+                starttime: starttime,
+                linesAhead: linesAhead,
+                linesBehind: linesBehind,
                 wordBank: props.cookies.get("wordBank") || "Default"
             }
         }
