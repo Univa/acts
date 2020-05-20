@@ -102,6 +102,10 @@ export default class Words extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.msg_timeout)
+    }
+
     reset() {
         this.words = 0;
         this.lineTracker = 0
@@ -205,7 +209,7 @@ export default class Words extends React.Component {
             displayingMessage: true
         })
 
-        setTimeout(() => {
+        this.msg_timeout = setTimeout(() => {
             this.setState({
                 displayingMessage: false 
             })
