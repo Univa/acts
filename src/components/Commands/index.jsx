@@ -38,25 +38,66 @@ class Commands extends React.Component {
         })
     }
 
-    handleKey(e) {
+    findSetting(settings, path) {
+        var setting = settings
+        for (var loc of path.split("-")) {
+            try {
+                setting = setting[loc]
+            } catch(err) {
+                return undefined
+            }
+        }
+        return setting
+    }
+
+    handleKey(e, settings) {
         if (e.key === "Enter" && !this.displayingMessage) {
             var command = e.target.value.trim()
 
             if (this.prefixes.includes(command[0])) {
-                command = command.slice(1, command.length)
+                command = command.slice(1, command.length).split(" ")
+                command = command.filter(arg => arg !== "") // removes extra spaces
 
-                if (command === "settings") {
+                if (command[0] === "settings") {
                     this.props.history.push("/settings")
                     this.textBox.current.blur()
-                } else if (command === "type") {
+
+                } else if (command[0] === "type") {
                     this.props.history.push("/type")
                     this.textBox.current.blur()
-                } else if (command === "bank") {
+
+                } else if (command[0] === "bank") {
                     this.props.history.push("/bank")
                     this.textBox.current.blur()
+
+                } else if (command[0] === "set") {
+                    let args = command.slice(1, command.length)
+                    let setting = args[0]
+                    if (setting === undefined) {
+                        this.displayMessage("Missing setting argument", 2000)
+                    } else {
+                        var value = args.slice(1, args.length).join(" ").trim()
+                        var current_setting = this.findSetting(settings, setting)
+                        if (value === "") {
+                            this.displayMessage("Missing value argument", 2000)
+                        } else {
+                            if (!isNaN(value)) { value = parseInt(value, 10) }
+                            if (current_setting !== undefined && typeof current_setting !== "object") {
+                                this.props.updateSettings(setting, value)
+                                this.textBox.current.blur()
+                            } else if (Array.isArray(current_setting)) {
+                                this.props.updateSettings(setting, args.slice(1, args.length))
+                                this.textBox.current.blur()
+                            } else {
+                                this.displayMessage("\"" + args[0] + "\" is not a setting", 2000)
+                            }
+                        }
+                    }
+
                 } else {
-                    this.displayMessage("\"" + command + "\" is not a command", 2000)
+                    this.displayMessage("\"" + command[0] + "\" is not a command", 2000)
                 }
+
             } else {
                 this.displayMessage("No command was entered", 2000)
             }
@@ -98,7 +139,7 @@ class Commands extends React.Component {
                         type="text"
                         className="commands"
                         style={{color: settings.theme.color.command, visibility: this.state.visibility}}
-                        onKeyDown={ this.handleKey.bind(this) }
+                        onKeyDown={ (e) => this.handleKey.bind(this)(e, settings) }
                         onChange={ this.updateTextBox.bind(this) }
                         onBlur={ this.clearTextBox.bind(this) }
                         value={ this.state.input }

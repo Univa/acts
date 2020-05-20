@@ -6,7 +6,11 @@ export default class Menu extends React.Component {
     findSetting(settings) {
         var setting = settings
         for (var loc of this.props.setting.split("-")) {
-            setting = setting[loc]
+            try {
+                setting = setting[loc]
+            } catch(err) {
+                return undefined
+            }
         }
         return setting
     }

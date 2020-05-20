@@ -146,7 +146,7 @@ class App extends React.Component {
         return (
             <SettingsContext.Provider value={ this.state.settings }>
                 <Router basename="/">
-                    <Commands />
+                    <Commands updateSettings={ this.updateSettingsContext }/>
                     <Switch>
                         <Route path="/bank">
                             <Bank updateSettings={ this.updateSettingsContext }/>

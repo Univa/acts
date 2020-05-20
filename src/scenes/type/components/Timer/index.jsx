@@ -55,6 +55,10 @@ export default class Timer extends React.Component {
             this.stop()
             this.props.finishHandler()
         }
+
+        if (this.props.starttime !== prevProps.starttime) {
+            this.props.resetHandler()
+        }
     }
 
     reset() {

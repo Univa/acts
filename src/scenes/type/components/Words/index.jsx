@@ -58,6 +58,48 @@ export default class Words extends React.Component {
         if ((this.props.message !== prevProps.message) || (this.props.msgduration !== prevProps.msgduration)) {
             this.displayMessage(this.props.msgduration)
         }
+
+        if (this.props.linesAhead > prevProps.linesAhead) {
+            for (var i = 0; i < this.props.linesAhead - prevProps.linesAhead; i++) {
+                if (this.contentRaw.length <= this.lineTracker + this.props.linesAhead) { this.genLine(this.wordsPerLine) }
+                this.renderLine(this.contentRaw[this.lineTracker + prevProps.linesAhead + i + 1], this.lineTracker + prevProps.linesAhead + i + 1, false, true)
+            }
+        } else if (this.props.linesAhead < prevProps.linesAhead) {
+            for (var j = 0; j < prevProps.linesAhead - this.props.linesAhead; j++) {
+                this.renderLine(this.contentRaw[this.contentRaw.length - j - 1], this.contentRaw.length - j - 1, false, false)
+            }
+        }
+
+        if (this.props.linesBehind > prevProps.linesBehind) {
+            for (var k = 0; k < this.props.linesBehind - prevProps.linesBehind; k++) {
+                this.renderLine(this.contentRaw[this.lineTracker - prevProps.linesBehind - k - 1], this.lineTracker - prevProps.linesBehind - k - 1, false, true)
+            }
+        } else if (this.props.linesBehind < prevProps.linesBehind) {
+            for (var l = 0; l < prevProps.linesBehind - this.props.linesBehind; l++) {
+                this.renderLine(this.contentRaw[this.lineTracker - prevProps.linesBehind + l], this.lineTracker - prevProps.linesBehind + l, false, false)
+            }
+        }
+
+        if (this.props.wordBank !== prevProps.wordBank) {
+            this.wordsPerLine = 7
+
+            if (this.props.wordBank === "Custom") {
+                this.wordBank = this.props.customBank
+            } else if (this.props.wordBank === "10fastfingers") {
+                this.wordBank = TenFastFingers
+            } else if (this.props.wordBank === "typings.gg") {
+                this.wordBank = TypingsGG
+            } else {
+                this.wordBank = Default
+                this.wordsPerLine = 5
+            }
+            this.reset()
+        }
+
+        if (this.props.customBank.join(" ") !== prevProps.customBank.join(" ") && this.props.wordBank === "Custom") {
+            this.wordBank = this.props.customBank
+            this.reset()
+        }
     }
 
     reset() {
