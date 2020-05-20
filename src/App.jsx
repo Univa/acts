@@ -36,6 +36,12 @@ class App extends React.Component {
             linesAhead = 1
         }
 
+        this.wordBanks = ["default", "custom", "10fastfingers", "typings.gg"]
+        let wordBank = props.cookies.get("wordBank")
+        if (!this.wordBanks.includes(wordBank)) {
+            wordBank = "default"
+        }
+
         let customBank = props.cookies.get("customBank")
         if (customBank === undefined) {
             customBank = ["sample", "words", "wow"]
@@ -63,7 +69,7 @@ class App extends React.Component {
                 startTime: startTime,
                 linesAhead: linesAhead,
                 linesBehind: linesBehind,
-                wordBank: props.cookies.get("wordBank") || "default",
+                wordBank: wordBank,
                 customBank: customBank
             }
         }
@@ -96,6 +102,9 @@ class App extends React.Component {
                 }
             } else if (setting === "wordBank") {
                 value = value.toLowerCase();
+                if (!this.wordBanks.includes(value)) {
+                    value = "default"
+                }
             }
 
             if (setting === "customBank") {
