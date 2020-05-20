@@ -55,7 +55,7 @@ class Bank extends React.Component {
     }
 
     handleChange(settings, setting_path, event) {
-        var value = event.target.value.trim()
+        var value = event.target.value.trimStart()
         if (value !== ""){
             this.changeSetting(settings, setting_path, value.split(" "))
             this.setCookie(setting_path, value)
