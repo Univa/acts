@@ -8,6 +8,7 @@ class Bank extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            isLoaded: false,
             value: ""
         }
     }
@@ -56,6 +57,9 @@ class Bank extends React.Component {
 
     handleChange(settings, setting_path, event) {
         var value = event.target.value.trimStart()
+        this.setState({
+            value: event.target.value
+        })
         if (value !== ""){
             this.changeSetting(settings, setting_path, value.split(" "))
             this.setCookie(setting_path, value)
@@ -67,17 +71,23 @@ class Bank extends React.Component {
         return (
             <SettingsContext.Consumer>
                 {(settings) => {
-                    let value = this.findSetting(settings, ["customBank"])
-                    if (value === undefined) {
-                        value = ""
-                    } else {
-                        value = value.join(" ")
+                    if (!this.state.isLoaded) {
+                        let value = this.findSetting(settings, ["customBank"])
+                        if (value === undefined) {
+                            value = ""
+                        } else {
+                            value = value.join(" ")
+                        }
+                        this.setState({
+                            isLoaded: true,
+                            value: value
+                        })
                     }
                     return (
                         <div className="Bank">
                             <p style={{color:settings.theme.color.notTyped}}>Custom Word Bank</p>
                             <p style={{color:settings.theme.color.notTyped}}>Enter a list of words separated by spaces</p>
-                            <textarea className="word-bank" style={{color:settings.theme.color.notTyped}} maxLength="1000" value={ value } onChange={ (e) => this.handleChange.bind(this)(this.deepCopyObject(settings), ["customBank"], e) }></textarea>
+                            <textarea className="word-bank" style={{color:settings.theme.color.notTyped}} maxLength="1000" value={ this.state.value } onChange={ (e) => this.handleChange.bind(this)(this.deepCopyObject(settings), ["customBank"], e) }></textarea>
                             <div>
                                 <NavButton dest="/settings" message="Edit Settings" />
                                 <NavButton dest="/type" message="Go Back to Typing" />

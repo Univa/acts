@@ -9,6 +9,14 @@ class Input extends React.Component {
         cookies: instanceOf(Cookies).isRequired
     }
 
+    constructor(props) {
+        super(props)
+        this.state = {
+            isLoaded: false,
+            value: ""
+        }
+    }
+
     deepCopyObject(object) {
         if (typeof object !== "object") {
             return object
@@ -57,6 +65,9 @@ class Input extends React.Component {
                 value = this.props.upper
             }
         }
+        this.setState({
+            value: value
+        })
         this.changeSetting(settings, path, value)
         this.setCookie(path, value)
         this.props.updateSettings(settings)
@@ -66,12 +77,18 @@ class Input extends React.Component {
         return (
             <SettingsContext.Consumer>
                 {(settings) => {
+                    if (!this.state.isLoaded) {
+                        this.setState({
+                            isLoaded: true,
+                            value: this.findSetting(settings, this.props.settingPath)
+                        })
+                    }
                     return (
                         <input
                             className="Input"
                             type={ this.props.type }
                             style={{color: settings.theme.color.notTyped}}
-                            value={ this.findSetting(settings, this.props.settingPath) }
+                            value={ this.state.value }
                             onChange={ (event) => this.handleChange.bind(this)(this.deepCopyObject(settings), this.props.settingPath, event) }
                         />
                     )}
