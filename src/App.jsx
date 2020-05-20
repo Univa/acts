@@ -68,7 +68,43 @@ class App extends React.Component {
             }
         }
 
-        this.updateSettingsContext = (new_data) => {
+        this.updateSettingsContext = (setting, value) => {
+            var new_data = this.deepCopyObject(this.state.settings)
+            var cookie_value;
+            
+            if (setting === "linesAhead" || setting === "linesBehind") {
+                value = parseInt(value, 10)
+                if (value < 0) {
+                    value = 0
+                } else if (value > 5) {
+                    value = 5
+                } else if (isNaN(value)) {
+                    value = 1
+                }
+            } else if (setting === "starttime") {
+                value = parseInt(value, 10)
+                if (value < 0) {
+                    value = 0
+                } else if (isNaN(value)) {
+                    value = 60
+                }
+            } else if (setting === "customBank") {
+                if (value.join(" ") === "") {
+                    value = ["sample", "words", "wow"]
+                } else {
+                    value = value.filter(word => word !== "")
+                }
+            }
+
+            if (setting === "customBank") {
+                cookie_value = value.join(" ")
+            } else {
+                cookie_value = value
+            }
+
+            this.changeSetting(new_data, setting, value)
+            this.setCookie(setting, cookie_value)
+
             this.setState(prevState => ({
                 settings: {
                     ...prevState.settings,
@@ -76,6 +112,33 @@ class App extends React.Component {
                 }
             }))
         }
+    }
+
+    deepCopyObject(object) {
+        if (typeof object !== "object") {
+            return object
+        }
+
+        var newObj = Array.isArray(object) ? [] : {}
+
+        for (var key in object) {
+            newObj[key] = this.deepCopyObject(object[key])
+        }
+
+        return newObj
+    }
+
+    changeSetting(settings, setting_name, value) {
+        var path = setting_name.split("-")
+        var setting = settings
+        for (var loc of path.slice(0, path.length - 1)) {
+            setting = setting[loc]
+        }
+        setting[path[path.length - 1]] = value
+    }
+
+    setCookie(key, value) {
+        this.props.cookies.set(key, value, { path: "/acts" })
     }
 
     render() {
