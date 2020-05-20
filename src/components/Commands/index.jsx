@@ -95,7 +95,11 @@ class Commands extends React.Component {
                     }
 
                 } else {
-                    this.displayMessage("\"" + command[0] + "\" is not a command", 2000)
+                    if (command[0] === undefined) {
+                        this.displayMessage("No command was entered", 2000)
+                    } else {
+                        this.displayMessage("\"" + command[0] + "\" is not a command", 2000)
+                    }
                 }
 
             } else {
