@@ -12,10 +12,15 @@ export default class Settings extends React.Component {
                     <div className="Settings">
                         <div className="color-settings">
                             <p style={{color: settings.theme.color.notTyped}}>Colors</p>
-                            <p>
-                                <span style={{color: settings.theme.color.correct}}>Here is some s</span>
-                                <span style={{color: settings.theme.color.incorrect}}>imple</span>
-                                <span style={{color: settings.theme.color.notTyped}}>ample text</span>
+                            <p style={{backgroundColor: settings.theme.color.lineHighlight, borderRadius: "3px"}}>
+                                <span style={{color: settings.theme.color.correct}}>Here is some </span>
+                                <span style={{backgroundColor: settings.theme.color.wordHighlight, borderRadius: "3px"}}>
+                                    <span style={{color: settings.theme.color.correct}}>s</span>
+                                    <span style={{color: settings.theme.color.incorrect}}>impl</span>
+                                    <span style={{color: settings.theme.color.incorrect, backgroundColor: settings.theme.color.charHighlight, borderRadius: "3px"}}>e</span>
+                                    <span style={{color: settings.theme.color.notTyped}}>ample </span>
+                                </span>
+                                <span style={{color: settings.theme.color.notTyped}}>text</span>
                             </p>
                             <div className="setting-container">
                                 <div className="setting">
