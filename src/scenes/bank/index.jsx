@@ -77,7 +77,7 @@ class Bank extends React.Component {
                         <div className="Bank">
                             <p style={{color:settings.theme.color.notTyped}}>Custom Word Bank</p>
                             <p style={{color:settings.theme.color.notTyped}}>Enter a list of words separated by spaces</p>
-                            <textarea className="word-bank" style={{color:settings.theme.color.notTyped}} maxlength="1000" onChange={ (e) => this.handleChange.bind(this)(this.deepCopyObject(settings), ["customBank"], e) }>{ value }</textarea>
+                            <textarea className="word-bank" style={{color:settings.theme.color.notTyped}} maxLength="1000" value={ value } onChange={ (e) => this.handleChange.bind(this)(this.deepCopyObject(settings), ["customBank"], e) }></textarea>
                             <div>
                                 <NavButton dest="/settings" message="Edit Settings" />
                                 <NavButton dest="/type" message="Go Back to Typing" />
