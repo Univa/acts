@@ -93,12 +93,12 @@ export default class Words extends React.Component {
                 this.wordBank = Default
                 this.wordsPerLine = 5
             }
-            this.reset()
+            this.props.resetHandler()
         }
 
         if (this.props.customBank.join(" ") !== prevProps.customBank.join(" ") && this.props.wordBank === "Custom") {
             this.wordBank = this.props.customBank
-            this.reset()
+            this.props.resetHandler()
         }
     }
 
