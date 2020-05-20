@@ -29,7 +29,7 @@ export default class Words extends React.Component {
 
         this.wordsPerLine = 7
 
-        if (this.props.wordBank === "Custom") {
+        if (this.props.wordBank === "custom") {
             this.wordBank = this.props.customBank
         } else if (this.props.wordBank === "10fastfingers") {
             this.wordBank = TenFastFingers
@@ -83,7 +83,7 @@ export default class Words extends React.Component {
         if (this.props.wordBank !== prevProps.wordBank) {
             this.wordsPerLine = 7
 
-            if (this.props.wordBank === "Custom") {
+            if (this.props.wordBank === "custom") {
                 this.wordBank = this.props.customBank
             } else if (this.props.wordBank === "10fastfingers") {
                 this.wordBank = TenFastFingers
@@ -96,7 +96,7 @@ export default class Words extends React.Component {
             this.props.resetHandler()
         }
 
-        if (this.props.customBank.join(" ") !== prevProps.customBank.join(" ") && this.props.wordBank === "Custom") {
+        if (this.props.customBank.join(" ") !== prevProps.customBank.join(" ") && this.props.wordBank === "custom") {
             this.wordBank = this.props.customBank
             this.props.resetHandler()
         }

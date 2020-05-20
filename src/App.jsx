@@ -94,6 +94,8 @@ class App extends React.Component {
                 } else {
                     value = value.filter(word => word !== "")
                 }
+            } else if (setting === "wordBank") {
+                value = value.toLowerCase();
             }
 
             if (setting === "customBank") {
