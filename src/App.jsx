@@ -21,9 +21,9 @@ class App extends React.Component {
 
     constructor(props) {
         super(props)
-        let starttime = parseInt(props.cookies.get("starttime") || 60, 10)
-        if (isNaN(starttime) || starttime <= 0) {
-            starttime = 60
+        let startTime = parseInt(props.cookies.get("startTime") || 60, 10)
+        if (isNaN(startTime) || startTime <= 0) {
+            startTime = 60
         }
 
         let linesAhead = parseInt(props.cookies.get("linesAhead") || 1, 10)
@@ -60,7 +60,7 @@ class App extends React.Component {
                         lineHighlight: props.cookies.get("theme-color-lineHighlight") || "rgba(0, 0, 0, 0.2)"
                     }
                 },
-                starttime: starttime,
+                startTime: startTime,
                 linesAhead: linesAhead,
                 linesBehind: linesBehind,
                 wordBank: props.cookies.get("wordBank") || "Default",
@@ -81,7 +81,7 @@ class App extends React.Component {
                 } else if (isNaN(value)) {
                     value = 1
                 }
-            } else if (setting === "starttime") {
+            } else if (setting === "startTime") {
                 value = parseInt(value, 10)
                 if (value < 0) {
                     value = 0

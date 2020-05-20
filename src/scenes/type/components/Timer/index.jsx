@@ -6,7 +6,7 @@ export default class Timer extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            time: props.starttime
+            time: props.startTime
         }
 
         this.updateTimer = this.updateTimer.bind(this)
@@ -56,7 +56,7 @@ export default class Timer extends React.Component {
             this.props.finishHandler()
         }
 
-        if (this.props.starttime !== prevProps.starttime) {
+        if (this.props.startTime !== prevProps.startTime) {
             this.props.resetHandler()
         }
     }
@@ -64,7 +64,7 @@ export default class Timer extends React.Component {
     reset() {
         this.stop()
         this.setState({
-            time: this.props.starttime
+            time: this.props.startTime
         })
     }
 
@@ -80,7 +80,7 @@ export default class Timer extends React.Component {
 }
 
 Timer.defaultProps = {
-    starttime: 60,
+    startTime: 60,
     mode: "countdown",
     units: "s",
     interval: 1

@@ -70,7 +70,7 @@ export default class Settings extends React.Component {
                             <div className="setting-container">
                                 <div className="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Starting Time</p>
-                                    <Input type="number" setting="starttime" updateSettings={ this.props.updateSettings } />
+                                    <Input type="number" setting="startTime" updateSettings={ this.props.updateSettings } />
                                 </div>
                                 <div className="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Lines Ahead</p>

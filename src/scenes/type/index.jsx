@@ -73,7 +73,7 @@ export default class Type extends React.Component {
                     {(settings) => (
                         [
                             <p><span style={{color: settings.theme.color.notTyped}}>Time's up.</span></p>,
-                            <p><span style={{color: settings.theme.color.notTyped}}>WPM: </span><span style={{color: settings.theme.color.correct}}>{ (this.state.typedata.correct / 5 * (60 / settings.starttime)).toFixed(1) }</span></p>
+                            <p><span style={{color: settings.theme.color.notTyped}}>WPM: </span><span style={{color: settings.theme.color.correct}}>{ (this.state.typedata.correct / 5 * (60 / settings.startTime)).toFixed(1) }</span></p>
                         ]
                     )}
                 </SettingsContext.Consumer>
@@ -112,7 +112,7 @@ export default class Type extends React.Component {
                         <div className="Type" tabIndex="0" ref={ this.containerRef }>
                             <div className="info">
                                 <Timer
-                                    starttime={ settings.starttime }
+                                    startTime={ settings.startTime }
                                     running={ this.state.typedata.running }
                                     stopHandler={ this.onTimerStop }
                                     finishHandler={ this.onTimerFinish }
