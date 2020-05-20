@@ -119,6 +119,9 @@ class Commands extends React.Component {
             this.setState({
                 input: e.target.value
             })
+            if (e.target.value === "") {
+                this.textBox.current.blur()
+            }
         }
     }
 
