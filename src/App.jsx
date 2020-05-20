@@ -101,7 +101,7 @@ class App extends React.Component {
                     value = value.filter(word => word !== "")
                 }
             } else if (setting === "wordBank") {
-                value = value.toLowerCase();
+                value = String(value).toLowerCase();
                 if (!this.wordBanks.includes(value)) {
                     value = "default"
                 }
