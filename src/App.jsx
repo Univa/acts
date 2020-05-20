@@ -63,7 +63,7 @@ class App extends React.Component {
                 startTime: startTime,
                 linesAhead: linesAhead,
                 linesBehind: linesBehind,
-                wordBank: props.cookies.get("wordBank") || "Default",
+                wordBank: props.cookies.get("wordBank") || "default",
                 customBank: customBank
             }
         }
