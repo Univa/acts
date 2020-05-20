@@ -3,6 +3,15 @@ import './styles.scss'
 import { SettingsContext } from '../../../../settings-context'
 
 export default class Menu extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            isLoaded: false,
+            options: [],
+            value: ""
+        }
+    }
+
     findSetting(settings) {
         var setting = settings
         for (var loc of this.props.setting.split("-")) {
@@ -16,6 +25,9 @@ export default class Menu extends React.Component {
     }
 
     handleChange(event) {
+        this.setState({
+            value: event.target.value
+        })
         this.props.updateSettings(this.props.setting, event.target.value)
     }
 
@@ -23,22 +35,32 @@ export default class Menu extends React.Component {
         return (
             <SettingsContext.Consumer>
                 {(settings) => {
-                    var options = []
-                    var current = this.findSetting(settings)
-                    for (var item of this.props.options) {
-                        options.push(<option
-                                style={{color: settings.theme.color.notTyped}}
-                                className="menu-option"
-                                key={ item }
-                                value={ item }
-                                onClick={ this.handleChange.bind(this) }
-                            >{ item }</option>)
+                    if (!this.state.isLoaded) {
+                        var options = []
+                        var value = this.props.options[0]
+                        for (var item of this.props.options) {
+                            options.push(<option
+                                    style={{color: settings.theme.color.notTyped}}
+                                    className="menu-option"
+                                    key={ item }
+                                    value={ item }
+                                    onClick={ this.handleChange.bind(this) }
+                                >{ item }</option>)
+                            if (item.toLowerCase() === this.findSetting(settings)) {
+                                value = item
+                            }
+                        }
+                        this.setState({
+                            isLoaded: true,
+                            options: options,
+                            value: value
+                        })
                     }
                     return (
                         <div className="Menu">
-                            <input disabled style={{color: settings.theme.color.notTyped}} className="menu-button" type="text" value={ current } />
+                            <input disabled style={{color: settings.theme.color.notTyped}} className="menu-button" type="text" value={ this.state.value } />
                             <div className="menu-options">
-                                { options }
+                                { this.state.options }
                             </div>
                         </div>
                     )
