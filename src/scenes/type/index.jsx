@@ -132,6 +132,7 @@ export default class Type extends React.Component {
                                 wordBank={ settings.wordBank }
                                 customBank={ settings.customBank }
                                 resetHandler={ this.onReset }
+                                charBlacklist={ settings.cmdPrefixes }
                                 ref={ this.wordsRef }
                             />
                         </div>

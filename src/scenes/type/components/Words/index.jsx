@@ -227,6 +227,9 @@ export default class Words extends React.Component {
         if (this.state.displayingMessage) {
             //pass
 
+        } else if (this.props.charBlacklist.includes(e.key)) {
+            //pass
+
         } else if (e.key === "F5") {
             e.preventDefault()
             this.props.resetHandler()
