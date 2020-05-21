@@ -74,41 +74,39 @@ class Commands extends React.Component {
                     let args = command.slice(1, command.length)
                     let setting = args[0]
                     if (setting === undefined) {
-                        this.displayMessage("Missing setting argument", 2000)
+                        this.displayMessage("Missing setting argument")
                     } else {
                         var value = args.slice(1, args.length).join(" ").trim()
                         var current_setting = this.findSetting(settings, setting)
                         if (value === "") {
-                            this.displayMessage("Missing value argument", 2000)
+                            this.displayMessage("Missing value argument")
                         } else {
                             if (!isNaN(value)) { value = parseInt(value, 10) }
                             if (current_setting !== undefined && typeof current_setting !== "object") {
-                                this.props.updateSettings(setting, value)
-                                this.textBox.current.blur()
+                                this.props.updateSettings(setting, value, this.displayMessage)
                             } else if (Array.isArray(current_setting)) {
-                                this.props.updateSettings(setting, args.slice(1, args.length))
-                                this.textBox.current.blur()
+                                this.props.updateSettings(setting, args.slice(1, args.length), this.displayMessage)
                             } else {
-                                this.displayMessage("\"" + args[0] + "\" is not a setting", 2000)
+                                this.displayMessage("\"" + args[0] + "\" is not a setting")
                             }
                         }
                     }
 
                 } else {
                     if (command[0] === undefined) {
-                        this.displayMessage("No command was entered", 2000)
+                        this.displayMessage("No command was entered")
                     } else {
-                        this.displayMessage("\"" + command[0] + "\" is not a command", 2000)
+                        this.displayMessage("\"" + command[0] + "\" is not a command")
                     }
                 }
 
             } else {
-                this.displayMessage("No command was entered", 2000)
+                this.displayMessage("No command was entered")
             }
         }
     }
 
-    displayMessage(msg, time) {
+    displayMessage(msg, time = 2000) {
         this.setState({
             input: msg
         })

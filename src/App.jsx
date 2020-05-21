@@ -74,7 +74,7 @@ class App extends React.Component {
             }
         }
 
-        this.updateSettingsContext = (setting, value) => {
+        this.updateSettingsContext = (setting, value, callback = (msg) => {}) => {
             var new_data = this.deepCopyObject(this.state.settings)
             var cookie_value;
             
@@ -122,6 +122,8 @@ class App extends React.Component {
                     ...new_data
                 }
             }))
+
+            callback(setting + " was set to " + value)
         }
     }
 
