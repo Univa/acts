@@ -121,7 +121,7 @@ class App extends React.Component {
                 }
             }
 
-            if (setting === "customBank") {
+            if (setting === "customBank" || setting === "cmdPrefixes") {
                 cookie_value = value.join(" ")
             } else {
                 cookie_value = value
