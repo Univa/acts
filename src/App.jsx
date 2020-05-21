@@ -43,14 +43,14 @@ class App extends React.Component {
         }
 
         let customBank = props.cookies.get("customBank")
-        if (customBank === undefined) {
+        if (customBank === undefined || customBank === "") {
             customBank = ["sample", "words", "wow"]
         } else {
             customBank = customBank.split(" ")
         }
 
         let cmdPrefixes = props.cookies.get("cmdPrefixes")
-        if (cmdPrefixes === undefined) {
+        if (cmdPrefixes === undefined || cmdPrefixes === "") {
             cmdPrefixes = ["!", ":", "/"]
         } else {
             cmdPrefixes = cmdPrefixes.split(" ")
