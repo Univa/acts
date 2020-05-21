@@ -11,7 +11,6 @@ class Commands extends React.Component {
             visibility: "hidden"
         }
 
-        this.prefixes = ["!", ":", "/"]
         this.displayingMessage = false
 
         this.displayMessage = this.displayMessage.bind(this)
@@ -19,13 +18,13 @@ class Commands extends React.Component {
         this.textBox = React.createRef();
 
         document.addEventListener('keydown', (e) => {
-            if ((this.prefixes.includes(e.key) && this.textBox.current !== null) && this.state.visibility !== "visible") {
+            if ((this.props.prefixes.includes(e.key) && this.textBox.current !== null) && this.state.visibility !== "visible") {
                 this.focused = document.activeElement
                 this.setState({
                     visibility: "visible"
                 })
                 this.textBox.current.focus()
-            } else if (this.prefixes.includes(e.key) && this.displayingMessage) {
+            } else if (this.props.prefixes.includes(e.key) && this.displayingMessage) {
                 clearTimeout(this.timeout)
                 this.displayingMessage = false;
                 this.setState({
@@ -54,7 +53,7 @@ class Commands extends React.Component {
         if (e.key === "Enter" && !this.displayingMessage) {
             var command = e.target.value.trim()
 
-            if (this.prefixes.includes(command[0])) {
+            if (this.props.prefixes.includes(command[0])) {
                 command = command.slice(1, command.length).split(" ")
                 command = command.filter(arg => arg !== "") // removes extra spaces
 

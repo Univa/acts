@@ -49,6 +49,13 @@ class App extends React.Component {
             customBank = customBank.split(" ")
         }
 
+        let cmdPrefixes = props.cookies.get("cmdPrefixes")
+        if (cmdPrefixes === undefined) {
+            cmdPrefixes = ["!", ":", "/"]
+        } else {
+            cmdPrefixes = cmdPrefixes.split(" ")
+        }
+
         this.state = {
             settings: {
                 theme: {
@@ -70,7 +77,8 @@ class App extends React.Component {
                 linesAhead: linesAhead,
                 linesBehind: linesBehind,
                 wordBank: wordBank,
-                customBank: customBank
+                customBank: customBank,
+                cmdPrefixes: cmdPrefixes
             }
         }
 
@@ -104,6 +112,12 @@ class App extends React.Component {
                 value = String(value).toLowerCase();
                 if (!this.wordBanks.includes(value)) {
                     value = "default"
+                }
+            } else if (setting === "cmdPrefixes") {
+                if (value.join(" ") === "") {
+                    value = ["!", ":", "/"]
+                } else {
+                    value = value.map(x => x[0])
                 }
             }
 
@@ -159,7 +173,7 @@ class App extends React.Component {
         return (
             <SettingsContext.Provider value={ this.state.settings }>
                 <Router basename="/">
-                    <Commands updateSettings={ this.updateSettingsContext }/>
+                    <Commands updateSettings={ this.updateSettingsContext } prefixes={ this.state.settings.cmdPrefixes }/>
                     <Switch>
                         <Route path="/bank">
                             <Bank updateSettings={ this.updateSettingsContext }/>
