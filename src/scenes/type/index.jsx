@@ -125,7 +125,6 @@ export default class Type extends React.Component {
                             <Words
                                 linesAhead={ settings.linesAhead }
                                 linesBehind={ settings.linesBehind }
-                                keyHandler={ this.handleKey }
                                 message={ this.state.message }
                                 msgduration={ this.state.duration }
                                 updateTypingContext={ this.updateTypingContext }
