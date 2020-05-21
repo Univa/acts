@@ -53,7 +53,7 @@ class App extends React.Component {
         if (cmdPrefixes === undefined || cmdPrefixes === "") {
             cmdPrefixes = ["!", ":", "/"]
         } else {
-            cmdPrefixes = cmdPrefixes.split(" ")
+            cmdPrefixes = cmdPrefixes.split(" ").map(x => x[0])
         }
 
         this.state = {
