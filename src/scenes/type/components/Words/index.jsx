@@ -120,8 +120,10 @@ export default class Words extends React.Component {
         this.startedTyping = false;
         this.contentRaw = []
         this.setState({
-            content: []
+            content: [],
+            displayingMessage: false
         })
+        clearTimeout(this.msg_timeout)
         for (var i = 0; i < this.props.linesAhead + 1; i++) {
             this.genLine(this.wordsPerLine)
             this.renderLine(this.contentRaw[i], i, i === 0 ? true : undefined, true, i === 0 ? 0 : undefined, i === 0 ? 0 : undefined)
@@ -245,15 +247,15 @@ export default class Words extends React.Component {
             e.preventDefault() // disable's firefox quick find from activating
         }
 
-        if (this.state.displayingMessage) {
-            //pass
-
-        } else if (this.props.charBlacklist.includes(e.key)) {
+        if (this.props.charBlacklist.includes(e.key)) {
             //pass
 
         } else if (e.key === "F5") {
             e.preventDefault()
             this.props.resetHandler()
+
+        } else if (this.state.displayingMessage) {
+            //pass
 
         } else if (this.props.mode === "result") {
             //pass
