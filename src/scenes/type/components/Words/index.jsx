@@ -335,6 +335,7 @@ export default class Words extends React.Component {
 
         // If space is pressed
         } else if (e.key === " ") {
+            e.preventDefault() // prevents page from scrolling on smaller screens
             // If all characters were typed correctly
             if (this.contentRaw[line][word].incorrect.length === 0 && this.contentRaw[line][word].notTyped[0] === " ") {
                 // Create a correct character
