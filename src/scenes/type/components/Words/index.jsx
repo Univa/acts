@@ -19,6 +19,7 @@ export default class Words extends React.Component {
         this.lineTracker = 0
         this.wordTracker = 0
         this.correctCharacters = 0
+        this.totalCharacters = 0
         this.startedTyping = false;
         this.lastkeytime = new Date().getTime();
 
@@ -115,6 +116,7 @@ export default class Words extends React.Component {
         this.lineTracker = 0
         this.wordTracker = 0
         this.correctCharacters = 0
+        this.totalCharacters = 0
         this.startedTyping = false;
         this.contentRaw = []
         this.setState({
@@ -270,13 +272,21 @@ export default class Words extends React.Component {
                 }
                 this.renderLine(this.contentRaw[line], line, true, true, word, char)
 
+                this.totalCharacters--
+
+                this.props.updateTypingContext({
+                    total: this.totalCharacters
+                })
+
             // If there are no incorrect characters, but some correct characters
             } else if (this.contentRaw[line][word].correct.length > 0) {
                 // Delete a correct character
                 this.correctCharacters--
+                this.totalCharacters--
 
                 this.props.updateTypingContext({
-                    correct: this.correctCharacters
+                    correct: this.correctCharacters,
+                    total: this.totalCharacters
                 })
 
                 this.contentRaw[line][word].notTyped = this.contentRaw[line][word].correct[this.contentRaw[line][word].correct.length - 1] + this.contentRaw[line][word].notTyped
@@ -316,13 +326,21 @@ export default class Words extends React.Component {
                     }
                     this.renderLine(this.contentRaw[new_line], new_line, true, true, new_word, char)
 
+                    this.totalCharacters--
+
+                    this.props.updateTypingContext({
+                        total: this.totalCharacters
+                    })
+
                 // If there are no incorrect characters, then there must be correct characters on the previous word
                 } else if (line !== 0 || word !== 0) {
                     // Delete a correct character on the previous word
                     this.correctCharacters--
+                    this.totalCharacters--
 
                     this.props.updateTypingContext({
-                        correct: this.correctCharacters
+                        correct: this.correctCharacters,
+                        total: this.totalCharacters
                     })
 
                     this.contentRaw[new_line][new_word].notTyped = this.contentRaw[new_line][new_word].correct[this.contentRaw[new_line][new_word].correct.length - 1] + this.contentRaw[new_line][new_word].notTyped
@@ -359,6 +377,11 @@ export default class Words extends React.Component {
                 // Create an incorrect character
                 this.contentRaw[line][word].incorrect = this.contentRaw[line][word].incorrect + e.key
             }
+
+            this.totalCharacters++
+            this.props.updateTypingContext({
+                total: this.totalCharacters
+            })
 
             // Go to the next word
             this.wordTracker++
@@ -399,10 +422,12 @@ export default class Words extends React.Component {
             // update time since last correct keypress
             this.lastkeytime = new Date().getTime()
             this.correctCharacters++
+            this.totalCharacters++
 
             this.props.updateTypingContext({
                 lastkeytime: this.lastkeytime,
-                correct: this.correctCharacters
+                correct: this.correctCharacters,
+                total: this.totalCharacters
             })
 
             // Start the timer if it hasn't
@@ -419,6 +444,11 @@ export default class Words extends React.Component {
             this.contentRaw[line][word].incorrect = this.contentRaw[line][word].incorrect + e.key
             let char = this.contentRaw[line][word].correct.length + this.contentRaw[line][word].incorrect.length - 1
             this.renderLine(this.contentRaw[line], line, true, true, word, char)
+
+            this.totalCharacters++
+            this.props.updateTypingContext({
+                total: this.totalCharacters
+            })
 
             // Start the timer if it hasn't
             if (!this.startedTyping) {

@@ -31,7 +31,8 @@ export default class Type extends React.Component {
                 lastkeytime: 0,
                 lastkeydelay: 0,
                 running: false,
-                correct: 0
+                correct: 0,
+                total: 0
             }
         }
 
@@ -86,6 +87,7 @@ export default class Type extends React.Component {
                 {(settings) => (
                     <div className="results">
                         <p><span style={{color: settings.theme.color.notTyped}}>WPM: </span><span style={{color: settings.theme.color.correct}}>{ (this.state.typedata.correct / 5 * (60 / settings.startTime)).toFixed(1) }</span></p>
+                        <p><span style={{color: settings.theme.color.notTyped}}>Accuracy: </span><span style={{color: settings.theme.color.correct}}>{ this.state.typedata.correct + "/" + this.state.typedata.total + " (" + (this.state.typedata.correct / this.state.typedata.total * 100).toFixed(1) + "%)" }</span></p>
                         <p><span style={{color: settings.theme.color.correct}}>F5</span><span style={{color: settings.theme.color.notTyped}}> to reset</span></p>
                     </div>
                 )}
@@ -121,7 +123,8 @@ export default class Type extends React.Component {
                 speed: 0,
                 lastkeytime: 0,
                 lastkeydelay: 0,
-                correct: 0
+                correct: 0,
+                total: 0
             }
         })
         this.timerRef.current.reset()
