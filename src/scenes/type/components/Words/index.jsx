@@ -55,6 +55,10 @@ export default class Words extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        if (this.props.mode !== prevProps.mode && this.props.mode === "result") {
+            this.displayResults()
+        }
+
         if ((this.props.message !== prevProps.message) || (this.props.msgduration !== prevProps.msgduration)) {
             this.displayMessage(this.props.msgduration)
         }
@@ -119,6 +123,18 @@ export default class Words extends React.Component {
         for (var i = 0; i < this.props.linesAhead + 1; i++) {
             this.genLine(this.wordsPerLine)
             this.renderLine(this.contentRaw[i], i, i === 0 ? true : undefined, true, i === 0 ? 0 : undefined, i === 0 ? 0 : undefined)
+        }
+    }
+
+    displayResults() {
+        this.setState({
+            content: []
+        })
+
+        // cut only the lines that were typed on
+        this.contentRaw = this.contentRaw.slice(0, this.lineTracker + 1)
+        for (var line = 0; line < this.contentRaw.length; line++) {
+            this.renderLine(this.contentRaw[line], line)
         }
     }
 
@@ -233,6 +249,9 @@ export default class Words extends React.Component {
         } else if (e.key === "F5") {
             e.preventDefault()
             this.props.resetHandler()
+
+        } else if (this.props.mode === "result") {
+            //pass
 
         // If backspace is pressed
         } else if (e.key === "Backspace") {
