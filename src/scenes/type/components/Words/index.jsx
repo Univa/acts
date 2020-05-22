@@ -225,10 +225,13 @@ export default class Words extends React.Component {
             displayingMessage: true
         })
 
+        this.props.messageEnableHandler()
+
         this.msg_timeout = setTimeout(() => {
             this.setState({
                 displayingMessage: false 
             })
+            this.props.messageDisableHandler()
         }, dur)
     }
 

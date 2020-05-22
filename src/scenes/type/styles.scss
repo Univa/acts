@@ -7,9 +7,6 @@
 }
 
 .Words {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     animation: fade-in 1s;
 }
 
@@ -18,4 +15,28 @@
     width: 95vw;
     justify-content: space-between;
     animation: fade-in 1s;
+}
+
+.main {
+    position: absolute;
+    display: flex;
+    top: 50%;
+    transform: translateY(-50%);
+    justify-content: space-around;
+    align-items: center;
+}
+
+.results {
+    font-family: Jost;
+    font-size: clamp(15px, 2.7vw, 24px);
+}
+
+.results p {
+    max-height: 45px;
+    animation: fade-in 0.5s, grow-height 0.5s;
+    overflow: hidden;
+}
+
+.results span {
+    transition: color 0.5s;
 }

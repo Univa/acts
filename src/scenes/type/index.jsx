@@ -38,6 +38,8 @@ export default class Type extends React.Component {
         this.onTimerStop = this.onTimerStop.bind(this)
         this.onTimerFinish = this.onTimerFinish.bind(this)
         this.onReset = this.onReset.bind(this)
+        this.onMessageEnable = this.onMessageEnable.bind(this)
+        this.onMessageDisable = this.onMessageDisable.bind(this)
         this.updateTypingContext = (new_data) => {
             // don't touch this ever again or you'll get fucked again
             this.setState(prevState => ({
@@ -79,6 +81,28 @@ export default class Type extends React.Component {
                 </SettingsContext.Consumer>
             )
         }))
+        this.results = (
+            <SettingsContext.Consumer>
+                {(settings) => (
+                    <div className="results">
+                        <p><span style={{color: settings.theme.color.notTyped}}>WPM: </span><span style={{color: settings.theme.color.correct}}>{ (this.state.typedata.correct / 5 * (60 / settings.startTime)).toFixed(1) }</span></p>
+                        <p><span style={{color: settings.theme.color.correct}}>F5</span><span style={{color: settings.theme.color.notTyped}}> to reset</span></p>
+                    </div>
+                )}
+            </SettingsContext.Consumer>
+        )
+    }
+
+    onMessageDisable() {
+        this.setState({
+            displayingMessage: false
+        })
+    }
+
+    onMessageEnable() {
+        this.setState({
+            displayingMessage: true
+        })
     }
 
     onTimerStop() {
@@ -122,19 +146,24 @@ export default class Type extends React.Component {
                                 <Display value={ this.state.typedata.correct } />
                                 <Speed updateTypingContext={ this.updateTypingContext }/>
                             </div>
-                            <Words
-                                linesAhead={ settings.linesAhead }
-                                linesBehind={ settings.linesBehind }
-                                mode={ this.state.mode }
-                                message={ this.state.message }
-                                msgduration={ this.state.duration }
-                                updateTypingContext={ this.updateTypingContext }
-                                wordBank={ settings.wordBank }
-                                customBank={ settings.customBank }
-                                resetHandler={ this.onReset }
-                                charBlacklist={ settings.cmdPrefixes }
-                                ref={ this.wordsRef }
-                            />
+                            <div className="main">
+                                <Words
+                                    linesAhead={ settings.linesAhead }
+                                    linesBehind={ settings.linesBehind }
+                                    mode={ this.state.mode }
+                                    message={ this.state.message }
+                                    msgduration={ this.state.duration }
+                                    updateTypingContext={ this.updateTypingContext }
+                                    wordBank={ settings.wordBank }
+                                    customBank={ settings.customBank }
+                                    resetHandler={ this.onReset }
+                                    messageEnableHandler={ this.onMessageEnable }
+                                    messageDisableHandler={ this.onMessageDisable }
+                                    charBlacklist={ settings.cmdPrefixes }
+                                    ref={ this.wordsRef }
+                                />
+                                { this.state.mode === "result" && this.state.displayingMessage === false ? this.results : null }
+                            </div>
                         </div>
                     )}
                 </SettingsContext.Consumer>
