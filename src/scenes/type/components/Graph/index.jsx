@@ -15,6 +15,16 @@ export default class Graph extends React.Component {
 
     componentDidMount() {
         Chart.defaults.global.defaultFontFamily = "Jost";
+        if (this.props.data[0] === undefined) {
+            this.props.data[0] = {
+                speed: 0,
+                time: 0,
+                key: "None",
+                keyType: "N/A",
+                line: 0,
+                word: 0
+            }
+        }
         let startTime = this.props.data[0].time
         let data = this.props.data.map(pt => ({x: (pt.time - startTime) / 1000, y: pt.speed}))
         console.log(data)
