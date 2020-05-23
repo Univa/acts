@@ -93,18 +93,6 @@ export default class Type extends React.Component {
                 </SettingsContext.Consumer>
             )
         }))
-        this.results = (
-            <SettingsContext.Consumer>
-                {(settings) => (
-                    <div className="results">
-                        <Graph data={ this.state.typedata.speeds } xScale={ settings.startTime } />
-                        <p><span style={{color: settings.theme.color.notTyped}}>WPM: </span><span style={{color: settings.theme.color.correct}}>{ (this.state.typedata.correct / 5 * (60 / settings.startTime)).toFixed(1) }</span></p>
-                        <p><span style={{color: settings.theme.color.notTyped}}>Accuracy: </span><span style={{color: settings.theme.color.correct}}>{ this.state.typedata.correct + "/" + this.state.typedata.total + " (" + (this.state.typedata.correct / this.state.typedata.total * 100).toFixed(1) + "%)" }</span></p>
-                        <p><span style={{color: settings.theme.color.correct}}>F5</span><span style={{color: settings.theme.color.notTyped}}> to reset</span></p>
-                    </div>
-                )}
-            </SettingsContext.Consumer>
-        )
     }
 
     onMessageDisable() {
@@ -182,7 +170,14 @@ export default class Type extends React.Component {
                                     charBlacklist={ settings.cmdPrefixes }
                                     ref={ this.wordsRef }
                                 />
-                                { this.state.mode === "result" && this.state.displayingMessage === false ? this.results : null }
+                                { (this.state.mode === "result" && this.state.displayingMessage === false) &&
+                                <div className="results">
+                                    <Graph data={ this.state.typedata.speeds } xScale={ settings.startTime } />
+                                    <p><span style={{color: settings.theme.color.notTyped}}>WPM: </span><span style={{color: settings.theme.color.correct}}>{ (this.state.typedata.correct / 5 * (60 / settings.startTime)).toFixed(1) }</span></p>
+                                    <p><span style={{color: settings.theme.color.notTyped}}>Accuracy: </span><span style={{color: settings.theme.color.correct}}>{ this.state.typedata.correct + "/" + this.state.typedata.total + " (" + (this.state.typedata.correct / this.state.typedata.total * 100).toFixed(1) + "%)" }</span></p>
+                                    <p><span style={{color: settings.theme.color.correct}}>F5</span><span style={{color: settings.theme.color.notTyped}}> to reset</span></p>
+                                </div>
+                                }
                             </div>
                         </div>
                     )}
