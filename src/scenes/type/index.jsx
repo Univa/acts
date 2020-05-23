@@ -28,8 +28,8 @@ export default class Type extends React.Component {
             mode: "type",
             typedata: {
                 speed: 0,
-                lastkeytime: 0,
-                lastkeydelay: 0,
+                lastCorrectKeyTime: 0,
+                lastKeyTime: 0,
                 running: false,
                 correct: 0,
                 total: 0
@@ -121,8 +121,8 @@ export default class Type extends React.Component {
             mode: "type",
             typedata: {
                 speed: 0,
-                lastkeytime: 0,
-                lastkeydelay: 0,
+                lastCorrectKeyTime: 0,
+                lastKeyTime: 0,
                 correct: 0,
                 total: 0
             }

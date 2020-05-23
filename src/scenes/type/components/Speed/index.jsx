@@ -13,7 +13,7 @@ export default class Speed extends React.Component {
         this.speedDepth = 1000
         this.charsInDepth = 0;
         this.contextData = {
-            lastkeytime: 0
+            lastCorrectKeyTime: 0
         }
 
         this.updateSpeed = this.updateSpeed.bind(this)
@@ -40,7 +40,7 @@ export default class Speed extends React.Component {
     }
 
     updateKeyTimes(data) {
-        if (data.lastkeytime !== this.contextData.lastkeytime) {
+        if (data.lastCorrectKeyTime !== this.contextData.lastCorrectKeyTime) {
             this.charsInDepth++
             setTimeout(() => this.charsInDepth--, this.speedDepth)
         }
@@ -53,10 +53,10 @@ export default class Speed extends React.Component {
 
     calcSpeed() {
         let bullshit = 0
-        if (Math.abs(new Date().getTime() - this.contextData.lastkeytime) > this.speedDepth) {
+        if (Math.abs(new Date().getTime() - this.contextData.lastCorrectKeyTime) > this.speedDepth) {
             bullshit = this.charsInDepth
         } else {
-            bullshit = this.charsInDepth - ((this.props.interval / this.speedDepth) * ((new Date().getTime() - this.contextData.lastkeytime) / 1000 / (this.props.interval / this.speedDepth)))
+            bullshit = this.charsInDepth - ((this.props.interval / this.speedDepth) * ((new Date().getTime() - this.contextData.lastCorrectKeyTime) / 1000 / (this.props.interval / this.speedDepth)))
         }
         var speed = Math.round(bullshit * (60 / (this.speedDepth / 1000)) / 5)
         return speed
