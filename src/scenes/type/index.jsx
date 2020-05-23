@@ -35,7 +35,9 @@ export default class Type extends React.Component {
                 lastKeyType: "correct",
                 running: false,
                 correct: 0,
-                total: 0
+                total: 0,
+                currentWord: 0,
+                currentLine: 0,
             }
         }
 
@@ -47,7 +49,7 @@ export default class Type extends React.Component {
         this.updateTypingContext = (new_data) => {
             this.setState(prevState => {
                 if (new_data.total > prevState.typedata.total) {
-                    new_data.speeds = prevState.typedata.speeds.concat({speed: this.state.typedata.speed, time: new_data.lastKeyTime, key: new_data.lastKey, keyType: new_data.lastKeyType})
+                    new_data.speeds = prevState.typedata.speeds.concat({speed: this.state.typedata.speed, time: new_data.lastKeyTime, key: new_data.lastKey, keyType: new_data.lastKeyType, word: prevState.typedata.currentWord, line: prevState.typedata.currentLine})
                 } else if (new_data.total < prevState.typedata.total) {
                     new_data.speeds = prevState.typedata.speeds.slice(0, prevState.typedata.speeds.length - 1)
                 }
@@ -137,7 +139,9 @@ export default class Type extends React.Component {
                 lastKey: "",
                 lastKeyType: "correct",
                 correct: 0,
-                total: 0
+                total: 0,
+                currentWord: 0,
+                currentLine: 0
             }
         })
         this.timerRef.current.reset()

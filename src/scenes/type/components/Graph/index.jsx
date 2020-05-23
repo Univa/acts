@@ -51,6 +51,8 @@ export default class Graph extends React.Component {
                             label.push("Character: " + (this.props.data[tooltip.index].key === " " ? "Space" : this.props.data[tooltip.index].key))
                             label.push("Character no. " + (tooltip.index + 1))
                             label.push("Character type: " + (this.props.data[tooltip.index].keyType.charAt(0).toUpperCase() + this.props.data[tooltip.index].keyType.slice(1)))
+                            label.push("Line no. " + (this.props.data[tooltip.index].line + 1))
+                            label.push("Word no. " + (this.props.data[tooltip.index].word + 1))
                             label.push("Pressed at: " + tooltip.xLabel + "s")
                             label.push(data.datasets[tooltip.datasetIndex].label + ": " + tooltip.yLabel)
                             return label

@@ -334,7 +334,9 @@ export default class Words extends React.Component {
                     this.totalCharacters--
 
                     this.props.updateTypingContext({
-                        total: this.totalCharacters
+                        total: this.totalCharacters,
+                        currentWord: new_word,
+                        currentLine: new_line
                     })
 
                 // If there are no incorrect characters, then there must be correct characters on the previous word
@@ -345,7 +347,9 @@ export default class Words extends React.Component {
 
                     this.props.updateTypingContext({
                         correct: this.correctCharacters,
-                        total: this.totalCharacters
+                        total: this.totalCharacters,
+                        currentWord: new_word,
+                        currentLine: new_line
                     })
 
                     this.contentRaw[new_line][new_word].notTyped = this.contentRaw[new_line][new_word].correct[this.contentRaw[new_line][new_word].correct.length - 1] + this.contentRaw[new_line][new_word].notTyped
@@ -415,6 +419,11 @@ export default class Words extends React.Component {
             } else {
                 this.renderLine(this.contentRaw[line], line, true, true, word + 1, 0)
             }
+
+            this.props.updateTypingContext({
+                currentWord: this.contentRaw[this.lineTracker].findIndex(x => x.id === this.wordTracker),
+                currentLine: this.lineTracker
+            })
 
             // Start the timer if it hasn't
             if (!this.startedTyping) {
