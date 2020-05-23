@@ -23,6 +23,8 @@ export default class Words extends React.Component {
         this.startedTyping = false;
         this.lastCorrectKeyTime = new Date().getTime();
         this.lastKeyTime = new Date().getTime();
+        this.lastKey = ""
+        this.lastKeyType = "correct"
 
         this.handleKey = this.handleKey.bind(this);
         this.reset = this.reset.bind(this);
@@ -369,11 +371,11 @@ export default class Words extends React.Component {
                 // update time since last correct keypress
                 this.lastCorrectKeyTime = new Date().getTime()
                 this.lastKeyTime = this.lastCorrectKeyTime
+                this.lastKeyType = "correct"
                 this.correctCharacters++
 
                 this.props.updateTypingContext({
                     lastCorrectKeyTime: this.lastCorrectKeyTime,
-                    lastKeyTime: this.lastKeyTime,
                     correct: this.correctCharacters
                 })
 
@@ -381,12 +383,16 @@ export default class Words extends React.Component {
             } else {
                 // Create an incorrect character
                 this.contentRaw[line][word].incorrect = this.contentRaw[line][word].incorrect + e.key
+                this.lastKeyTime = new Date().getTime()
+                this.lastKeyType = "incorrect"
             }
 
             this.totalCharacters++
-            this.lastKeyTime = new Date().getTime()
+            this.lastKey = e.key
             this.props.updateTypingContext({
                 lastKeyTime: this.lastKeyTime,
+                lastKeyType: this.lastKeyType,
+                lastKey: this.lastKey,
                 total: this.totalCharacters
             })
 
@@ -429,12 +435,16 @@ export default class Words extends React.Component {
             // update time since last correct keypress
             this.lastCorrectKeyTime = new Date().getTime()
             this.lastKeyTime = this.lastCorrectKeyTime
+            this.lastKey = e.key
+            this.lastKeyType = "correct"
             this.correctCharacters++
             this.totalCharacters++
 
             this.props.updateTypingContext({
                 lastCorrectKeyTime: this.lastCorrectKeyTime,
                 lastKeyTime: this.lastKeyTime,
+                lastKey: this.lastKey,
+                lastKeyType: this.lastKeyType,
                 correct: this.correctCharacters,
                 total: this.totalCharacters
             })
@@ -456,8 +466,12 @@ export default class Words extends React.Component {
 
             this.totalCharacters++
             this.lastKeyTime = new Date().getTime()
+            this.lastKey = e.key
+            this.lastKeyType = "incorrect"
             this.props.updateTypingContext({
                 lastKeyTime: this.lastKeyTime,
+                lastKey: this.lastKey,
+                lastKeyType: this.lastKeyType,
                 total: this.totalCharacters
             })
 

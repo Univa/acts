@@ -28,8 +28,11 @@ export default class Type extends React.Component {
             mode: "type",
             typedata: {
                 speed: 0,
+                speeds: [],
                 lastCorrectKeyTime: 0,
                 lastKeyTime: 0,
+                lastKey: "",
+                lastKeyType: "correct",
                 running: false,
                 correct: 0,
                 total: 0
@@ -42,13 +45,19 @@ export default class Type extends React.Component {
         this.onMessageEnable = this.onMessageEnable.bind(this)
         this.onMessageDisable = this.onMessageDisable.bind(this)
         this.updateTypingContext = (new_data) => {
-            // don't touch this ever again or you'll get fucked again
-            this.setState(prevState => ({
-                typedata: {
-                    ...prevState.typedata,
-                    ...new_data
+            this.setState(prevState => {
+                if (new_data.total > prevState.typedata.total) {
+                    new_data.speeds = prevState.typedata.speeds.concat({speed: this.state.typedata.speed, time: new_data.lastKeyTime, key: new_data.lastKey, keyType: new_data.lastKeyType})
+                } else if (new_data.total < prevState.typedata.total) {
+                    new_data.speeds = prevState.typedata.speeds.slice(0, prevState.typedata.speeds.length - 1)
                 }
-            }))
+                return {
+                    typedata: {
+                        ...prevState.typedata,
+                        ...new_data
+                    }
+                }
+            })
         }
 
         this.timerRef = React.createRef()
@@ -86,6 +95,7 @@ export default class Type extends React.Component {
             <SettingsContext.Consumer>
                 {(settings) => (
                     <div className="results">
+                        <Graph data={ this.state.typedata.speeds } xScale={ settings.startTime } />
                         <p><span style={{color: settings.theme.color.notTyped}}>WPM: </span><span style={{color: settings.theme.color.correct}}>{ (this.state.typedata.correct / 5 * (60 / settings.startTime)).toFixed(1) }</span></p>
                         <p><span style={{color: settings.theme.color.notTyped}}>Accuracy: </span><span style={{color: settings.theme.color.correct}}>{ this.state.typedata.correct + "/" + this.state.typedata.total + " (" + (this.state.typedata.correct / this.state.typedata.total * 100).toFixed(1) + "%)" }</span></p>
                         <p><span style={{color: settings.theme.color.correct}}>F5</span><span style={{color: settings.theme.color.notTyped}}> to reset</span></p>
@@ -121,8 +131,11 @@ export default class Type extends React.Component {
             mode: "type",
             typedata: {
                 speed: 0,
+                speeds: [],
                 lastCorrectKeyTime: 0,
                 lastKeyTime: 0,
+                lastKey: "",
+                lastKeyType: "correct",
                 correct: 0,
                 total: 0
             }
