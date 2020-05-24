@@ -86,17 +86,13 @@ export default class Graph extends React.Component {
                     borderColor: "white",
                     showLine: true,
                     data: data,
-                    fill: false
+                    fill: false,
+                    pointBackgroundColor: [],
+                    pointBorderColor: []
                 }]
             },
             options: {
                 responsive: true,
-                elements: {
-                    point: {
-                        backgroundColor: "white",
-                        borderColor: "transparent"
-                    }
-                },
                 tooltips: {
                     displayColors: false,
                     mode: "index",
@@ -108,6 +104,7 @@ export default class Graph extends React.Component {
                     callbacks: {
                         label: (tooltip, data) => {
                             var label = []
+                            console.log(this.graphContent)
                             label.push("Character: " + (this.props.data[tooltip.index].key === " " ? "Space" : this.props.data[tooltip.index].key))
                             label.push("Character no. " + (tooltip.index + 1))
                             label.push("Character type: " + (this.props.data[tooltip.index].keyType.charAt(0).toUpperCase() + this.props.data[tooltip.index].keyType.slice(1)))
@@ -202,6 +199,10 @@ export default class Graph extends React.Component {
                         this.config.options.scales.yAxes[0].ticks.fontColor = theme.color.notTyped
                         this.config.options.elements.point.backgroundColor = theme.color.correct
                         this.config.options.tooltips.bodyFontColor = theme.color.notTyped
+                        for (var i = 0; i < this.props.data.length; i++) {
+                            this.props.data[i].keyType === "incorrect" ? this.config.data.datasets[0].pointBackgroundColor[i] = theme.color.incorrect : this.config.data.datasets[0].pointBackgroundColor[i] = theme.color.correct
+                            this.props.data[i].keyType === "incorrect" ? this.config.data.datasets[0].pointBorderColor[i] = theme.color.incorrect : this.config.data.datasets[0].pointBorderColor[i] = theme.color.correct
+                        }
                         this.graphContent.update()
                     }
                     return (
