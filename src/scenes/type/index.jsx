@@ -31,6 +31,7 @@ export default class Type extends React.Component {
                 word: undefined,
                 char: undefined
             },
+            tooltipData: {},
             typedata: {
                 speed: 0,
                 speeds: [],
@@ -50,6 +51,7 @@ export default class Type extends React.Component {
         this.onTimerStop = this.onTimerStop.bind(this)
         this.onTimerFinish = this.onTimerFinish.bind(this)
         this.onHoverCoordChange = this.onHoverCoordChange.bind(this)
+        this.onGraphHover = this.onGraphHover.bind(this)
         this.onReset = this.onReset.bind(this)
         this.onMessageEnable = this.onMessageEnable.bind(this)
         this.onMessageDisable = this.onMessageDisable.bind(this)
@@ -150,6 +152,12 @@ export default class Type extends React.Component {
         })
     }
 
+    onGraphHover(data) {
+        this.setState({
+            tooltipData: data
+        })
+    }
+
     render() { 
         return (
             <TypingContext.Provider value={ this.state.typedata }>
@@ -178,6 +186,7 @@ export default class Type extends React.Component {
                                     updateTypingContext={ this.updateTypingContext }
                                     wordBank={ settings.wordBank }
                                     customBank={ settings.customBank }
+                                    tooltipData={ this.state.tooltipData }
                                     resetHandler={ this.onReset }
                                     hoverHandler={ this.onHoverCoordChange }
                                     messageEnableHandler={ this.onMessageEnable }
@@ -187,7 +196,7 @@ export default class Type extends React.Component {
                                 />
                                 { (this.state.mode === "result" && this.state.displayingMessage === false) &&
                                 <div className="results">
-                                    <Graph data={ this.state.typedata.speeds } xScale={ settings.startTime } hoveredCoordinates={ this.state.hoveredCoordinates }/>
+                                    <Graph data={ this.state.typedata.speeds } xScale={ settings.startTime } hoveredCoordinates={ this.state.hoveredCoordinates } hoverHandler={ this.onGraphHover }/>
                                     <p><span style={{color: settings.theme.color.notTyped}}>WPM: </span><span style={{color: settings.theme.color.correct}}>{ (this.state.typedata.correct / 5 * (60 / settings.startTime)).toFixed(1) }</span></p>
                                     <p><span style={{color: settings.theme.color.notTyped}}>Accuracy: </span><span style={{color: settings.theme.color.correct}}>{ this.state.typedata.correct + "/" + this.state.typedata.total + " (" + (this.state.typedata.correct / this.state.typedata.total * 100).toFixed(1) + "%)" }</span></p>
                                     <p><span style={{color: settings.theme.color.correct}}>F5</span><span style={{color: settings.theme.color.notTyped}}> to reset</span></p>

@@ -117,6 +117,26 @@ export default class Graph extends React.Component {
                         }
                     }
                 },
+                hover: {
+                    mode: "index",
+                    intersect: false,
+                    onHover: (e, elements) => {
+                        let hoverData
+                        if (elements[0] === undefined) {
+                            if (-1 !== this.prevIndex) {
+                                hoverData = {}
+                                this.props.hoverHandler(hoverData)
+                            }
+                            this.prevIndex = -1
+                        } else {
+                            if (elements[0]._index !== this.prevIndex) {
+                                hoverData = this.props.data[elements[0]._index]
+                                this.props.hoverHandler(hoverData)
+                            }
+                            this.prevIndex = elements[0]._index
+                        }
+                    }
+                },
                 legend: {
                     display: false
                 },

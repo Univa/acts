@@ -115,6 +115,15 @@ export default class Words extends React.Component {
             this.wordBank = this.props.customBank
             this.props.resetHandler()
         }
+        
+        if ((this.props.tooltipData.line !== prevProps.tooltipData.line || this.props.tooltipData.word !== prevProps.tooltipData.word || this.props.tooltipData.char !== prevProps.tooltipData.char) && this.props.mode === "result") {
+            let line = this.props.tooltipData.line
+            let prevLine = prevProps.tooltipData.line
+            let word = this.props.tooltipData.word
+            let char = this.props.tooltipData.char
+            this.renderLine(this.contentRaw[prevLine], prevLine, false, true)
+            this.renderLine(this.contentRaw[line], line, true, true, word, char)
+        }
     }
 
     componentWillUnmount() {
