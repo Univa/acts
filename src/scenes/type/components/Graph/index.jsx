@@ -13,6 +13,56 @@ export default class Graph extends React.Component {
         this.graphRef = React.createRef()
     }
 
+    openTooltip(index) {
+        if (this.graphContent.tooltip._active === undefined) {
+            this.graphContent.tooltip._active = []
+        }
+
+        var item = this.graphContent.getDatasetMeta(0).data[index]
+
+        // don't really need this for loop but putting it here just in case
+        // this just makes the function return if the tooltip is already active
+        for (var i = 0; i < this.graphContent.tooltip._active.length; i++) {
+            if (item._index === this.graphContent.tooltip._active[i]._index) { return }
+        }
+
+        // otherwise activate it
+        this.graphContent.tooltip._active.push(item)
+        this.graphContent.tooltip.update(true)
+        this.graphContent.draw()
+    }
+
+    closeTooltip(index) {
+        if (this.graphContent.tooltip._active === undefined || this.graphContent.tooltip._active.length === 0) {
+            return
+        }
+
+        for (var i = 0; i < this.graphContent.tooltip._active.length; i++) {
+            if (this.graphContent.getDatasetMeta(0).data[index]._index === this.graphContent.tooltip._active[i]._index) {
+                this.graphContent.tooltip._active.splice(i, 1)
+                break
+            }
+        }
+        this.graphContent.tooltip.update(true)
+        this.graphContent.draw()
+    }
+
+    addOrdinalSuffix(num) {
+        var j = num % 10
+        var k = num % 100
+        var suffix = "th"
+        if (j === 1 && k !== 11) {
+            suffix = "st"
+        }
+        if (j === 2 && k !== 12) {
+            suffix = "nd"
+        }
+        if (j === 3 && k !== 13) {
+            suffix = "rd"
+        }
+        return num + suffix
+    }
+
     componentDidMount() {
         Chart.defaults.global.defaultFontFamily = "Jost";
         if (this.props.data[0] === undefined) {
@@ -63,6 +113,7 @@ export default class Graph extends React.Component {
                             label.push("Character type: " + (this.props.data[tooltip.index].keyType.charAt(0).toUpperCase() + this.props.data[tooltip.index].keyType.slice(1)))
                             label.push("Line no. " + (this.props.data[tooltip.index].line + 1))
                             label.push("Word no. " + (this.props.data[tooltip.index].word + 1))
+                            label.push(this.addOrdinalSuffix(this.props.data[tooltip.index].char + 1) + " character of the word")
                             label.push("Pressed at: " + tooltip.xLabel + "s")
                             label.push(data.datasets[tooltip.datasetIndex].label + ": " + tooltip.yLabel)
                             return label
@@ -124,6 +175,17 @@ export default class Graph extends React.Component {
         })
 
         this.graphContent = new Chart(this.graphRef.current, this.config)
+    }
+
+    componentDidUpdate(prevProps) {
+        console.log(this.props.hoveredCoordinates)
+        // this stringify is probably bad practice for checking object equality, but it works so ill keep it
+        if (JSON.stringify(this.props.hoveredCoordinates) !== JSON.stringify(prevProps.hoveredCoordinates)) {
+            let {line, word, char} = this.props.hoveredCoordinates
+            this.closeTooltip(this.index)
+            this.index = this.props.data.findIndex(x => x.line === line && x.word === word && x.char === char)
+            if (this.index !== -1) { this.openTooltip(this.index) }
+        }
     }
     
     render() {

@@ -26,6 +26,11 @@ export default class Type extends React.Component {
             ),
             duration: 3000,
             mode: "type",
+            hoveredCoordinates: {
+                line: undefined,
+                word: undefined,
+                char: undefined
+            },
             typedata: {
                 speed: 0,
                 speeds: [],
@@ -38,18 +43,20 @@ export default class Type extends React.Component {
                 total: 0,
                 currentWord: 0,
                 currentLine: 0,
+                currentChar: 0
             }
         }
 
         this.onTimerStop = this.onTimerStop.bind(this)
         this.onTimerFinish = this.onTimerFinish.bind(this)
+        this.onHoverCoordChange = this.onHoverCoordChange.bind(this)
         this.onReset = this.onReset.bind(this)
         this.onMessageEnable = this.onMessageEnable.bind(this)
         this.onMessageDisable = this.onMessageDisable.bind(this)
         this.updateTypingContext = (new_data) => {
             this.setState(prevState => {
                 if (new_data.total > prevState.typedata.total) {
-                    new_data.speeds = prevState.typedata.speeds.concat({speed: this.state.typedata.speed, time: new_data.lastKeyTime, key: new_data.lastKey, keyType: new_data.lastKeyType, word: prevState.typedata.currentWord, line: prevState.typedata.currentLine})
+                    new_data.speeds = prevState.typedata.speeds.concat({speed: this.state.typedata.speed, time: new_data.lastKeyTime, key: new_data.lastKey, keyType: new_data.lastKeyType, char: prevState.typedata.currentChar, word: prevState.typedata.currentWord, line: prevState.typedata.currentLine})
                 } else if (new_data.total < prevState.typedata.total) {
                     new_data.speeds = prevState.typedata.speeds.slice(0, prevState.typedata.speeds.length - 1)
                 }
@@ -129,11 +136,18 @@ export default class Type extends React.Component {
                 correct: 0,
                 total: 0,
                 currentWord: 0,
-                currentLine: 0
+                currentLine: 0,
+                currentChar: 0
             }
         })
         this.timerRef.current.reset()
         this.wordsRef.current.reset()
+    }
+
+    onHoverCoordChange(line, word, char) {
+        this.setState({
+            hoveredCoordinates: {line: line, word: word, char: char}
+        })
     }
 
     render() { 
@@ -165,6 +179,7 @@ export default class Type extends React.Component {
                                     wordBank={ settings.wordBank }
                                     customBank={ settings.customBank }
                                     resetHandler={ this.onReset }
+                                    hoverHandler={ this.onHoverCoordChange }
                                     messageEnableHandler={ this.onMessageEnable }
                                     messageDisableHandler={ this.onMessageDisable }
                                     charBlacklist={ settings.cmdPrefixes }
@@ -172,7 +187,7 @@ export default class Type extends React.Component {
                                 />
                                 { (this.state.mode === "result" && this.state.displayingMessage === false) &&
                                 <div className="results">
-                                    <Graph data={ this.state.typedata.speeds } xScale={ settings.startTime } />
+                                    <Graph data={ this.state.typedata.speeds } xScale={ settings.startTime } hoveredCoordinates={ this.state.hoveredCoordinates }/>
                                     <p><span style={{color: settings.theme.color.notTyped}}>WPM: </span><span style={{color: settings.theme.color.correct}}>{ (this.state.typedata.correct / 5 * (60 / settings.startTime)).toFixed(1) }</span></p>
                                     <p><span style={{color: settings.theme.color.notTyped}}>Accuracy: </span><span style={{color: settings.theme.color.correct}}>{ this.state.typedata.correct + "/" + this.state.typedata.total + " (" + (this.state.typedata.correct / this.state.typedata.total * 100).toFixed(1) + "%)" }</span></p>
                                     <p><span style={{color: settings.theme.color.correct}}>F5</span><span style={{color: settings.theme.color.notTyped}}> to reset</span></p>

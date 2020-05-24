@@ -29,6 +29,13 @@ export default class Words extends React.Component {
         this.handleKey = this.handleKey.bind(this);
         this.reset = this.reset.bind(this);
 
+        this.onCharMouseEnter = this.onCharMouseEnter.bind(this)
+        this.onCharMouseLeave = this.onCharMouseLeave.bind(this)
+        this.onWordMouseEnter = this.onWordMouseEnter.bind(this)
+        this.onWordMouseLeave = this.onWordMouseLeave.bind(this)
+        this.onLineMouseEnter = this.onLineMouseEnter.bind(this)
+        this.onLineMouseLeave = this.onLineMouseLeave.bind(this)
+
         this.contentRaw = []
 
         this.wordsPerLine = 7
@@ -145,6 +152,41 @@ export default class Words extends React.Component {
         }
     }
 
+    // reminder: remove the setStates becuase they're only here for debugging
+    onCharMouseEnter(key) {
+        this.hoveredChar = parseInt(key.split("-")[1], 10)
+        this.updateHoverCoordinates()
+    }
+
+    onCharMouseLeave(key) {
+        this.hoveredChar = undefined
+        this.updateHoverCoordinates()
+    }
+
+    onWordMouseEnter(key) {
+        this.hoveredWord = parseInt(key.split("-")[1], 10)
+        this.updateHoverCoordinates()
+    }
+
+    onWordMouseLeave(key) {
+        this.hoveredWord = undefined
+        this.updateHoverCoordinates()
+    }
+
+    onLineMouseEnter(key) {
+        this.hoveredLine = parseInt(key.split("-")[1], 10)
+        this.updateHoverCoordinates()
+    }
+
+    onLineMouseLeave(key) {
+        this.hoveredLine = undefined
+        this.updateHoverCoordinates()
+    }
+
+    updateHoverCoordinates() {
+        this.props.hoverHandler(this.hoveredLine, this.hoveredWord, this.hoveredChar)
+    }
+
     renderLine(line_data, pos, highlight = false, active = true, cur_word = -1, cur_char = -1) {
         if (pos >= 0) {
             var words = []
@@ -153,13 +195,14 @@ export default class Words extends React.Component {
                 var chars = []
                 var charCount = 0
                 var charCountTotal = 0
+                var bad_space_pos = -1
                 for (var correct in line_data[word].correct) {
                     if (cur_char === charCountTotal && cur_word === parseInt(word, 10)) {
                        highlighted = true 
                     } else {
                         highlighted = false
                     }
-                    chars.push(<Char key={ "char-" + charCount } type="correct" highlighted={ highlighted } character={ line_data[word].correct.charAt(correct) } />)
+                    chars.push(<Char key={ "char-" + charCount } alt_key={ "char-" + charCountTotal } highlightOnHover={ this.props.mode === "result" ? true : false } type="correct" highlighted={ highlighted } character={ line_data[word].correct.charAt(correct) } mouseEnterHandler={ this.onCharMouseEnter } mouseLeaveHandler={ this.onCharMouseLeave }/>)
                     charCount++
                     charCountTotal++
                 }
@@ -170,31 +213,45 @@ export default class Words extends React.Component {
                         } else {
                             highlighted = false
                         }
-                        chars.push(<Char key={ "incorrect-char-" + incorrect } type="incorrect" highlighted={ highlighted } character={ line_data[word].incorrect.charAt(incorrect) } />)
+                        chars.push(<Char key={ "incorrect-char-" + incorrect } alt_key={ "char-" + charCountTotal } highlightOnHover={ this.props.mode === "result" ? true : false } type="incorrect" highlighted={ highlighted } character={ line_data[word].incorrect.charAt(incorrect) } mouseEnterHandler={ this.onCharMouseEnter } mouseLeaveHandler={ this.onCharMouseLeave }/>)
+                        charCountTotal++
+                    } else {
+                        bad_space_pos = charCountTotal
                         charCountTotal++
                     }
                 }
                 for (var notTyped in line_data[word].notTyped) {
-                    if (cur_char === charCountTotal && cur_word === parseInt(word, 10)) {
-                       highlighted = true 
+                    if (line_data[word].notTyped.charAt(notTyped) !== " " || bad_space_pos === -1) {
+                        if (cur_char === charCountTotal && cur_word === parseInt(word, 10)) {
+                        highlighted = true 
+                        } else {
+                            highlighted = false
+                        }
+                        chars.push(<Char key={ "char-" + charCount } alt_key={ "char-" + charCountTotal } highlightOnHover={ this.props.mode === "result" ? true : false } type="notTyped" highlighted={ highlighted } character={ line_data[word].notTyped.charAt(notTyped) } mouseEnterHandler={ this.onCharMouseEnter } mouseLeaveHandler={ this.onCharMouseLeave }/>)
+                        charCount++
+                        charCountTotal++
                     } else {
-                        highlighted = false
+                        if (cur_char === bad_space_pos && cur_word === parseInt(word, 10)) {
+                            highlighted = true
+                        } else {
+                            highlighted = false
+                        }
+                        // the key for this incorrect space is not prefixed with incorrect-char to prevent React from misidentifying this element as a new element
+                        // this really just changes the space character's type to incorrect when the user enters a bad space
+                        chars.push(<Char key={ "char-" + charCount } alt_key={ "char-" + bad_space_pos } highlightOnHover={ this.props.mode === "result" ? true : false } type="incorrect" highlighted={ highlighted } character={ line_data[word].incorrect.charAt(incorrect) } mouseEnterHandler={ this.onCharMouseEnter } mouseLeaveHandler={ this.onCharMouseLeave }/>)
                     }
-                    chars.push(<Char key={ "char-" + charCount } type="notTyped" highlighted={ highlighted } character={ line_data[word].notTyped.charAt(notTyped) } />)
-                    charCount++
-                    charCountTotal++
                 }
                 if (parseInt(word, 10) === cur_word) {
                     highlighted = true
                 } else {
                     highlighted = false
                 }
-                words.push(<Word key={ "word-" + word } highlighted={ highlighted }>{ chars }</Word>)
+                words.push(<Word key={ "word-" + word } alt_key={ "word-" + word } highlighted={ highlighted } highlightOnHover={ this.props.mode === "result" ? true : false } mouseEnterHandler={ this.onWordMouseEnter } mouseLeaveHandler={ this.onWordMouseLeave }>{ chars }</Word>)
             }
 
             this.setState(prevState => {
                 var new_content = prevState.content.slice()
-                new_content[pos] = <Line highlighted={ highlight } key={ "line-" + pos } active={ active }>{ words }</Line>
+                new_content[pos] = <Line highlighted={ highlight } key={ "line-" + pos } alt_key={ "line-" + pos } active={ active } highlightOnHover={ this.props.mode === "result" ? true : false } mouseEnterHandler={ this.onLineMouseEnter } mouseLeaveHandler={ this.onLineMouseLeave }>{ words }</Line>
                 return ({
                     content: new_content
                 })
@@ -270,17 +327,21 @@ export default class Words extends React.Component {
                 // Delete an incorrect character
                 this.contentRaw[line][word].incorrect = this.contentRaw[line][word].incorrect.slice(0, this.contentRaw[line][word].incorrect.length - 1)
                 let char = 0
+                let cur_char = 0
                 if (this.contentRaw[line][word].incorrect.length > 0) {
                     char = this.contentRaw[line][word].correct.length + this.contentRaw[line][word].incorrect.length - 1
+                    cur_char = char + 1
                 } else {
                     char = this.contentRaw[line][word].correct.length
+                    cur_char = char
                 }
                 this.renderLine(this.contentRaw[line], line, true, true, word, char)
 
                 this.totalCharacters--
 
                 this.props.updateTypingContext({
-                    total: this.totalCharacters
+                    total: this.totalCharacters,
+                    currentChar: cur_char
                 })
 
             // If there are no incorrect characters, but some correct characters
@@ -291,7 +352,8 @@ export default class Words extends React.Component {
 
                 this.props.updateTypingContext({
                     correct: this.correctCharacters,
-                    total: this.totalCharacters
+                    total: this.totalCharacters,
+                    currentChar: this.contentRaw[line][word].correct.length - 1
                 })
 
                 this.contentRaw[line][word].notTyped = this.contentRaw[line][word].correct[this.contentRaw[line][word].correct.length - 1] + this.contentRaw[line][word].notTyped
@@ -324,10 +386,13 @@ export default class Words extends React.Component {
                     // Delete an incorrect character on the previous word
                     this.contentRaw[new_line][new_word].incorrect = this.contentRaw[new_line][new_word].incorrect.slice(0, this.contentRaw[new_line][new_word].incorrect.length - 1)
                     let char = 0
+                    let cur_char = 0
                     if (this.contentRaw[new_line][new_word].incorrect.length > 0) {
                         char = this.contentRaw[new_line][new_word].correct.length + this.contentRaw[new_line][new_word].incorrect.length - 1
+                        cur_char = char + 1
                     } else {
                         char = this.contentRaw[new_line][new_word].correct.length
+                        cur_char = char
                     }
                     this.renderLine(this.contentRaw[new_line], new_line, true, true, new_word, char)
 
@@ -336,7 +401,8 @@ export default class Words extends React.Component {
                     this.props.updateTypingContext({
                         total: this.totalCharacters,
                         currentWord: new_word,
-                        currentLine: new_line
+                        currentLine: new_line,
+                        currentChar: cur_char
                     })
 
                 // If there are no incorrect characters, then there must be correct characters on the previous word
@@ -349,7 +415,8 @@ export default class Words extends React.Component {
                         correct: this.correctCharacters,
                         total: this.totalCharacters,
                         currentWord: new_word,
-                        currentLine: new_line
+                        currentLine: new_line,
+                        currentChar: this.contentRaw[new_line][new_word].correct.length - 1
                     })
 
                     this.contentRaw[new_line][new_word].notTyped = this.contentRaw[new_line][new_word].correct[this.contentRaw[new_line][new_word].correct.length - 1] + this.contentRaw[new_line][new_word].notTyped
@@ -397,7 +464,8 @@ export default class Words extends React.Component {
                 lastKeyTime: this.lastKeyTime,
                 lastKeyType: this.lastKeyType,
                 lastKey: this.lastKey,
-                total: this.totalCharacters
+                total: this.totalCharacters,
+                currentChar: 0
             })
 
             // Go to the next word
@@ -455,7 +523,8 @@ export default class Words extends React.Component {
                 lastKey: this.lastKey,
                 lastKeyType: this.lastKeyType,
                 correct: this.correctCharacters,
-                total: this.totalCharacters
+                total: this.totalCharacters,
+                currentChar: char
             })
 
             // Start the timer if it hasn't
@@ -481,6 +550,7 @@ export default class Words extends React.Component {
                 lastKeyTime: this.lastKeyTime,
                 lastKey: this.lastKey,
                 lastKeyType: this.lastKeyType,
+                currentChar: char + 1,
                 total: this.totalCharacters
             })
 
