@@ -8,6 +8,7 @@
 
 .Words {
     animation: fade-in 1s;
+    margin: 20px;
 }
 
 .info {
@@ -20,6 +21,7 @@
 .main {
     position: absolute;
     display: flex;
+    flex-wrap: wrap;
     top: 50%;
     transform: translateY(-50%);
     justify-content: space-around;
@@ -28,6 +30,7 @@
 
 .results {
     font-family: Jost;
+    margin: 20px;
     font-size: clamp(15px, 2.7vw, 24px);
 }
 
