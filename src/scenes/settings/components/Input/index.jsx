@@ -26,7 +26,6 @@ export default class Input extends React.Component {
     handleChange(event) {
         var value = event.target.value
         if (this.props.type === "number") {
-            console.log(value)
             if (!isNaN(value) && value !== "") {
                 value = parseInt(event.target.value, 10)
                 if (value < this.props.lower) {

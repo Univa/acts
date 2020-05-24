@@ -77,7 +77,6 @@ export default class Graph extends React.Component {
         }
         let startTime = this.props.data[0].time
         let data = this.props.data.map(pt => ({x: (pt.time - startTime) / 1000, y: pt.speed}))
-        console.log(data)
         this.config = {
             type: "scatter",
             data: {
@@ -104,7 +103,6 @@ export default class Graph extends React.Component {
                     callbacks: {
                         label: (tooltip, data) => {
                             var label = []
-                            console.log(this.graphContent)
                             label.push("Character: " + (this.props.data[tooltip.index].key === " " ? "Space" : this.props.data[tooltip.index].key))
                             label.push("Character no. " + (tooltip.index + 1))
                             label.push("Character type: " + (this.props.data[tooltip.index].keyType.charAt(0).toUpperCase() + this.props.data[tooltip.index].keyType.slice(1)))
@@ -195,7 +193,6 @@ export default class Graph extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        console.log(this.props.hoveredCoordinates)
         // this stringify is probably bad practice for checking object equality, but it works so ill keep it
         if (JSON.stringify(this.props.hoveredCoordinates) !== JSON.stringify(prevProps.hoveredCoordinates)) {
             let {line, word, char} = this.props.hoveredCoordinates
