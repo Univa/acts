@@ -23,6 +23,7 @@ export default class Words extends React.Component {
         this.startedTyping = false;
         this.lastCorrectKeyTime = new Date().getTime();
         this.lastKeyTime = new Date().getTime();
+        this.lineRefs = []
         this.lastKey = ""
         this.lastKeyType = "correct"
 
@@ -123,11 +124,16 @@ export default class Words extends React.Component {
             let char = this.props.tooltipData.char
             this.renderLine(this.contentRaw[prevLine], prevLine, false, true)
             this.renderLine(this.contentRaw[line], line, true, true, word, char)
+            if (line !== undefined) { this.lineRefs[line].current.scrollIntoView({behavior: "smooth", block: "nearest"}) }
         }
     }
 
     componentWillUnmount() {
         clearTimeout(this.msg_timeout)
+    }
+
+    setLineRef(ref, index) {
+        this.lineRefs[index] = ref
     }
 
     reset() {
@@ -260,7 +266,7 @@ export default class Words extends React.Component {
 
             this.setState(prevState => {
                 var new_content = prevState.content.slice()
-                new_content[pos] = <Line highlighted={ highlight } key={ "line-" + pos } alt_key={ "line-" + pos } active={ active } highlightOnHover={ this.props.mode === "result" ? true : false } mouseEnterHandler={ this.onLineMouseEnter } mouseLeaveHandler={ this.onLineMouseLeave }>{ words }</Line>
+                new_content[pos] = <Line highlighted={ highlight } key={ "line-" + pos } alt_key={ "line-" + pos } refSet={ this.setLineRef.bind(this) } active={ active } highlightOnHover={ this.props.mode === "result" ? true : false } mouseEnterHandler={ this.onLineMouseEnter } mouseLeaveHandler={ this.onLineMouseLeave }>{ words }</Line>
                 return ({
                     content: new_content
                 })
