@@ -3,6 +3,8 @@ import { Default, TenFastFingers, TypingsGG } from './word_banks';
 import Line from './Line.jsx'
 import Char from './Char.jsx'
 import Word from './Word.jsx'
+import SimpleBar from 'simplebar-react'
+import 'simplebar/dist/simplebar.min.css'
 import './styles.scss'
 
 export default class Words extends React.Component {
@@ -582,7 +584,9 @@ export default class Words extends React.Component {
     render() {
         return (
             <div className="Words">
-                { this.state.displayingMessage ? this.props.message : this.state.content }
+                <SimpleBar style={{maxHeight: "90vh"}}>
+                    { this.state.displayingMessage ? this.props.message : this.state.content }
+                </SimpleBar>
             </div>
         )
     }
