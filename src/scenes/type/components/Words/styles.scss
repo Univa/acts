@@ -4,6 +4,7 @@
     text-align: left;
     width: clamp(300px, 55vw, 800px);
     min-width: 300px;
+    max-height: 90vh;
     overflow: auto;
 }
 
