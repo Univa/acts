@@ -6,6 +6,13 @@
     min-width: 300px;
     max-height: 90vh;
     overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.Words::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }
 
 .Line {
