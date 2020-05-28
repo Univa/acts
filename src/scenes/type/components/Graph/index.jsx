@@ -63,6 +63,28 @@ export default class Graph extends React.Component {
         return num + suffix
     }
 
+    genApproximation(data, resolution = 20) {
+        var section_size = this.props.xScale / resolution
+        var section = 1
+        var sum = 0
+        var item_count = 0
+        var approximation_data = [{x:0,y:0}]
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].x > section_size * section || i === data.length - 1) {
+                approximation_data.push({
+                    x: (section - 1) * section_size + section_size / 2,
+                    y: sum / item_count
+                })
+                section++
+                sum = 0
+                item_count = 0
+            }
+            sum += data[i].y
+            item_count++
+        }
+        return approximation_data
+    }
+
     componentDidMount() {
         Chart.defaults.global.defaultFontFamily = "Jost";
         if (this.props.data[0] === undefined) {
@@ -77,29 +99,38 @@ export default class Graph extends React.Component {
         }
         let startTime = this.props.data[0].time
         let data = this.props.data.map(pt => ({x: (pt.time - startTime) / 1000, y: pt.speed}))
+        let approximation = this.genApproximation(data)
         this.config = {
             type: "scatter",
             data: {
                 datasets: [{
                     label: "WPM",
-                    borderColor: "transparent",
-                    showLine: true,
                     data: data,
                     fill: false,
                     pointBackgroundColor: [],
-                    pointBorderColor: []
+                    pointBorderColor: [],
+                    pointRadius: 2.5
+                }, {
+                    label: "Approximation",
+                    data: approximation,
+                    fill: false,
+                    showLine: true,
+                    borderColor: "transparent",
+                    pointRadius: 0,
+                    pointHitRadius: 0,
+                    pointHoverRadius: 0
                 }]
             },
             options: {
                 responsive: true,
                 tooltips: {
                     displayColors: false,
-                    mode: "index",
-                    intersect: false,
+                    mode: "point",
                     bodyFontSize: 16,
                     bodyFontColor: "transparent",
                     xPadding: 10,
                     yPadding: 10,
+                    filter: (tooltip) => { return tooltip.datasetIndex === 0 },
                     callbacks: {
                         label: (tooltip, data) => {
                             var label = []
@@ -116,8 +147,7 @@ export default class Graph extends React.Component {
                     }
                 },
                 hover: {
-                    mode: "index",
-                    intersect: false,
+                    mode: "point",
                     onHover: (e, elements) => {
                         let hoverData
                         if (elements[0] === undefined) {
@@ -207,7 +237,7 @@ export default class Graph extends React.Component {
             <SettingsContext.Consumer>
                 {({theme}) => {
                     if (this.state.isLoaded) {
-                        this.config.data.datasets[0].borderColor = theme.color.correct
+                        this.config.data.datasets[1].borderColor = theme.color.notTyped
                         this.config.options.scales.xAxes[0].scaleLabel.fontColor = theme.color.notTyped
                         this.config.options.scales.yAxes[0].scaleLabel.fontColor = theme.color.notTyped
                         this.config.options.scales.xAxes[0].gridLines.color = theme.color.notTyped
