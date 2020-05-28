@@ -73,6 +73,7 @@ export default class Type extends React.Component {
 
         this.timerRef = React.createRef()
         this.wordsRef = React.createRef()
+        this.speedRef = React.createRef()
         this.containerRef = React.createRef()
     }
 
@@ -144,6 +145,7 @@ export default class Type extends React.Component {
         })
         this.timerRef.current.reset()
         this.wordsRef.current.reset()
+        this.speedRef.current.reset()
     }
 
     onHoverCoordChange(line, word, char) {
@@ -174,7 +176,7 @@ export default class Type extends React.Component {
                                     ref={ this.timerRef }
                                 />
                                 <Display value={ this.state.typedata.correct } />
-                                <Speed updateTypingContext={ this.updateTypingContext }/>
+                                <Speed updateTypingContext={ this.updateTypingContext } ref={ this.speedRef }/>
                             </div>
                             <div className="main">
                                 <Words

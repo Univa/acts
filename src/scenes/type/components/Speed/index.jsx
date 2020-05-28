@@ -17,6 +17,7 @@ export default class Speed extends React.Component {
         }
 
         this.updateSpeed = this.updateSpeed.bind(this)
+        this.timeouts = []
     }
 
     updateSpeed() {
@@ -42,7 +43,7 @@ export default class Speed extends React.Component {
     updateKeyTimes(data) {
         if (data.lastCorrectKeyTime !== this.contextData.lastCorrectKeyTime) {
             this.charsInDepth++
-            setTimeout(() => this.charsInDepth--, this.speedDepth)
+            this.timeouts.push(setTimeout(() => this.charsInDepth--, this.speedDepth))
         }
     }
 
@@ -60,6 +61,16 @@ export default class Speed extends React.Component {
         }
         var speed = Math.round(bullshit * (60 / (this.speedDepth / 1000)) / 5)
         return speed
+    }
+
+    reset() {
+        this.setState({
+            speed: 0
+        })
+        this.charsInDepth = 0
+        for (var i = 0; i < this.timeouts.length; i++) {
+            clearTimeout(this.timeouts[i])
+        }
     }
 
     render() {
