@@ -82,7 +82,7 @@ export default class Graph extends React.Component {
             data: {
                 datasets: [{
                     label: "WPM",
-                    borderColor: "white",
+                    borderColor: "transparent",
                     showLine: true,
                     data: data,
                     fill: false,
@@ -97,7 +97,7 @@ export default class Graph extends React.Component {
                     mode: "index",
                     intersect: false,
                     bodyFontSize: 16,
-                    bodyFontColor: "white",
+                    bodyFontColor: "transparent",
                     xPadding: 10,
                     yPadding: 10,
                     callbacks: {
@@ -147,15 +147,15 @@ export default class Graph extends React.Component {
                         scaleLabel: {
                             display: true,
                             labelString: "Time (s)",
-                            fontColor: "white"
+                            fontColor: "transparent"
                         },
                         gridLines: {
                             drawOnChartArea: false,
-                            color: "white"
+                            color: "transparent"
                         },
                         ticks: {
                             padding: 5,
-                            fontColor: "white",
+                            fontColor: "transparent",
                             min: 0,
                             max: this.props.xScale
                         }
@@ -169,15 +169,15 @@ export default class Graph extends React.Component {
                         scaleLabel: {
                             display: true,
                             labelString: "WPM",
-                            fontColor: "white"
+                            fontColor: "transparent"
                         },
                         gridLines: {
                             drawOnChartArea: false,
-                            color: "white"
+                            color: "transparent"
                         },
                         ticks: {
                             padding: 5,
-                            fontColor: "white",
+                            fontColor: "transparent",
                             min: 0
                         }
                     }]
@@ -214,7 +214,6 @@ export default class Graph extends React.Component {
                         this.config.options.scales.yAxes[0].gridLines.color = theme.color.notTyped
                         this.config.options.scales.xAxes[0].ticks.fontColor = theme.color.notTyped
                         this.config.options.scales.yAxes[0].ticks.fontColor = theme.color.notTyped
-                        this.config.options.elements.point.backgroundColor = theme.color.correct
                         this.config.options.tooltips.bodyFontColor = theme.color.notTyped
                         for (var i = 0; i < this.props.data.length; i++) {
                             this.props.data[i].keyType === "incorrect" ? this.config.data.datasets[0].pointBackgroundColor[i] = theme.color.incorrect : this.config.data.datasets[0].pointBackgroundColor[i] = theme.color.correct
