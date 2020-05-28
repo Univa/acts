@@ -43,7 +43,12 @@ export default class Speed extends React.Component {
     updateKeyTimes(data) {
         if (data.lastCorrectKeyTime !== this.contextData.lastCorrectKeyTime) {
             this.charsInDepth++
-            this.timeouts.push(setTimeout(() => this.charsInDepth--, this.speedDepth))
+            this.timeouts.push(setTimeout(() => {
+                this.charsInDepth--
+                if (this.charsInDepth < 0) {
+                    this.charsInDepth = 0
+                }
+            }, this.speedDepth))
         }
     }
 
