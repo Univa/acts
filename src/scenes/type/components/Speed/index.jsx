@@ -34,7 +34,7 @@ export default class Speed extends React.Component {
         this.interval = setInterval(() => {
             this.updateSpeed()
             this.setState({
-                speed: this.speed
+                speed: parseInt(this.speed)
             })
         }, this.props.interval)
     }
@@ -60,8 +60,8 @@ export default class Speed extends React.Component {
     }
 
     calcSpeed() {
-        var speed = Math.round(this.charsInDepth * (60 / (this.speedDepth / 1000)) / 5)
-        return speed
+        var speed = this.charsInDepth * (60 / (this.speedDepth / 1000)) / 5
+        return parseFloat(speed.toFixed(1))
     }
 
     reset() {
