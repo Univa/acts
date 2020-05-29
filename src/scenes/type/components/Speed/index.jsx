@@ -48,6 +48,8 @@ export default class Speed extends React.Component {
                     this.charsInDepth = 0
                 }
             }, this.speedDepth))
+        }
+        if (data.lastKeyTime !== this.contextData.lastKeyTime) {
             this.updateSpeed()
         }
     }
