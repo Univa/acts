@@ -10,6 +10,7 @@ export default class Speed extends React.Component {
             speed: 0
         }
 
+        this.speed = 0
         this.speedDepth = 1000
         this.charsInDepth = 0;
         this.contextData = {
@@ -21,23 +22,21 @@ export default class Speed extends React.Component {
     }
 
     updateSpeed() {
-        var new_speed = this.calcSpeed()
-        if (new_speed !== this.state.speed) {
-            this.setState({
-                speed: new_speed
-            })
+        this.speed = this.calcSpeed()
+        if (this.speed !== this.state.speed) {
             this.props.updateTypingContext({
-                speed: new_speed 
+                speed: this.speed 
             })
         }
     }
 
     componentDidMount() {
-        if (this.props.updateMethod === "type") {
-            document.addEventListener('keydown', this.updateSpeed);
-        } else {
-            this.interval = setInterval(this.updateSpeed, this.props.interval)
-        }
+        this.interval = setInterval(() => {
+            this.updateSpeed()
+            this.setState({
+                speed: this.speed
+            })
+        }, this.props.interval)
     }
 
     updateKeyTimes(data) {
@@ -49,6 +48,7 @@ export default class Speed extends React.Component {
                     this.charsInDepth = 0
                 }
             }, this.speedDepth))
+            this.updateSpeed()
         }
     }
 
@@ -63,6 +63,7 @@ export default class Speed extends React.Component {
     }
 
     reset() {
+        this.speed = 0
         this.setState({
             speed: 0
         })
@@ -96,6 +97,5 @@ export default class Speed extends React.Component {
 
 Speed.defaultProps = {
     units: "WPM",
-    updateMethod: "time",
     interval: 100
 }
