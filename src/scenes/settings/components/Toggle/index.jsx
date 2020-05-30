@@ -57,7 +57,7 @@ export default class Toggle extends React.Component {
                         })
                     }
                     return (
-                        <input style={{color: settings.theme.color.notTyped}} className="Toggle" type="button" value={ this.state.display } onClick={ this.handleClick.bind(this) } size="20" />
+                        <input style={{color: settings.theme.color.notTyped}} className="Toggle" type="button" value={ this.state.display } onClick={ this.handleClick.bind(this) } size="1" />
                     )
                 }}
             </SettingsContext.Consumer>
