@@ -6,6 +6,7 @@
     background-color: transparent;
     border: solid 1px grey;
     border-radius: 10px;
+    box-sizing: border-box;
 }
 
 .Input[type=number]::-webkit-inner-spin-button,
