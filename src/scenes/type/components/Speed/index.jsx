@@ -11,14 +11,14 @@ export default class Speed extends React.Component {
         }
 
         this.speed = 0
-        this.speedDepth = 1000
-        this.charsInDepth = 0;
+        this.speedDepth = 2500
         this.contextData = {
             lastCorrectKeyTime: 0
         }
 
         this.updateSpeed = this.updateSpeed.bind(this)
         this.timeouts = []
+        this.keyTimes = []
     }
 
     updateSpeed() {
@@ -41,12 +41,9 @@ export default class Speed extends React.Component {
 
     updateKeyTimes(data) {
         if (data.lastCorrectKeyTime !== this.contextData.lastCorrectKeyTime) {
-            this.charsInDepth++
+            this.keyTimes.push(data.lastCorrectKeyTime)
             this.timeouts.push(setTimeout(() => {
-                this.charsInDepth--
-                if (this.charsInDepth < 0) {
-                    this.charsInDepth = 0
-                }
+                this.keyTimes = this.keyTimes.slice(1, this.keyTimes.length)
             }, this.speedDepth))
         }
         if (data.lastKeyTime !== this.contextData.lastKeyTime) {
@@ -60,8 +57,12 @@ export default class Speed extends React.Component {
     }
 
     calcSpeed() {
-        var speed = this.charsInDepth * (60 / (this.speedDepth / 1000)) / 5
-        return parseFloat(speed.toFixed(1))
+        var speed = this.keyTimes.length * (60 / (this.speedDepth / 1000)) / 5
+        var speed2 = 1 / ((new Date().getTime() - this.keyTimes[0]) / 1000) * (this.keyTimes.length - 1) * 60 / 5
+        if (isNaN(speed2)) {
+            speed2 = speed
+        }
+        return parseFloat(((speed + speed2) / 2).toFixed(1))
     }
 
     reset() {
@@ -69,7 +70,7 @@ export default class Speed extends React.Component {
         this.setState({
             speed: 0
         })
-        this.charsInDepth = 0
+        this.keyTimes = []
         for (var i = 0; i < this.timeouts.length; i++) {
             clearTimeout(this.timeouts[i])
             this.timeouts = []
@@ -99,5 +100,5 @@ export default class Speed extends React.Component {
 
 Speed.defaultProps = {
     units: "WPM",
-    interval: 100
+    interval: 50
 }
