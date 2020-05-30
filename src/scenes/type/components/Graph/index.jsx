@@ -261,3 +261,15 @@ export default class Graph extends React.Component {
         )
     }
 }
+
+Graph.defaultProps = {
+    xScale: 10,
+    data: [],
+    mode: "static",
+    hoverHandler: (e) => {},
+    hoveredCoordinates: {
+        line: undefined,
+        word: undefined,
+        char: undefined
+    }
+}
