@@ -76,6 +76,7 @@ class App extends React.Component {
                 startTime: startTime,
                 linesAhead: linesAhead,
                 linesBehind: linesBehind,
+                liveGraph: props.cookies.get("liveGraph") === "true",
                 wordBank: wordBank,
                 customBank: customBank,
                 cmdPrefixes: cmdPrefixes
@@ -118,6 +119,12 @@ class App extends React.Component {
                     value = ["!", ":", "/"]
                 } else {
                     value = value.map(x => x[0])
+                }
+            } else if (setting === "liveGraph") {
+                if (value === "true" || value === true || value === 1) {
+                    value = true
+                } else {
+                    value = false
                 }
             }
 

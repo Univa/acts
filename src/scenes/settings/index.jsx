@@ -1,6 +1,6 @@
 import React from 'react'
 import { SettingsContext } from '../../settings-context'
-import { Input, Menu } from './components'
+import { Input, Menu, Toggle } from './components'
 import { NavButton } from '../../components'
 import './styles.scss'
 
@@ -88,6 +88,10 @@ export default class Settings extends React.Component {
                                 <div className="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Word Bank</p>
                                     <Menu options={ ["Default", "Custom", "10fastfingers", "typings.gg"] } setting="wordBank" updateSettings={ this.props.updateSettings }/>
+                                </div>
+                                <div className="setting">
+                                    <p style={{color: settings.theme.color.notTyped}}>Live WPM Graph</p>
+                                    <Toggle setting="liveGraph" updateSettings={ this.props.updateSettings }/>
                                 </div>
                             </div>
                             <div>

@@ -9,6 +9,209 @@ export default class Graph extends React.Component {
         this.state = {
             isLoaded: false
         }
+
+        Chart.defaults.global.defaultFontFamily = "Jost";
+
+        var data
+        if (this.props.data[0] === undefined) {
+            data = []
+        } else {
+            var startTime = this.props.data[0].time
+            data = this.props.data.map(pt => ({x: (pt.time - startTime) / 1000, y: pt.speed}))
+        }
+
+        var approximation = this.genApproximation(data)
+        
+        if (this.props.mode === "static") {
+            this.config = {
+                type: "scatter",
+                data: {
+                    datasets: [{
+                        label: "WPM",
+                        data: data,
+                        fill: false,
+                        pointBackgroundColor: [],
+                        pointBorderColor: [],
+                        pointRadius: 2.5
+                    }, {
+                        label: "Approximation",
+                        data: approximation,
+                        fill: false,
+                        showLine: true,
+                        borderColor: "transparent",
+                        pointRadius: 0,
+                        pointHitRadius: 0,
+                        pointHoverRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    tooltips: {
+                        displayColors: false,
+                        mode: "point",
+                        bodyFontSize: 16,
+                        bodyFontColor: "transparent",
+                        xPadding: 10,
+                        yPadding: 10,
+                        filter: (tooltip) => { return tooltip.datasetIndex === 0 },
+                        callbacks: {
+                            label: (tooltip, data) => {
+                                var label = []
+                                label.push("Character: " + (this.props.data[tooltip.index].key === " " ? "Space" : this.props.data[tooltip.index].key))
+                                label.push("Character no. " + (tooltip.index + 1))
+                                label.push("Character type: " + (this.props.data[tooltip.index].keyType.charAt(0).toUpperCase() + this.props.data[tooltip.index].keyType.slice(1)))
+                                label.push("Line no. " + (this.props.data[tooltip.index].line + 1))
+                                label.push("Word no. " + (this.props.data[tooltip.index].word + 1))
+                                label.push(this.addOrdinalSuffix(this.props.data[tooltip.index].char + 1) + " character of the word")
+                                label.push("Pressed at: " + tooltip.xLabel + "s")
+                                label.push(data.datasets[tooltip.datasetIndex].label + ": " + tooltip.yLabel)
+                                return label
+                            }
+                        }
+                    },
+                    hover: {
+                        mode: "point",
+                        onHover: (e, elements) => {
+                            let hoverData
+                            if (elements[0] === undefined) {
+                                if (-1 !== this.prevIndex) {
+                                    hoverData = {}
+                                    this.props.hoverHandler(hoverData)
+                                }
+                                this.prevIndex = -1
+                            } else {
+                                if (elements[0]._index !== this.prevIndex) {
+                                    hoverData = this.props.data[elements[0]._index]
+                                    this.props.hoverHandler(hoverData)
+                                }
+                                this.prevIndex = elements[0]._index
+                            }
+                        }
+                    },
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            afterTickToLabelConversion: (instance) => {
+                                instance.ticks[0] = null;
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: "Time (s)",
+                                fontColor: "transparent"
+                            },
+                            gridLines: {
+                                drawOnChartArea: false,
+                                color: "transparent"
+                            },
+                            ticks: {
+                                padding: 5,
+                                fontColor: "transparent",
+                                min: 0,
+                                max: this.props.xScale
+                            }
+                        }],
+                        yAxes: [{
+                            display: true,
+                            afterTickToLabelConversion: (instance) => {
+                                instance.ticks[instance.ticks.length - 1] = null;
+                                instance.ticksAsNumbers[instance.ticksAsNumbers.length - 1] = null;
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: "WPM",
+                                fontColor: "transparent"
+                            },
+                            gridLines: {
+                                drawOnChartArea: false,
+                                color: "transparent"
+                            },
+                            ticks: {
+                                padding: 5,
+                                fontColor: "transparent",
+                                min: 0
+                            }
+                        }]
+                    }
+                }
+            }
+        } else {
+            this.config = {
+                type: "scatter",
+                data: {
+                    datasets: [{
+                        label: "WPM",
+                        data: data,
+                        fill: false,
+                        pointBackgroundColor: [],
+                        pointBorderColor: [],
+                        pointRadius: 2.5,
+                        pointHitRadius: 0,
+                        pointHoverRadius: 2.5
+                    }, {
+                        label: "Approximation",
+                        data: approximation,
+                        fill: false,
+                        showLine: true,
+                        borderColor: "transparent",
+                        pointRadius: 0,
+                        pointHitRadius: 0,
+                        pointHoverRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        enabled: false
+                    },
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: false,
+                            scaleLabel: {
+                                display: true,
+                            },
+                            gridLines: {
+                                drawOnChartArea: false,
+                                color: "transparent"
+                            },
+                            ticks: {
+                                padding: 5,
+                                fontColor: "transparent",
+                                min: 0,
+                                max: this.props.xScale
+                            }
+                        }],
+                        yAxes: [{
+                            display: false,
+                            afterTickToLabelConversion: (instance) => {
+                                instance.ticks[instance.ticks.length - 1] = null;
+                                instance.ticksAsNumbers[instance.ticksAsNumbers.length - 1] = null;
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: "WPM",
+                                fontColor: "transparent"
+                            },
+                            gridLines: {
+                                drawOnChartArea: false,
+                                color: "transparent"
+                            },
+                            ticks: {
+                                padding: 5,
+                                fontColor: "transparent",
+                                min: 0
+                            }
+                        }]
+                    }
+                }
+            }
+        }
         
         this.graphRef = React.createRef()
     }
@@ -86,135 +289,6 @@ export default class Graph extends React.Component {
     }
 
     componentDidMount() {
-        Chart.defaults.global.defaultFontFamily = "Jost";
-        if (this.props.data[0] === undefined) {
-            this.props.data[0] = {
-                speed: 0,
-                time: 0,
-                key: "None",
-                keyType: "N/A",
-                line: 0,
-                word: 0
-            }
-        }
-        let startTime = this.props.data[0].time
-        let data = this.props.data.map(pt => ({x: (pt.time - startTime) / 1000, y: pt.speed}))
-        let approximation = this.genApproximation(data)
-        this.config = {
-            type: "scatter",
-            data: {
-                datasets: [{
-                    label: "WPM",
-                    data: data,
-                    fill: false,
-                    pointBackgroundColor: [],
-                    pointBorderColor: [],
-                    pointRadius: 2.5
-                }, {
-                    label: "Approximation",
-                    data: approximation,
-                    fill: false,
-                    showLine: true,
-                    borderColor: "transparent",
-                    pointRadius: 0,
-                    pointHitRadius: 0,
-                    pointHoverRadius: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                tooltips: {
-                    displayColors: false,
-                    mode: "point",
-                    bodyFontSize: 16,
-                    bodyFontColor: "transparent",
-                    xPadding: 10,
-                    yPadding: 10,
-                    filter: (tooltip) => { return tooltip.datasetIndex === 0 },
-                    callbacks: {
-                        label: (tooltip, data) => {
-                            var label = []
-                            label.push("Character: " + (this.props.data[tooltip.index].key === " " ? "Space" : this.props.data[tooltip.index].key))
-                            label.push("Character no. " + (tooltip.index + 1))
-                            label.push("Character type: " + (this.props.data[tooltip.index].keyType.charAt(0).toUpperCase() + this.props.data[tooltip.index].keyType.slice(1)))
-                            label.push("Line no. " + (this.props.data[tooltip.index].line + 1))
-                            label.push("Word no. " + (this.props.data[tooltip.index].word + 1))
-                            label.push(this.addOrdinalSuffix(this.props.data[tooltip.index].char + 1) + " character of the word")
-                            label.push("Pressed at: " + tooltip.xLabel + "s")
-                            label.push(data.datasets[tooltip.datasetIndex].label + ": " + tooltip.yLabel)
-                            return label
-                        }
-                    }
-                },
-                hover: {
-                    mode: "point",
-                    onHover: (e, elements) => {
-                        let hoverData
-                        if (elements[0] === undefined) {
-                            if (-1 !== this.prevIndex) {
-                                hoverData = {}
-                                this.props.hoverHandler(hoverData)
-                            }
-                            this.prevIndex = -1
-                        } else {
-                            if (elements[0]._index !== this.prevIndex) {
-                                hoverData = this.props.data[elements[0]._index]
-                                this.props.hoverHandler(hoverData)
-                            }
-                            this.prevIndex = elements[0]._index
-                        }
-                    }
-                },
-                legend: {
-                    display: false
-                },
-                scales: {
-                    xAxes: [{
-                        display: true,
-                        afterTickToLabelConversion: (instance) => {
-                            instance.ticks[0] = null;
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: "Time (s)",
-                            fontColor: "transparent"
-                        },
-                        gridLines: {
-                            drawOnChartArea: false,
-                            color: "transparent"
-                        },
-                        ticks: {
-                            padding: 5,
-                            fontColor: "transparent",
-                            min: 0,
-                            max: this.props.xScale
-                        }
-                    }],
-                    yAxes: [{
-                        display: true,
-                        afterTickToLabelConversion: (instance) => {
-                            instance.ticks[instance.ticks.length - 1] = null;
-                            instance.ticksAsNumbers[instance.ticksAsNumbers.length - 1] = null;
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: "WPM",
-                            fontColor: "transparent"
-                        },
-                        gridLines: {
-                            drawOnChartArea: false,
-                            color: "transparent"
-                        },
-                        ticks: {
-                            padding: 5,
-                            fontColor: "transparent",
-                            min: 0
-                        }
-                    }]
-                }
-            }
-        }
-
         this.setState({
             isLoaded: true
         })
@@ -229,6 +303,19 @@ export default class Graph extends React.Component {
             this.closeTooltip(this.index)
             this.index = this.props.data.findIndex(x => x.line === line && x.word === word && x.char === char)
             if (this.index !== -1) { this.openTooltip(this.index) }
+        }
+        if (this.props.mode === "live" && JSON.stringify(this.props.data) !== JSON.stringify(prevProps.data)) {
+            let data = []
+            if (this.props.data.length !== 0) {
+                data = this.props.data.map(pt => ({x: (pt.time - this.props.data[0].time) / 1000, y: pt.speed}))
+            }
+            this.config.data.datasets[0].data = data
+            this.config.data.datasets[1].data = this.genApproximation(data)
+            this.graphContent.update()
+        }
+        if (this.props.mode === "live" && this.props.xScale !== prevProps.xScale) {
+            this.config.options.scales.xAxes[0].ticks.max = this.props.xScale
+            this.graphContent.update()
         }
     }
     
@@ -252,7 +339,7 @@ export default class Graph extends React.Component {
                         this.graphContent.update()
                     }
                     return (
-                        <div className="Graph">
+                        <div className="Graph" style={ this.props.style }>
                             <canvas className="graph-content" ref={ this.graphRef }></canvas>
                         </div>
                     )

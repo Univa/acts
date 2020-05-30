@@ -166,6 +166,9 @@ export default class Type extends React.Component {
                 <SettingsContext.Consumer>
                     {(settings) => (
                         <div className="Type" tabIndex="0" ref={ this.containerRef }>
+                            { (settings.liveGraph) && 
+                            <Graph mode="live" data={ this.state.typedata.speeds } xScale={ settings.startTime } style={{position: "absolute", opacity: 0.1, width: "100vw", height: "100vh"}}/>
+                            }
                             <div className="info">
                                 <Timer
                                     startTime={ settings.startTime }
@@ -198,7 +201,7 @@ export default class Type extends React.Component {
                                 />
                                 { (this.state.mode === "result" && this.state.displayingMessage === false) &&
                                 <div className="results">
-                                    <Graph data={ this.state.typedata.speeds } xScale={ settings.startTime } hoveredCoordinates={ this.state.hoveredCoordinates } hoverHandler={ this.onGraphHover }/>
+                                    <Graph mode="static" data={ this.state.typedata.speeds } xScale={ settings.startTime } hoveredCoordinates={ this.state.hoveredCoordinates } hoverHandler={ this.onGraphHover }/>
                                     <p><span style={{color: settings.theme.color.notTyped}}>WPM: </span><span style={{color: settings.theme.color.correct}}>{ (this.state.typedata.correct / 5 * (60 / settings.startTime)).toFixed(1) }</span></p>
                                     <p><span style={{color: settings.theme.color.notTyped}}>Accuracy: </span><span style={{color: settings.theme.color.correct}}>{ this.state.typedata.correct + "/" + this.state.typedata.total + " (" + (this.state.typedata.correct / this.state.typedata.total * 100).toFixed(1) + "%)" }</span></p>
                                     <p><span style={{color: settings.theme.color.correct}}>F5</span><span style={{color: settings.theme.color.notTyped}}> to reset</span></p>
