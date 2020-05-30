@@ -70,7 +70,8 @@ class App extends React.Component {
                         speed: props.cookies.get("theme-color-speed") || "white",
                         charHighlight: props.cookies.get("theme-color-charHighlight") || "rgba(0, 0, 0, 0.2)",
                         wordHighlight: props.cookies.get("theme-color-wordHighlight") || "rgba(0, 0, 0, 0.2)",
-                        lineHighlight: props.cookies.get("theme-color-lineHighlight") || "rgba(0, 0, 0, 0.2)"
+                        lineHighlight: props.cookies.get("theme-color-lineHighlight") || "rgba(0, 0, 0, 0.2)",
+                        caret: props.cookies.get("theme-color-caret") || "white"
                     }
                 },
                 startTime: startTime,

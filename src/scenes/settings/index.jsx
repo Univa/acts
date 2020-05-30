@@ -18,6 +18,7 @@ export default class Settings extends React.Component {
                                     <span style={{color: settings.theme.color.correct}}>s</span>
                                     <span style={{color: settings.theme.color.incorrect}}>impl</span>
                                     <span style={{color: settings.theme.color.incorrect, backgroundColor: settings.theme.color.charHighlight, borderRadius: "3px"}}>e</span>
+                                    <div key="caret" style={{display: "inline-flex", backgroundColor: settings.theme.color.caret, width: "2px", position: "absolute"}}>&nbsp;</div>
                                     <span style={{color: settings.theme.color.notTyped}}>ample </span>
                                 </span>
                                 <span style={{color: settings.theme.color.notTyped}}>text</span>
@@ -54,6 +55,10 @@ export default class Settings extends React.Component {
                                 <div className="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Speed</p>
                                     <Input type="text" setting="theme-color-speed" updateSettings={ this.props.updateSettings } />
+                                </div>
+                                <div className="setting">
+                                    <p style={{color: settings.theme.color.notTyped}}>Caret</p>
+                                    <Input type="text" setting="theme-color-caret" updateSettings={ this.props.updateSettings } />
                                 </div>
                                 <div className="setting">
                                     <p style={{color: settings.theme.color.notTyped}}>Character Highlight</p>
