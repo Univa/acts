@@ -3,7 +3,7 @@ export default {
     name: "Botanical",
     data: {
         color: {
-            notTyped: "#3e5d58",
+            notTyped: "#3e5d5880",
             correct: "#3e5d58",
             incorrect: "#92aca0",
             bg: "#dde5ed",
