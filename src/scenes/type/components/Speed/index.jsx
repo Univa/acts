@@ -73,8 +73,8 @@ export default class Speed extends React.Component {
         this.keyTimes = []
         for (var i = 0; i < this.timeouts.length; i++) {
             clearTimeout(this.timeouts[i])
-            this.timeouts = []
         }
+        this.timeouts = []
     }
 
     render() {
