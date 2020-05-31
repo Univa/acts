@@ -81,12 +81,10 @@ class Commands extends React.Component {
                             this.displayMessage("Missing value argument")
                         } else {
                             if (!isNaN(value)) { value = parseInt(value, 10) }
-                            if (current_setting !== undefined && typeof current_setting !== "object") {
-                                this.props.updateSettings(setting, value, this.displayMessage)
-                            } else if (Array.isArray(current_setting)) {
+                            if (Array.isArray(current_setting)) {
                                 this.props.updateSettings(setting, args.slice(1, args.length), this.displayMessage)
                             } else {
-                                this.displayMessage("\"" + args[0] + "\" is not a setting")
+                                this.props.updateSettings(setting, value, this.displayMessage)
                             }
                         }
                     }

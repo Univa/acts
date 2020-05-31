@@ -8,6 +8,7 @@ import {
 } from './scenes';
 import { Commands } from './components'
 import { SettingsContext } from './settings-context.jsx'
+import * as themes from './themes'
 import {
     HashRouter as Router,
     Switch,
@@ -21,6 +22,7 @@ class App extends React.Component {
 
     constructor(props) {
         super(props)
+
         let startTime = parseInt(props.cookies.get("startTime") || 60, 10)
         if (isNaN(startTime) || startTime <= 0) {
             startTime = 60
@@ -85,68 +87,107 @@ class App extends React.Component {
         }
 
         this.updateSettingsContext = (setting, value, callback = (msg) => {}) => {
-            var new_data = this.deepCopyObject(this.state.settings)
-            var cookie_value;
-            
-            if (setting === "linesAhead" || setting === "linesBehind") {
-                value = parseInt(value, 10)
-                if (value < 0) {
-                    value = 0
-                } else if (value > 5) {
-                    value = 5
-                } else if (isNaN(value)) {
-                    value = 1
+            var current_setting = this.findSetting(this.state.settings, setting)
+            if (current_setting !== undefined && (typeof current_setting !== "object" || Array.isArray(current_setting))) {
+                var cookie_value;
+                if (setting === "linesAhead" || setting === "linesBehind") {
+                    value = parseInt(value, 10)
+                    if (value < 0) {
+                        value = 0
+                    } else if (value > 5) {
+                        value = 5
+                    } else if (isNaN(value)) {
+                        value = 1
+                    }
+                } else if (setting === "startTime") {
+                    value = parseInt(value, 10)
+                    if (value < 0) {
+                        value = 0
+                    } else if (isNaN(value)) {
+                        value = 60
+                    }
+                } else if (setting === "customBank") {
+                    if (value.join(" ") === "") {
+                        value = ["sample", "words", "wow"]
+                    } else {
+                        value = value.filter(word => word !== "")
+                    }
+                } else if (setting === "wordBank") {
+                    value = String(value).toLowerCase();
+                    if (!this.wordBanks.includes(value)) {
+                        value = "default"
+                    }
+                } else if (setting === "cmdPrefixes") {
+                    if (value.join(" ") === "") {
+                        value = ["!", ":", "/"]
+                    } else {
+                        value = value.map(x => x[0])
+                    }
+                } else if (setting === "liveGraph") {
+                    if (value === "true" || value === true || value === 1) {
+                        value = true
+                    } else {
+                        value = false
+                    }
                 }
-            } else if (setting === "startTime") {
-                value = parseInt(value, 10)
-                if (value < 0) {
-                    value = 0
-                } else if (isNaN(value)) {
-                    value = 60
-                }
-            } else if (setting === "customBank") {
-                if (value.join(" ") === "") {
-                    value = ["sample", "words", "wow"]
+
+                if (setting === "customBank" || setting === "cmdPrefixes") {
+                    cookie_value = value.join(" ")
                 } else {
-                    value = value.filter(word => word !== "")
+                    cookie_value = value
                 }
-            } else if (setting === "wordBank") {
-                value = String(value).toLowerCase();
-                if (!this.wordBanks.includes(value)) {
-                    value = "default"
-                }
-            } else if (setting === "cmdPrefixes") {
-                if (value.join(" ") === "") {
-                    value = ["!", ":", "/"]
-                } else {
-                    value = value.map(x => x[0])
-                }
-            } else if (setting === "liveGraph") {
-                if (value === "true" || value === true || value === 1) {
-                    value = true
-                } else {
-                    value = false
-                }
+
+                this.setState(prevState => {
+                    let new_data = this.deepCopyObject(prevState.settings)
+                    this.changeSetting(new_data, setting, value)
+                    this.setCookie(setting, cookie_value)
+                    return {
+                        settings: {
+                            ...prevState.settings,
+                            ...new_data
+                        }
+                    }
+                })
+
+                callback(setting + " was set to " + value)
+                return
             }
 
-            if (setting === "customBank" || setting === "cmdPrefixes") {
-                cookie_value = value.join(" ")
+            if (setting === "theme") {
+                var id = String(value).toLowerCase()
+                var theme_info = themes["_" + id]
+                if (theme_info === undefined) {
+                    callback(setting + " \"" + id + "\" is not a valid theme ID")
+                    return
+                }
+                value = theme_info.data
+                callback(setting + " was set to \"" + theme_info.name + "\"")
+            } else if (current_setting !== undefined) {
+                if (typeof value !== "object" || Array.isArray(value)) {
+                    callback(setting + " can not be set")
+                    return
+                }
             } else {
-                cookie_value = value
+                callback(setting + " is not a setting")
+                return
             }
 
-            this.changeSetting(new_data, setting, value)
-            this.setCookie(setting, cookie_value)
-
-            this.setState(prevState => ({
-                settings: {
-                    ...prevState.settings,
-                    ...new_data
-                }
-            }))
-
-            callback(setting + " was set to " + value)
+            for (var key in value) {
+                this.updateSettingsContext(setting + "-" + key, value[key])
+            }
         }
+    }
+
+    findSetting(settings, path) {
+        var setting = settings
+        for (var loc of path.split("-")) {
+            try {
+                setting = setting[loc]
+            } catch(err) {
+                return undefined
+            }
+        }
+        return setting
     }
 
     deepCopyObject(object) {
