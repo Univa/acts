@@ -18,7 +18,7 @@ export default class Settings extends React.Component {
                                     <span style={{color: settings.theme.color.correct}}>s</span>
                                     <span style={{color: settings.theme.color.incorrect}}>impl</span>
                                     <span style={{color: settings.theme.color.incorrect, backgroundColor: settings.theme.color.charHighlight, borderRadius: "3px"}}>e</span>
-                                    <div key="caret" style={{display: "inline-flex", backgroundColor: settings.theme.color.caret, width: "2px", position: "absolute"}}>&nbsp;</div>
+                                    <span key="caret" style={{backgroundColor: settings.theme.color.caret, width: "2px", position: "absolute"}}>&nbsp;</span>
                                     <span style={{color: settings.theme.color.notTyped}}>ample </span>
                                 </span>
                                 <span style={{color: settings.theme.color.notTyped}}>text</span>

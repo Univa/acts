@@ -67,7 +67,7 @@ export default class Char extends React.Component {
                         }
 
                         if (this.props.highlighted || (this.state.hovered && this.props.highlightOnHover)) {
-                            let caret = <div key="caret" style={{display: "inline", backgroundColor: settings.theme.color.caret, width: "2px", position: "absolute"}}>&nbsp;</div>
+                            let caret = <span key="caret" style={{backgroundColor: settings.theme.color.caret, width: "2px", position: "absolute"}}>&nbsp;</span>
                             if (this.props.type === "incorrect") {
                                 content.push(caret)
                             } else {
