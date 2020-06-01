@@ -8,4 +8,7 @@
     padding: 10px;
     margin: 10px;
     width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
