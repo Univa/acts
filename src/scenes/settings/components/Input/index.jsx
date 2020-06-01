@@ -58,7 +58,7 @@ export default class Input extends React.Component {
                         <input
                             className="Input"
                             type={ this.props.type }
-                            style={{color: settings.theme.color.notTyped}}
+                            style={{fontFamily: settings.theme.font.settings, color: settings.theme.color.notTyped}}
                             value={ this.state.value }
                             onChange={ this.handleChange.bind(this) }
                             size="1"

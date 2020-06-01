@@ -44,6 +44,7 @@ export default class Char extends React.Component {
                         let style
                         if (this.props.type === "incorrect") {
                             style = {
+                                fontFamily: settings.theme.font.words,
                                 color: color,
                                 backgroundColor: bgColor,
                                 display: "inline-flex",
@@ -52,6 +53,7 @@ export default class Char extends React.Component {
                             }
                         } else {
                             style = {
+                                fontFamily: settings.theme.font.words,
                                 color: color,
                                 backgroundColor: bgColor,
                                 display: "inline-flex",

@@ -165,7 +165,7 @@ export default class Type extends React.Component {
             <TypingContext.Provider value={ this.state.typedata }>
                 <SettingsContext.Consumer>
                     {(settings) => (
-                        <div className="Type" tabIndex="0" ref={ this.containerRef }>
+                        <div className="Type" tabIndex="0" ref={ this.containerRef } style={{fontFamily: settings.theme.font.words}}>
                             { (settings.liveGraph) && 
                             <Graph mode="live" data={ this.state.typedata.speeds } xScale={ settings.startTime } style={{position: "absolute", opacity: 0.1, width: "100vw", height: "100vh"}}/>
                             }

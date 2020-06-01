@@ -74,6 +74,15 @@ class App extends React.Component {
                         wordHighlight: props.cookies.get("theme-color-wordHighlight") || "rgba(0, 0, 0, 0.2)",
                         lineHighlight: props.cookies.get("theme-color-lineHighlight") || "rgba(0, 0, 0, 0.2)",
                         caret: props.cookies.get("theme-color-caret") || "white"
+                    },
+                    font: {
+                        words: props.cookies.get("theme-font-words") || "Jost",
+                        settings: props.cookies.get("theme-font-settings") || "Jost",
+                        timer: props.cookies.get("theme-font-timer") || "Jost",
+                        counter: props.cookies.get("theme-font-counter") || "Jost",
+                        speed: props.cookies.get("theme-font-speed") || "Jost",
+                        command: props.cookies.get("theme-font-command") || "Jost",
+                        graph: props.cookies.get("theme-font-graph") || "Jost",
                     }
                 },
                 startTime: startTime,

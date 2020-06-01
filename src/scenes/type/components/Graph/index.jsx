@@ -332,6 +332,7 @@ export default class Graph extends React.Component {
                         this.config.options.scales.xAxes[0].ticks.fontColor = theme.color.notTyped
                         this.config.options.scales.yAxes[0].ticks.fontColor = theme.color.notTyped
                         this.config.options.tooltips.bodyFontColor = theme.color.notTyped
+                        Chart.defaults.global.defaultFontFamily = theme.font.graph;
                         for (var i = 0; i < this.props.data.length; i++) {
                             this.props.data[i].keyType === "incorrect" ? this.config.data.datasets[0].pointBackgroundColor[i] = theme.color.incorrect : this.config.data.datasets[0].pointBackgroundColor[i] = theme.color.correct
                             this.props.data[i].keyType === "incorrect" ? this.config.data.datasets[0].pointBorderColor[i] = theme.color.incorrect : this.config.data.datasets[0].pointBorderColor[i] = theme.color.correct

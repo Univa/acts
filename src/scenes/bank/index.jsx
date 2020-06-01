@@ -33,10 +33,10 @@ class Bank extends React.Component {
                         })
                     }
                     return (
-                        <div className="Bank">
+                        <div className="Bank" style={{fontFamily: settings.theme.font.settings}}>
                             <p style={{color:settings.theme.color.notTyped}}>Custom Word Bank</p>
                             <p style={{color:settings.theme.color.notTyped}}>Enter a list of words separated by spaces</p>
-                            <textarea className="word-bank" style={{color:settings.theme.color.notTyped}} value={ this.state.value } maxLength="2000" onChange={ this.handleChange.bind(this) }></textarea>
+                            <textarea className="word-bank" style={{fontFamily: settings.theme.font.settings, color:settings.theme.color.notTyped}} value={ this.state.value } maxLength="2000" onChange={ this.handleChange.bind(this) }></textarea>
                             <div>
                                 <NavButton dest="/settings" message="Edit Settings" />
                                 <NavButton dest="/type" message="Go Back to Typing" />

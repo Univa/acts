@@ -57,8 +57,8 @@ export default class Menu extends React.Component {
                         })
                     }
                     return (
-                        <div className="Menu">
-                            <input disabled style={{color: settings.theme.color.notTyped}} className="menu-button" type="text" value={ this.state.value } size="1" />
+                        <div className="Menu" style={{fontFamily: settings.theme.font.settings}}>
+                            <input disabled style={{fontFamily: settings.theme.font.settings, color: settings.theme.color.notTyped}} className="menu-button" type="text" value={ this.state.value } size="1" />
                             <div className="menu-options">
                                 { this.state.options }
                             </div>
