@@ -21,6 +21,7 @@ import _nautilus from './nautilus'
 import _oblivion from './oblivion'
 import _olivia from './olivia'
 import _pulse from './pulse'
+import _skidata from './skidata'
 import _taro from './taro'
 import _terminal from './terminal'
 import _terra from './terra'
@@ -50,6 +51,7 @@ export {
     _oblivion,
     _olivia,
     _pulse,
+    _skidata,
     _taro,
     _terminal,
     _terra,
