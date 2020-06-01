@@ -163,7 +163,7 @@ class App extends React.Component {
                 return
             }
 
-            if (setting === "theme") {
+            if (setting === "theme" && typeof value !== "object") {
                 var id = String(value).toLowerCase()
                 var theme_info = themes["_" + id]
                 if (theme_info === undefined) {
