@@ -18,6 +18,7 @@ import _mizu from './mizu'
 import _modo from './modo'
 import _modol from './modol'
 import _nautilus from './nautilus'
+import _oblivion from './oblivion'
 import _olivia from './olivia'
 import _pulse from './pulse'
 import _taro from './taro'
@@ -46,6 +47,7 @@ export {
     _modo,
     _modol,
     _nautilus,
+    _oblivion,
     _olivia,
     _pulse,
     _taro,
