@@ -177,6 +177,7 @@ class App extends React.Component {
                 for (var font in value) {
                     value[font] = font_name
                 }
+                callback(setting + " was set to \"" + font_name + "\"")
             } else if (current_setting !== undefined) {
                 if (typeof value !== "object" || Array.isArray(value)) {
                     callback(setting + " can not be set")
