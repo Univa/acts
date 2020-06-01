@@ -20,6 +20,7 @@ import _modo from './modo'
 import _modol from './modol'
 import _nautilus from './nautilus'
 import _oblivion from './oblivion'
+import _olivetti from './olivetti'
 import _olivia from './olivia'
 import _pulse from './pulse'
 import _skidata from './skidata'
@@ -51,6 +52,7 @@ export {
     _modol,
     _nautilus,
     _oblivion,
+    _olivetti,
     _olivia,
     _pulse,
     _skidata,
