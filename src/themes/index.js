@@ -4,6 +4,7 @@ import _botanical from './botanical'
 import _bow from './bow'
 import _burgundy from './burgundy'
 import _bushido from './bushido'
+import _calmdepths from './calmdepths'
 import _camping from './camping'
 import _carbon from './carbon'
 import _default from './default'
@@ -34,6 +35,7 @@ export {
     _bow,
     _burgundy,
     _bushido,
+    _calmdepths,
     _camping,
     _carbon,
     _default,
