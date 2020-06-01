@@ -15,6 +15,15 @@ export default {
             wordHighlight: "transparent",
             lineHighlight: "transparent",
             caret: "transparent"
+        },
+        font: {
+            words: "Source Code Pro",
+            settings: "Source Code Pro",
+            timer: "Source Code Pro",
+            counter: "Source Code Pro",
+            speed: "Source Code Pro",
+            command: "Source Code Pro",
+            graph: "Source Code Pro",
         }
     }
 }
