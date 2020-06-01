@@ -1,10 +1,32 @@
 import React from 'react'
 import { SettingsContext } from '../../settings-context'
-import { Input, Menu, Toggle } from './components'
+import { Button, Input, Menu, Toggle } from './components'
 import { NavButton } from '../../components'
 import './styles.scss'
+import * as themes from '../../themes'
 
 export default class Settings extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            showThemePresets: false
+        }
+
+        this.themes = []
+        console.log(themes)
+        for (var theme in themes) {
+            this.themes.push(
+                <Button setting="theme" value={ theme.substring(1) } display={ themes[theme].name } updateSettings={ this.props.updateSettings } />
+            )
+        }
+    }
+
+    toggleThemePresets() {
+        this.setState(prevState => ({
+            showThemePresets: !prevState.showThemePresets
+        }))
+    }
+
     render() {
         return (
             <SettingsContext.Consumer>
@@ -12,6 +34,17 @@ export default class Settings extends React.Component {
                     <div className="Settings" style={{fontFamily: settings.theme.font.settings}}>
                         <div className="theme-settings">
                             <p style={{color: settings.theme.color.correct}}>Theme</p>
+                            { (!this.state.showThemePresets) &&
+                            <button className="toggle-button" style={{fontFamily: settings.theme.font.settings, color: settings.theme.color.notTyped}} onClick={ this.toggleThemePresets.bind(this) }>Show Theme Presets</button>
+                            }
+                            { (this.state.showThemePresets) &&
+                            <button className="toggle-button" style={{fontFamily: settings.theme.font.settings, color: settings.theme.color.notTyped}} onClick={ this.toggleThemePresets.bind(this) }>Hide Theme Presets</button>
+                            }
+                            { (this.state.showThemePresets) &&
+                            <div className="theme-preset-container">
+                                { this.themes }
+                            </div>
+                            }
 
                             <div className="subsection" id="color-settings">
                                 <p style={{color: settings.theme.color.notTyped}}>Colors</p>

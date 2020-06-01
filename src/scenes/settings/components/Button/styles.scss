@@ -1,0 +1,13 @@
+.Button {
+    background-color: transparent;
+    border: solid 1px grey;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 5px;
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
