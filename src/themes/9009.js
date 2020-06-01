@@ -15,6 +15,15 @@ export default {
             wordHighlight: "#aca693",
             lineHighlight: "transparent",
             caret: "#171718"
+        },
+        font: {
+            words: "Jost",
+            settings: "Jost",
+            timer: "Jost",
+            counter: "Jost",
+            speed: "Jost",
+            command: "Jost",
+            graph: "Jost",
         }
     }
 }
