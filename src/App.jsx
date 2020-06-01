@@ -171,6 +171,12 @@ class App extends React.Component {
                 }
                 value = theme_info.data
                 callback(setting + " was set to \"" + theme_info.name + "\"")
+            } else if (setting === "theme-font") {
+                var font_name = value
+                value = this.deepCopyObject(this.state.settings.theme.font)
+                for (var key in value) {
+                    value[key] = font_name
+                }
             } else if (current_setting !== undefined) {
                 if (typeof value !== "object" || Array.isArray(value)) {
                     callback(setting + " can not be set")
