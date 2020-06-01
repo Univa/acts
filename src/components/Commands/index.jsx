@@ -82,9 +82,9 @@ class Commands extends React.Component {
                         } else {
                             if (!isNaN(value)) { value = parseInt(value, 10) }
                             if (Array.isArray(current_setting)) {
-                                this.props.updateSettings(setting, args.slice(1, args.length), this.displayMessage)
+                                this.props.updateSettings(setting, args.slice(1, args.length), {msg_callback: this.displayMessage})
                             } else {
-                                this.props.updateSettings(setting, value, this.displayMessage)
+                                this.props.updateSettings(setting, value, {msg_callback: this.displayMessage})
                             }
                         }
                     }

@@ -10,6 +10,7 @@ export default class Menu extends React.Component {
             options: [],
             value: ""
         }
+        this.currentValue = ""
     }
 
     findSetting(settings) {
@@ -28,16 +29,37 @@ export default class Menu extends React.Component {
         this.setState({
             value: event.target.value
         })
-        this.props.updateSettings(this.props.setting, event.target.value)
+        this.props.updateSettings(this.props.setting, event.target.value, {context_callback: this.updateInternalValue.bind(this)})
+    }
+
+    updateInternalValue(value) {
+        this.currentValue = value
+    }
+
+    loadFromSettings(settings) {
+        var value = this.props.options[0]
+        for (var item of this.props.options) {
+            if (item.toLowerCase() === this.findSetting(settings)) {
+                value = item
+                break
+            }
+        }
+        this.setState({
+            value: value
+        })
     }
 
     render() {
         return (
             <SettingsContext.Consumer>
                 {(settings) => {
+                    if (this.currentValue !== this.findSetting(settings)) {
+                        this.loadFromSettings(settings)
+                        this.updateInternalValue(this.findSetting(settings))
+                    }
+
                     if (!this.state.isLoaded) {
                         var options = []
-                        var value = this.props.options[0]
                         for (var item of this.props.options) {
                             options.push(<option
                                     style={{color: settings.theme.color.notTyped}}
@@ -46,14 +68,10 @@ export default class Menu extends React.Component {
                                     value={ item }
                                     onClick={ this.handleChange.bind(this) }
                                 >{ item }</option>)
-                            if (item.toLowerCase() === this.findSetting(settings)) {
-                                value = item
-                            }
                         }
                         this.setState({
                             isLoaded: true,
-                            options: options,
-                            value: value
+                            options: options
                         })
                     }
                     return (

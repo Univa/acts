@@ -9,6 +9,7 @@ export default class Input extends React.Component {
             isLoaded: false,
             value: ""
         }
+        this.currentValue = ""
     }
      
     findSetting(settings) {
@@ -41,17 +42,31 @@ export default class Input extends React.Component {
         this.setState({
             value: value
         })
-        this.props.updateSettings(this.props.setting, value)
+        this.props.updateSettings(this.props.setting, value, {context_callback: this.updateInternalValue.bind(this)})
+    }
+
+    updateInternalValue(value) {
+        this.currentValue = value
+    }
+
+    loadFromSettings(settings) {
+        this.setState({
+            value: this.findSetting(settings)
+        })
     }
 
     render() {
         return (
             <SettingsContext.Consumer>
                 {(settings) => {
+                    if (this.currentValue !== this.findSetting(settings)) {
+                        this.loadFromSettings(settings)
+                        this.updateInternalValue(this.findSetting(settings))
+                    }
+
                     if (!this.state.isLoaded) {
                         this.setState({
                             isLoaded: true,
-                            value: this.findSetting(settings, this.props.settingPath)
                         })
                     }
                     return (

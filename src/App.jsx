@@ -95,7 +95,7 @@ class App extends React.Component {
             }
         }
 
-        this.updateSettingsContext = (setting, value, callback = (msg) => {}) => {
+        this.updateSettingsContext = (setting, value, { msg_callback = (msg) => {}, context_callback = (result) => {} } = {}) => {
             var current_setting = this.findSetting(this.state.settings, setting)
             if (current_setting !== undefined && (typeof current_setting !== "object" || Array.isArray(current_setting))) {
                 var cookie_value;
@@ -158,7 +158,8 @@ class App extends React.Component {
                     }
                 })
 
-                callback(setting + " was set to " + value)
+                msg_callback(setting + " was set to " + value)
+                context_callback(value)
                 return
             }
 
@@ -166,31 +167,35 @@ class App extends React.Component {
                 var id = String(value).toLowerCase()
                 var theme_info = themes["_" + id]
                 if (theme_info === undefined) {
-                    callback(setting + " \"" + id + "\" is not a valid theme ID")
+                    msg_callback(setting + " \"" + id + "\" is not a valid theme ID")
+                    context_callback(undefined)
                     return
                 }
                 value = theme_info.data
-                callback(setting + " was set to \"" + theme_info.name + "\"")
+                msg_callback(setting + " was set to \"" + theme_info.name + "\"")
             } else if (setting === "theme-font" && typeof value !== "object") {
                 var font_name = String(value)
                 value = this.deepCopyObject(this.state.settings.theme.font)
                 for (var font in value) {
                     value[font] = font_name
                 }
-                callback(setting + " was set to \"" + font_name + "\"")
+                msg_callback(setting + " was set to \"" + font_name + "\"")
             } else if (current_setting !== undefined) {
                 if (typeof value !== "object" || Array.isArray(value)) {
-                    callback(setting + " can not be set")
+                    msg_callback(setting + " can not be set")
+                    context_callback(undefined)
                     return
                 }
             } else {
-                callback(setting + " is not a setting")
+                msg_callback(setting + " is not a setting")
+                context_callback(undefined)
                 return
             }
 
             for (var key in value) {
                 this.updateSettingsContext(setting + "-" + key, value[key])
             }
+            context_callback(value)
         }
     }
 

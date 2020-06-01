@@ -9,6 +9,7 @@ export default class Toggle extends React.Component {
             isLoaded: false,
             display: ""
         }
+        this.currentValue = ""
     }
 
     findSetting(settings) {
@@ -33,27 +34,40 @@ export default class Toggle extends React.Component {
         this.setState({
             display: display
         })
-        this.props.updateSettings(this.props.setting, this.value)
+        this.props.updateSettings(this.props.setting, this.value, {context_callback: this.updateInternalValue.bind(this)})
+    }
+
+    updateInternalValue(value) {
+        this.currentValue = value
+    }
+
+    loadFromSettings(settings) {
+        this.value = this.findSetting(settings)
+        var display
+
+        if (this.value) {
+            display = "On"
+        } else {
+            this.value = false
+            display = "Off"
+        }
+        this.setState({
+            display: display
+        })
     }
 
     render() {
         return (
             <SettingsContext.Consumer>
                 {(settings) => {
+                    if (this.currentValue !== this.findSetting(settings)) {
+                        this.loadFromSettings(settings)
+                        this.updateInternalValue(this.findSetting(settings))
+                    }
+
                     if (!this.state.isLoaded) {
-                        this.value = this.findSetting(settings)
-                        var display
-
-                        if (this.value) {
-                            display = "On"
-                        } else {
-                            this.value = false
-                            display = "Off"
-                        }
-
                         this.setState({
                             isLoaded: true,
-                            display: display
                         })
                     }
                     return (
