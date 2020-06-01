@@ -174,8 +174,8 @@ class App extends React.Component {
             } else if (setting === "theme-font") {
                 var font_name = value
                 value = this.deepCopyObject(this.state.settings.theme.font)
-                for (var key in value) {
-                    value[key] = font_name
+                for (var font in value) {
+                    value[font] = font_name
                 }
             } else if (current_setting !== undefined) {
                 if (typeof value !== "object" || Array.isArray(value)) {
