@@ -6,7 +6,6 @@ export default class Toggle extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            isLoaded: false,
             display: ""
         }
         this.currentValue = ""
@@ -25,16 +24,15 @@ export default class Toggle extends React.Component {
     }
 
     handleClick(event) {
-        this.value = !this.value
-        console.log(this.value)
+        this.currentValue = !this.currentValue
         var display = "Off"
-        if (this.value) {
+        if (this.currentValue) {
             display = "On"
         }
         this.setState({
             display: display
         })
-        this.props.updateSettings(this.props.setting, this.value, {context_callback: this.updateInternalValue.bind(this)})
+        this.props.updateSettings(this.props.setting, this.currentValue, {context_callback: this.updateInternalValue.bind(this)})
     }
 
     updateInternalValue(value) {
@@ -42,13 +40,12 @@ export default class Toggle extends React.Component {
     }
 
     loadFromSettings(settings) {
-        this.value = this.findSetting(settings)
+        var value = this.findSetting(settings)
         var display
 
-        if (this.value) {
+        if (value) {
             display = "On"
         } else {
-            this.value = false
             display = "Off"
         }
         this.setState({
@@ -63,12 +60,6 @@ export default class Toggle extends React.Component {
                     if (this.currentValue !== this.findSetting(settings)) {
                         this.loadFromSettings(settings)
                         this.updateInternalValue(this.findSetting(settings))
-                    }
-
-                    if (!this.state.isLoaded) {
-                        this.setState({
-                            isLoaded: true,
-                        })
                     }
                     return (
                         <input style={{fontFamily: settings.theme.font.settings, color: settings.theme.color.notTyped}} className="Toggle" type="button" value={ this.state.display } onClick={ this.handleClick.bind(this) } size="1" />

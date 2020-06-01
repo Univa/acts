@@ -6,8 +6,7 @@ export default class Input extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            isLoaded: false,
-            value: ""
+            display: ""
         }
         this.currentValue = ""
     }
@@ -40,7 +39,7 @@ export default class Input extends React.Component {
         }
 
         this.setState({
-            value: value
+            display: value
         })
         this.props.updateSettings(this.props.setting, value, {context_callback: this.updateInternalValue.bind(this)})
     }
@@ -51,7 +50,7 @@ export default class Input extends React.Component {
 
     loadFromSettings(settings) {
         this.setState({
-            value: this.findSetting(settings)
+            display: this.findSetting(settings)
         })
     }
 
@@ -63,18 +62,12 @@ export default class Input extends React.Component {
                         this.loadFromSettings(settings)
                         this.updateInternalValue(this.findSetting(settings))
                     }
-
-                    if (!this.state.isLoaded) {
-                        this.setState({
-                            isLoaded: true,
-                        })
-                    }
                     return (
                         <input
                             className="Input"
                             type={ this.props.type }
                             style={{fontFamily: settings.theme.font.settings, color: settings.theme.color.notTyped}}
-                            value={ this.state.value }
+                            value={ this.state.display }
                             onChange={ this.handleChange.bind(this) }
                             size="1"
                         />

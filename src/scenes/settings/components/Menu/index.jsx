@@ -6,9 +6,7 @@ export default class Menu extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            isLoaded: false,
-            options: [],
-            value: ""
+            display: ""
         }
         this.currentValue = ""
     }
@@ -27,7 +25,7 @@ export default class Menu extends React.Component {
 
     handleChange(event) {
         this.setState({
-            value: event.target.value
+            display: event.target.value
         })
         this.props.updateSettings(this.props.setting, event.target.value, {context_callback: this.updateInternalValue.bind(this)})
     }
@@ -45,7 +43,7 @@ export default class Menu extends React.Component {
             }
         }
         this.setState({
-            value: value
+            display: value
         })
     }
 
@@ -57,28 +55,21 @@ export default class Menu extends React.Component {
                         this.loadFromSettings(settings)
                         this.updateInternalValue(this.findSetting(settings))
                     }
-
-                    if (!this.state.isLoaded) {
-                        var options = []
-                        for (var item of this.props.options) {
-                            options.push(<option
-                                    style={{color: settings.theme.color.notTyped}}
-                                    className="menu-option"
-                                    key={ item }
-                                    value={ item }
-                                    onClick={ this.handleChange.bind(this) }
-                                >{ item }</option>)
-                        }
-                        this.setState({
-                            isLoaded: true,
-                            options: options
-                        })
+                    var options = []
+                    for (var item of this.props.options) {
+                        options.push(<option
+                                style={{color: settings.theme.color.notTyped}}
+                                className="menu-option"
+                                key={ item }
+                                value={ item }
+                                onClick={ this.handleChange.bind(this) }
+                            >{ item }</option>)
                     }
                     return (
                         <div className="Menu" style={{fontFamily: settings.theme.font.settings}}>
-                            <input disabled style={{fontFamily: settings.theme.font.settings, color: settings.theme.color.notTyped}} className="menu-button" type="text" value={ this.state.value } size="1" />
+                            <input disabled style={{fontFamily: settings.theme.font.settings, color: settings.theme.color.notTyped}} className="menu-button" type="text" value={ this.state.display } size="1" />
                             <div className="menu-options">
-                                { this.state.options }
+                                { options }
                             </div>
                         </div>
                     )
