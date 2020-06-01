@@ -89,6 +89,29 @@ export default class Type extends React.Component {
         this.containerRef.current.removeEventListener('keydown', this.wordsRef.current.handleKey)
     }
 
+    calcStdDev() {
+        // calculate the mean
+        let sum = 0
+        let correct_count = 0
+        for (var data of this.state.typedata.speeds) {
+            if (data.keyType === "correct") {
+                sum += data.speed
+                correct_count++
+            }
+        }
+        let mean = sum / correct_count
+
+        // calculate deviations
+        let deviation_sum = 0
+        for (var data2 of this.state.typedata.speeds) {
+            if (data2.keyType === "correct") {
+                deviation_sum += Math.pow(mean - data2.speed, 2)
+            }
+        }
+
+        return Math.sqrt(deviation_sum / correct_count).toFixed(1)
+    }
+
     onTimerFinish() {
         this.setState(prevState => ({
             mode: "result",
@@ -204,6 +227,7 @@ export default class Type extends React.Component {
                                     <Graph mode="static" data={ this.state.typedata.speeds } xScale={ settings.startTime } hoveredCoordinates={ this.state.hoveredCoordinates } hoverHandler={ this.onGraphHover }/>
                                     <p><span style={{color: settings.theme.color.notTyped}}>WPM: </span><span style={{color: settings.theme.color.correct}}>{ (this.state.typedata.correct / 5 * (60 / settings.startTime)).toFixed(1) }</span></p>
                                     <p><span style={{color: settings.theme.color.notTyped}}>Accuracy: </span><span style={{color: settings.theme.color.correct}}>{ this.state.typedata.correct + "/" + this.state.typedata.total + " (" + (this.state.typedata.correct / this.state.typedata.total * 100).toFixed(1) + "%)" }</span></p>
+                                    <p><span style={{color: settings.theme.color.notTyped}}>Standard Deviation: </span><span style={{color: settings.theme.color.correct}}>{ this.calcStdDev() }</span></p>
                                     <p><span style={{color: settings.theme.color.correct}}>F5</span><span style={{color: settings.theme.color.notTyped}}> to reset</span></p>
                                 </div>
                                 }
