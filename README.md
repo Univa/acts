@@ -48,7 +48,7 @@ These prefixes can be changed with the `set` command
 
 - Settings are __case-sensitive__
 
-- Example: `!set cmdPrefixes @ # $
+- Example: `!set cmdPrefixes @ # $`
 
 `type`
 
