@@ -46,6 +46,10 @@ These prefixes can be changed with the `set` command
 
 - See `this.state.settings` in [App.jsx](src/App.jsx) for a list of settings that you can change.
 
+- Settings are __case-sensitive__
+
+- Example: `!set cmdPrefixes @ # $
+
 `type`
 
 - Switches to the typing scene
