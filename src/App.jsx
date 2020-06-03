@@ -129,7 +129,7 @@ class App extends React.Component {
                     }
                 } else if (setting === "cmdPrefixes") {
                     if (value.join(" ") === "") {
-                        value = ["!", ":", "/"]
+                        value = ["$", "#"]
                     } else {
                         value = value.map(x => x[0])
                     }
