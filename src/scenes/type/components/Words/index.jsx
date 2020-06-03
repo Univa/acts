@@ -27,6 +27,10 @@ export default class Words extends React.Component {
         this.lastKey = ""
         this.lastKeyType = "correct"
 
+        this.punctuationChars = ["-", "?", ".", ",", "\"", ";"]
+        this.punctuationChance = 0.2
+        this.insideQuote = false
+
         this.handleKey = this.handleKey.bind(this);
         this.reset = this.reset.bind(this);
 
@@ -126,6 +130,10 @@ export default class Words extends React.Component {
             this.renderLine(this.contentRaw[line], line, true, true, word, char)
             if (line !== undefined) { this.lineRefs[line].current.scrollIntoView({behavior: "smooth", block: "nearest"}) }
         }
+
+        if (this.props.punctuation !== prevProps.punctuation) {
+            this.props.resetHandler()
+        }
     }
 
     componentWillUnmount() {
@@ -144,6 +152,7 @@ export default class Words extends React.Component {
         this.totalCharacters = 0
         this.startedTyping = false;
         this.contentRaw = []
+        this.insideQuote = false;
         this.setState({
             content: [],
             displayingMessage: false
@@ -274,16 +283,44 @@ export default class Words extends React.Component {
         }
     }
 
-    selectRandomWords(num) {
+    selectRandomWords(num, punctuation = false) {
         var words = [];
         for (var i = 0; i < num; i++) {
-            words.push(this.wordBank[Math.floor(Math.random() * this.wordBank.length)] + " ")
+            var beginning = ""
+            var ending = ""
+
+            if (punctuation === true) {
+                var chance = Math.random() / this.punctuationChance
+                var char = ""
+                if (chance < 1) {
+                    char = this.punctuationChars[Math.floor(Math.random() * this.punctuationChars.length)]
+                }
+
+                if (char === "-") {
+                    ending = char + this.wordBank[Math.floor(Math.random() * this.wordBank.length)]
+                } else if (char === "\"" && !this.insideQuote) {
+                    beginning = "\""
+                    this.insideQuote = !this.insideQuote
+                } else if (char === "\"" && this.insideQuote) {
+                    ending = "\""
+                    this.insideQuote = !this.insideQuote
+                } else {
+                    ending = char
+                }
+            }
+
+            words.push(beginning + this.wordBank[Math.floor(Math.random() * this.wordBank.length)] + ending + " ")
         }
         return words;
     }
 
     genLine(num) {
-        var words = this.selectRandomWords(num);
+        var words
+        if (!this.props.punctuation) {
+            words = this.selectRandomWords(num);
+        } else if (this.props.punctuation) {
+            words = this.selectRandomWords(num, true)
+        }
 
         var wordsToDisplay = [];
         for (var word of words) {

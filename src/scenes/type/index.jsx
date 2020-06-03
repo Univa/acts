@@ -209,6 +209,7 @@ export default class Type extends React.Component {
                                     linesAhead={ settings.linesAhead }
                                     linesBehind={ settings.linesBehind }
                                     mode={ this.state.mode }
+                                    punctuation={ settings.punctuation }
                                     message={ this.state.message }
                                     msgduration={ this.state.duration }
                                     updateTypingContext={ this.updateTypingContext }

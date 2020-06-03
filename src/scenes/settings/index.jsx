@@ -170,6 +170,10 @@ export default class Settings extends React.Component {
                                         <p style={{color: settings.theme.color.notTyped}}>Live WPM Graph</p>
                                         <Toggle setting="liveGraph" updateSettings={ this.props.updateSettings }/>
                                     </div>
+                                    <div className="setting">
+                                        <p style={{color: settings.theme.color.notTyped}}>Punctuation</p>
+                                        <Toggle setting="punctuation" updateSettings={ this.props.updateSettings }/>
+                                    </div>
                                 </div>
                             </div>
                             <div>

@@ -91,7 +91,8 @@ class App extends React.Component {
                 liveGraph: props.cookies.get("liveGraph") === "true",
                 wordBank: wordBank,
                 customBank: customBank,
-                cmdPrefixes: cmdPrefixes
+                cmdPrefixes: cmdPrefixes,
+                punctuation: props.cookies.get("punctuation") === "true"
             }
         }
 
@@ -132,7 +133,7 @@ class App extends React.Component {
                     } else {
                         value = value.map(x => x[0])
                     }
-                } else if (setting === "liveGraph") {
+                } else if (typeof current_setting === "boolean") {
                     if (value === "true" || value === true || value === 1) {
                         value = true
                     } else {
