@@ -27,7 +27,7 @@ export default class Words extends React.Component {
         this.lastKey = ""
         this.lastKeyType = "correct"
 
-        this.punctuationChars = ["-", "?", ".", ",", "\"", ";", ":", "!"]
+        this.punctuationChars = ["-", "?", ".", ",", "\"", ";", ":"]
         this.punctuationChance = 0.2
         this.insideQuote = false
 

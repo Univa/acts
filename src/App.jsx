@@ -53,7 +53,7 @@ class App extends React.Component {
 
         let cmdPrefixes = props.cookies.get("cmdPrefixes")
         if (cmdPrefixes === undefined || cmdPrefixes === "") {
-            cmdPrefixes = ["$", "#"]
+            cmdPrefixes = ["!", "$", "#"]
         } else {
             cmdPrefixes = cmdPrefixes.split(" ").map(x => x[0])
         }
@@ -129,7 +129,7 @@ class App extends React.Component {
                     }
                 } else if (setting === "cmdPrefixes") {
                     if (value.join(" ") === "") {
-                        value = ["$", "#"]
+                        value = ["!", "$", "#"]
                     } else {
                         value = value.map(x => x[0])
                     }

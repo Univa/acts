@@ -34,7 +34,7 @@ Power users can take advantage of the command system to change any setting on th
 
 All commands must begin with a prefix. The default command prefixes are:
 
-`$ or #`
+`! $ or #`
 
 These prefixes can be changed with the `set` command
 
