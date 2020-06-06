@@ -273,7 +273,7 @@ export default class Graph extends React.Component {
         var item_count = 0
         var approximation_data = [{x:0,y:0}]
         for (var i = 0; i < data.length; i++) {
-            if (data[i].x > section_size * section || i === data.length - 1) {
+            if (data[i].x > section_size * section || (i === data.length - 1 && data.length > 1)) {
                 approximation_data.push({
                     x: (section - 1) * section_size + section_size / 2,
                     y: sum / item_count
@@ -311,6 +311,8 @@ export default class Graph extends React.Component {
             }
             this.config.data.datasets[0].data = data
             this.config.data.datasets[1].data = this.genApproximation(data)
+            console.log(this.config.data.datasets[0].data)
+            console.log(this.config.data.datasets[1].data)
             this.graphContent.update()
         }
         if (this.props.mode === "live" && this.props.xScale !== prevProps.xScale) {
