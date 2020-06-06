@@ -28,6 +28,11 @@ class App extends React.Component {
             startTime = 60
         }
 
+        let wordsToType = parseInt(props.cookies.get("wordsToType") || 100, 10)
+        if (isNaN(wordsToType) || wordsToType <= 0) {
+            wordsToType = 100
+        }
+
         let linesAhead = parseInt(props.cookies.get("linesAhead") || 1, 10)
         if (isNaN(linesAhead) || linesAhead < 0) {
             linesAhead = 1
@@ -58,6 +63,12 @@ class App extends React.Component {
             cmdPrefixes = cmdPrefixes.split(" ").map(x => x[0])
         }
 
+        this.endConditions = ["time", "words"]
+        let endCondition = props.cookies.get("endCondition")
+        if (!this.endConditions.includes(endCondition)) {
+            endCondition = "time"
+        }
+
         this.state = {
             settings: {
                 theme: {
@@ -86,13 +97,15 @@ class App extends React.Component {
                     }
                 },
                 startTime: startTime,
+                wordsToType: wordsToType,
                 linesAhead: linesAhead,
                 linesBehind: linesBehind,
                 liveGraph: props.cookies.get("liveGraph") === "true",
                 wordBank: wordBank,
                 customBank: customBank,
                 cmdPrefixes: cmdPrefixes,
-                punctuation: props.cookies.get("punctuation") === "true"
+                punctuation: props.cookies.get("punctuation") === "true",
+                endCondition: endCondition
             }
         }
 
@@ -116,6 +129,13 @@ class App extends React.Component {
                     } else if (isNaN(value)) {
                         value = 60
                     }
+                } else if (setting === "wordsToType") {
+                    value = parseInt(value, 10)
+                    if (value < 0) {
+                        value = 0
+                    } else if (isNaN(value)) {
+                        value = 100
+                    }
                 } else if (setting === "customBank") {
                     if (value.join(" ") === "") {
                         value = ["sample", "words", "wow"]
@@ -132,6 +152,11 @@ class App extends React.Component {
                         value = ["!", "$", "#"]
                     } else {
                         value = value.map(x => x[0])
+                    }
+                } else if (setting === "endCondition") {
+                    value = String(value).toLowerCase();
+                    if (!this.endConditions.includes(value)) {
+                        value = "time"
                     }
                 } else if (typeof current_setting === "boolean") {
                     if (value === "true" || value === true || value === 1) {

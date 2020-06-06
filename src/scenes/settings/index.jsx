@@ -150,9 +150,21 @@ export default class Settings extends React.Component {
                             <p style={{color: settings.theme.color.correct}}>Typing</p>
                             <div className="subsection">
                                 <div className="setting-container">
+                                    { (settings.endCondition === "time") &&
                                     <div className="setting">
                                         <p style={{color: settings.theme.color.notTyped}}>Starting Time</p>
                                         <Input type="number" setting="startTime" updateSettings={ this.props.updateSettings } />
+                                    </div>
+                                    }
+                                    { (settings.endCondition === "words") &&
+                                    <div className="setting">
+                                        <p style={{color: settings.theme.color.notTyped}}>Words to Type</p>
+                                        <Input type="number" setting="wordsToType" updateSettings={ this.props.updateSettings } />
+                                    </div>
+                                    }
+                                    <div className="setting">
+                                        <p style={{color: settings.theme.color.notTyped}}>End Condition</p>
+                                        <Menu options={ ["Time", "Words"] } setting="endCondition" updateSettings={ this.props.updateSettings } />
                                     </div>
                                     <div className="setting">
                                         <p style={{color: settings.theme.color.notTyped}}>Lines Ahead</p>

@@ -31,6 +31,9 @@ export default class Words extends React.Component {
         this.punctuationChance = 0.2
         this.insideQuote = false
 
+        this.startTime = new Date().getTime()
+        this.endTime = new Date().getTime()
+
         this.handleKey = this.handleKey.bind(this);
         this.reset = this.reset.bind(this);
 
@@ -134,6 +137,14 @@ export default class Words extends React.Component {
         if (this.props.punctuation !== prevProps.punctuation) {
             this.props.resetHandler()
         }
+
+        if (this.props.endCondition !== prevProps.endCondition) {
+            this.props.resetHandler()
+        }
+        
+        if (this.props.wordsToType !== prevProps.wordsToType) {
+            this.props.resetHandler()
+        }
     }
 
     componentWillUnmount() {
@@ -146,6 +157,7 @@ export default class Words extends React.Component {
 
     reset() {
         this.words = 0;
+        this.wordsLeft = this.props.wordsToType
         this.lineTracker = 0
         this.wordTracker = 0
         this.correctCharacters = 0
@@ -545,11 +557,27 @@ export default class Words extends React.Component {
                 currentLine: this.lineTracker
             })
 
+            if (this.props.endCondition === "words") {
+                this.props.updateTypingContext({
+                    wordsLeft: this.props.wordsToType - this.wordTracker
+                })
+            }
+
+            if (this.props.endCondition === "words" && this.props.wordsToType - this.wordTracker === 0) {
+                this.endTime = new Date().getTime()
+                this.props.updateTypingContext({
+                    endTime: this.endTime
+                })
+                this.props.finishHandler()
+            }
+
             // Start the timer if it hasn't
             if (!this.startedTyping) {
                 this.startedTyping = true;
+                this.startTime = new Date().getTime()
                 this.props.updateTypingContext({
-                    running: true
+                    running: true,
+                    startTime: this.startTime
                 })
             }
 
@@ -582,8 +610,10 @@ export default class Words extends React.Component {
             // Start the timer if it hasn't
             if (!this.startedTyping) {
                 this.startedTyping = true;
+                this.startTime = new Date().getTime()
                 this.props.updateTypingContext({
-                    running: true
+                    running: true,
+                    startTime: this.startTime
                 })
             }
 
@@ -609,8 +639,10 @@ export default class Words extends React.Component {
             // Start the timer if it hasn't
             if (!this.startedTyping) {
                 this.startedTyping = true;
+                this.startTime = new Date().getTime()
                 this.props.updateTypingContext({
-                    running: true
+                    running: true,
+                    startTime: this.startTime
                 })
             }
         }
