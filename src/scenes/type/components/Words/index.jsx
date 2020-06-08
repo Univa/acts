@@ -445,6 +445,12 @@ export default class Words extends React.Component {
                 var new_line = this.lineTracker
                 var new_word = this.contentRaw[this.lineTracker].findIndex(x => x.id === this.wordTracker)
 
+                if (this.props.endCondition === "words") {
+                    this.props.updateTypingContext({
+                        wordsLeft: this.props.wordsToType - this.wordTracker
+                    })
+                }
+
                 // If there are incorrect characters on the previous word
                 if (this.contentRaw[new_line][new_word].incorrect.length > 0) {
                     // Delete an incorrect character on the previous word
