@@ -19,7 +19,8 @@ export default class Type extends React.Component {
                     {({theme}) => (
                         [
                             <p><span style={{color: theme.color.notTyped}}>Welcome.</span></p>,
-                            <p><span style={{color: theme.color.notTyped}}>Start typing when you're </span><span style={{color: theme.color.correct}}>ready.</span></p>
+                            <p><span style={{color: theme.color.notTyped}}>Start typing when you're </span><span style={{color: theme.color.correct}}>ready.</span></p>,
+                            <p><span style={{color: theme.color.notTyped}}>Type </span><span style={{color: theme.color.command}}>!help</span><span style={{color: theme.color.notTyped}}> to learn how to use commands.</span></p>
                         ]
                     )}
                 </SettingsContext.Consumer>
