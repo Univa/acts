@@ -89,6 +89,9 @@ class Commands extends React.Component {
                         }
                     }
 
+                } else if (command[0] === "help") {
+                    window.open("https://github.com/Univa/acts/blob/master/README.md")
+
                 } else {
                     if (command[0] === undefined) {
                         this.displayMessage("No command was entered")
