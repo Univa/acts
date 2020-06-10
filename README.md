@@ -62,6 +62,10 @@ These prefixes can be changed with the `set` command
 
 - Switches to the word bank scene, which is used to set words for the "Custom" word bank.
 
+`help`
+
+- Shows this README file in the browser.
+
 ## Installation
 
 If you would like to run a local version of acts, clone this repository. Then in the terminal, run
