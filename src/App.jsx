@@ -28,9 +28,9 @@ class App extends React.Component {
             startTime = 60
         }
 
-        let wordsToType = parseInt(props.cookies.get("wordsToType") || 100, 10)
+        let wordsToType = parseInt(props.cookies.get("wordsToType") || 60, 10)
         if (isNaN(wordsToType) || wordsToType <= 0) {
-            wordsToType = 100
+            wordsToType = 60
         }
 
         let linesAhead = parseInt(props.cookies.get("linesAhead") || 1, 10)
