@@ -90,7 +90,7 @@ class Commands extends React.Component {
                     }
 
                 } else if (command[0] === "help") {
-                    window.open("https://github.com/Univa/acts/blob/master/README.md")
+                    window.open("https://github.com/Univa/acts/blob/master/COMMANDS.md")
 
                 } else {
                     if (command[0] === undefined) {
