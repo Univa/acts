@@ -33,3 +33,7 @@ These prefixes can be changed with the `set` command
 `help`
 
 - Shows this README file in the browser.
+
+`source`
+
+- Opens the [source code](https://github.com/Univa/acts) for acts in the browser.
